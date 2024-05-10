@@ -2,6 +2,7 @@ package com.example.botanify.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +32,7 @@ import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentLightBlue
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
+import com.example.botanify.ui.theme.SecondaryBase
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
@@ -120,6 +123,7 @@ fun InformationHomeCard(modifier: Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
+                    tint = SecondaryBase,
                     modifier = Modifier
                         .width(20.dp)
                         .height(20.dp),
@@ -146,7 +150,7 @@ fun TanamankuHomeCard(modifier: Modifier) {
             modifier = Modifier
                 .width(135.dp)
                 .height(150.dp)
-                .clip(RoundedCornerShape(10.dp,10.dp,))
+                .clip(RoundedCornerShape(10.dp, 10.dp))
                 .background(ContentLightBlue)
 
         ) {
@@ -179,6 +183,8 @@ fun TanamankuHomeCard(modifier: Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
+                    tint = SecondaryBase,
+
                     modifier = Modifier
                         .width(16.dp)
                         .height(16.dp),
@@ -201,6 +207,186 @@ fun TanamankuHomeCard(modifier: Modifier) {
 
 
 @Composable
+fun NotificationCard(modifier: Modifier) {
+    Column(
+        modifier = modifier
+            .background(ContentWhite)
+            .padding(10.dp)
+    ) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    tint = SecondaryBase,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp),
+                    painter = painterResource(id = R.drawable.ic_notification),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+
+                Text(
+                    text = "Penyiraman Tanaman",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 16.sp,
+                        fontWeight = FontWeight(600),
+                    )
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    tint = SecondaryBase,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp),
+                    painter = painterResource(id = R.drawable.ic_wateringcan),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+
+                Text(
+                    text = "09.30",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 16.sp,
+                        fontWeight = FontWeight(600),
+                    )
+                )
+
+            }
+        }
+
+        Text(
+            text = "Lakukan Penyiraman untuk tanaman : ",
+            style = TextStyle(
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(400),
+            )
+        )
+        Text(
+            text = "Pink Philodendron ",
+            color = PrimaryBase,
+            style = TextStyle(
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(600),
+            )
+        )
+    }
+}
+
+@Composable
+fun InformationCard(modifier: Modifier) {
+    Column(
+        modifier = modifier
+            .height(115.dp)
+            .clip(RoundedCornerShape(10.dp))
+    ) {
+        Row {
+            Image(
+                modifier = Modifier
+                    .width(90.dp)
+                    .height(90.dp),
+                painter = painterResource(id = R.drawable.information_plant1),
+                contentDescription = null
+            )
+            Column(modifier = Modifier.padding(10.dp)) {
+                Text(
+                    text = "Monstera",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        lineHeight = 27.sp,
+                        fontWeight = FontWeight(700),
+                    )
+                )
+                FilterCard(modifier = Modifier)
+                Text(
+                    text = "Tips merawat tanaman Monstera Deliciosa ...",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        fontWeight = FontWeight(400),
+                    )
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Divider()
+    }
+}
+
+@Composable
+fun TanamanSayaCard(modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(135.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(ContentWhite), verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            modifier = Modifier
+                .width(75.dp)
+                .height(115.dp)
+                .padding(5.dp),
+            painter = painterResource(id = R.drawable.tanamansaya_plant1),
+            contentDescription = null
+        )
+        Column(modifier = Modifier) {
+            Text(
+                text = "Pilea peperomiodes",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight(700),
+                )
+            )
+            Text(
+                text = "Penyiraman Selanjutnya :",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 21.sp,
+                    fontWeight = FontWeight(400),
+                )
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    tint = SecondaryBase,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp),
+                    painter = painterResource(id = R.drawable.ic_wateringcan),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+
+                Text(
+                    text = "Jum’at, 10 Mei",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 21.sp,
+                        fontWeight = FontWeight(400),
+                    )
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
 @Preview(showBackground = true)
 fun PreviewCardComponents() {
 
@@ -218,5 +404,11 @@ fun PreviewCardComponents() {
         InformationHomeCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
         TanamankuHomeCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        NotificationCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        InformationCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        TanamanSayaCard(modifier = Modifier)
     }
 }
