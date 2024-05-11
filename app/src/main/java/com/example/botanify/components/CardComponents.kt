@@ -65,16 +65,18 @@ fun BannerCard(modifier: Modifier) {
 }
 
 @Composable
-fun FilterCard(modifier: Modifier) {
+fun FilterCard(modifier: Modifier, filterText: String) {
     Box(
         modifier = modifier
+            .padding(end = 8.dp)
             .clip(RoundedCornerShape(5.dp))
             .background(PrimaryBase)
+
     ) {
         Text(
             modifier = Modifier.padding(6.dp),
             color = ContentWhite,
-            text = "Tips & Trick",
+            text = filterText,
             style = TextStyle(
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
@@ -88,6 +90,7 @@ fun FilterCard(modifier: Modifier) {
 fun InformationHomeCard(modifier: Modifier) {
     Row(
         modifier = modifier
+            .padding(bottom = 8.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(ContentWhite)
             .fillMaxWidth(),
@@ -106,6 +109,7 @@ fun InformationHomeCard(modifier: Modifier) {
                 contentDescription = null
             )
         }
+        Spacer(modifier = Modifier.width(8.dp))
 
         Column {
             Text(
@@ -130,6 +134,7 @@ fun InformationHomeCard(modifier: Modifier) {
                     painter = painterResource(id = R.drawable.ic_calender),
                     contentDescription = null
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "Senin, 24 Maret 2024",
                     style = TextStyle(
@@ -140,7 +145,9 @@ fun InformationHomeCard(modifier: Modifier) {
                 )
             }
         }
+
     }
+
 }
 
 @Composable
@@ -309,7 +316,7 @@ fun InformationCard(modifier: Modifier) {
                         fontWeight = FontWeight(700),
                     )
                 )
-                FilterCard(modifier = Modifier)
+                FilterCard(modifier = Modifier, "Tips & Trick")
                 Text(
                     text = "Tips merawat tanaman Monstera Deliciosa ...",
                     style = TextStyle(
@@ -385,6 +392,34 @@ fun TanamanSayaCard(modifier: Modifier) {
     }
 }
 
+@Composable
+fun SearchBarTanaman(modifier: Modifier) {
+    Row(modifier = modifier
+        .padding(16.dp)
+        .height(45.dp)
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(10.dp))
+        .background(SurfaceBase),
+        verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            tint = SecondaryBase,
+            modifier = Modifier
+                .padding(start = 8.dp, end = 8.dp)
+                .width(24.dp)
+                .height(24.dp)
+            ,
+            painter = painterResource(id = R.drawable.ic_search),
+            contentDescription = null
+        )
+        Text(
+            text = "Cari tanaman",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight(400),
+            )
+        )
+    }
+}
 
 @Composable
 @Preview(showBackground = true)
@@ -397,18 +432,19 @@ fun PreviewCardComponents() {
             .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        BannerCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
-        FilterCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
-        InformationHomeCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
-        TanamankuHomeCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
-        NotificationCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
-        InformationCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(16.dp))
-        TanamanSayaCard(modifier = Modifier)
+//        BannerCard(modifier = Modifier)
+//        Spacer(modifier = Modifier.height(16.dp))
+//        FilterCard(modifier = Modifier, "Tips & Trick")
+//        Spacer(modifier = Modifier.height(16.dp))
+//        InformationHomeCard(modifier = Modifier)
+//        Spacer(modifier = Modifier.height(16.dp))
+//        TanamankuHomeCard(modifier = Modifier)
+//        Spacer(modifier = Modifier.height(16.dp))
+//        NotificationCard(modifier = Modifier)
+//        Spacer(modifier = Modifier.height(16.dp))
+//        InformationCard(modifier = Modifier)
+//        Spacer(modifier = Modifier.height(16.dp))
+//        TanamanSayaCard(modifier = Modifier)
+        SearchBarTanaman(modifier = Modifier)
     }
 }
