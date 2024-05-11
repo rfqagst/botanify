@@ -217,11 +217,13 @@ fun TanamankuHomeCard(modifier: Modifier) {
 fun NotificationCard(modifier: Modifier) {
     Column(
         modifier = modifier
+            .padding(bottom = 8.dp)
             .background(ContentWhite)
-            .padding(10.dp)
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -273,6 +275,7 @@ fun NotificationCard(modifier: Modifier) {
         }
 
         Text(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
             text = "Lakukan Penyiraman untuk tanaman : ",
             style = TextStyle(
                 fontSize = 14.sp,
@@ -280,7 +283,9 @@ fun NotificationCard(modifier: Modifier) {
                 fontWeight = FontWeight(400),
             )
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp,bottom = 16.dp),
             text = "Pink Philodendron ",
             color = PrimaryBase,
             style = TextStyle(
@@ -440,7 +445,7 @@ fun PreviewCardComponents() {
 //        Spacer(modifier = Modifier.height(16.dp))
 //        TanamankuHomeCard(modifier = Modifier)
 //        Spacer(modifier = Modifier.height(16.dp))
-//        NotificationCard(modifier = Modifier)
+        NotificationCard(modifier = Modifier)
 //        Spacer(modifier = Modifier.height(16.dp))
 //        InformationCard(modifier = Modifier)
 //        Spacer(modifier = Modifier.height(16.dp))
