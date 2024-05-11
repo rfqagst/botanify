@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.botanify.home.HomeScreen
+import com.example.botanify.informasi.DetailInformasiScreen
 import com.example.botanify.ui.theme.BotanifyTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(modifier = Modifier)
+                    DetailInformasiScreen(modifier = Modifier)
                 }
             }
         }
