@@ -1,4 +1,4 @@
-package com.example.botanify.informasi
+package com.example.botanify.screen.informasi
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,6 @@ import com.example.botanify.R
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.PrimaryBase
-import com.example.botanify.ui.theme.SecondaryBase
 
 @Composable
 fun DetailInformasiScreen(modifier: Modifier) {

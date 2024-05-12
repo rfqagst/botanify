@@ -1,4 +1,4 @@
-package com.example.botanify.components
+package com.example.botanify.screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,12 +28,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentLightBlue
+import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
 import com.example.botanify.ui.theme.SecondaryBase
@@ -85,6 +87,27 @@ fun FilterCard(modifier: Modifier, filterText: String) {
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
                 fontWeight = FontWeight(600),
+            )
+        )
+    }
+}
+
+
+@Composable
+fun FilterCardOrange(modifier: Modifier, filterText: String) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(5.dp))
+            .background(SecondaryBase)
+
+    ) {
+        Text(
+            modifier = Modifier.padding(2.dp),
+            text = "Tips dan Trick",
+            color = ContentWhite,
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight(400),
             )
         )
     }
@@ -325,7 +348,7 @@ fun InformationCard(modifier: Modifier) {
                         fontWeight = FontWeight(700),
                     )
                 )
-                FilterCard(modifier = Modifier, "Tips & Trick")
+                FilterCardOrange(modifier = Modifier, "Tips & Trick")
                 Text(
                     text = "Tips merawat tanaman Monstera Deliciosa ...",
                     style = TextStyle(
@@ -445,7 +468,9 @@ fun ExpandableCard(
         modifier = modifier.background(ContentWhite)
     ){
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -483,6 +508,66 @@ fun ExpandableCard(
 }
 
 @Composable
+fun SearchTanamanCard(modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .padding(bottom = 8.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(ContentWhite)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(8.dp)
+                .width(60.dp)
+                .height(60.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentLightBlue)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.card_plant1),
+                contentDescription = null
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column {
+            Text(
+                text = "Pink Philodendron",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight(600),
+                    color = ContentDark,
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                text = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. ",
+                color = ContentSemiDark,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight(400),
+                )
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+            }
+        }
+
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 fun PreviewCardComponents() {
 
@@ -493,19 +578,19 @@ fun PreviewCardComponents() {
             .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-//        BannerCard(modifier = Modifier)
-//        Spacer(modifier = Modifier.height(16.dp))
-//        FilterCard(modifier = Modifier, "Tips & Trick")
-//        Spacer(modifier = Modifier.height(16.dp))
-//        InformationHomeCard(modifier = Modifier)
-//        Spacer(modifier = Modifier.height(16.dp))
-//        TanamankuHomeCard(modifier = Modifier)
-//        Spacer(modifier = Modifier.height(16.dp))
+        SearchTanamanCard(modifier = Modifier)
+        BannerCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        FilterCard(modifier = Modifier, "Tips & Trick")
+        Spacer(modifier = Modifier.height(16.dp))
+        InformationHomeCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        TanamankuHomeCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
         NotificationCard(modifier = Modifier)
-//        Spacer(modifier = Modifier.height(16.dp))
-//        InformationCard(modifier = Modifier)
-//        Spacer(modifier = Modifier.height(16.dp))
-//        TanamanSayaCard(modifier = Modifier)
+        Spacer(modifier = Modifier.height(16.dp))
+        InformationCard(modifier = Modifier)
+        TanamanSayaCard(modifier = Modifier)
         SearchBarTanaman(modifier = Modifier)
     }
 }

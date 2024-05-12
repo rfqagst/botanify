@@ -1,4 +1,4 @@
-package com.example.botanify.navigation
+package com.example.botanify.screen.navigation
 
 import com.example.botanify.R
 

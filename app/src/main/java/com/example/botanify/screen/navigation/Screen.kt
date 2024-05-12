@@ -1,4 +1,4 @@
-package com.example.botanify.navigation
+package com.example.botanify.screen.navigation
 
 sealed class Screen(val route: String) {
 data object Home : Screen("home")

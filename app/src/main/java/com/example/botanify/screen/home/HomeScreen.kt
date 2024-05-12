@@ -1,4 +1,4 @@
-package com.example.botanify.home
+package com.example.botanify.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,10 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
-import com.example.botanify.components.BannerCard
-import com.example.botanify.components.FilterCard
-import com.example.botanify.components.InformationHomeCard
-import com.example.botanify.components.SearchBarTanaman
+import com.example.botanify.screen.components.BannerCard
+import com.example.botanify.screen.components.FilterCard
+import com.example.botanify.screen.components.InformationHomeCard
+import com.example.botanify.screen.components.SearchBarTanaman
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SecondaryBase
 
@@ -94,7 +94,7 @@ fun HomeScreen(modifier: Modifier) {
 
         Column(modifier = Modifier.padding(16.dp)) {
             BannerCard(modifier = Modifier)
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -122,7 +122,7 @@ fun HomeScreen(modifier: Modifier) {
                     text = "Lihat semua",
                     color = SecondaryBase,
                     style = TextStyle(
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight(600),
                     )
                 )

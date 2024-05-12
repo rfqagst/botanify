@@ -1,4 +1,4 @@
-package com.example.botanify.scan
+package com.example.botanify.screen.scan
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

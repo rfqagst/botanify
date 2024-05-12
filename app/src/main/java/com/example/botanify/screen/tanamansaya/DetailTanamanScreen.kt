@@ -1,4 +1,4 @@
-package com.example.botanify.tanamansaya
+package com.example.botanify.screen.tanamansaya
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
-import com.example.botanify.components.ExpandableCard
+import com.example.botanify.screen.components.ExpandableCard
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SurfaceBase
 

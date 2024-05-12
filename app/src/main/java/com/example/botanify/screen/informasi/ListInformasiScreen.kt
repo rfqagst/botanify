@@ -1,4 +1,4 @@
-package com.example.botanify.informasi
+package com.example.botanify.screen.informasi
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,19 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.botanify.components.InformationCard
-import com.example.botanify.components.SearchBarTanaman
+import com.example.botanify.screen.components.InformationHomeCard
+import com.example.botanify.screen.components.SearchBarTanaman
 
 @Composable
 fun ListInformasiScreen(modifier: Modifier) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(16.dp)) {
         SearchBarTanaman(modifier = Modifier)
         Spacer(modifier = Modifier.height(24.dp))
-        InformationCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
-        InformationCard(modifier = Modifier)
-        Spacer(modifier = Modifier.height(8.dp))
-        InformationCard(modifier = Modifier)
+        InformationHomeCard(modifier = Modifier)
+        InformationHomeCard(modifier = Modifier)
+        InformationHomeCard(modifier = Modifier)
     }
 }
 
