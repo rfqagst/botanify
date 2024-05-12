@@ -1,10 +1,8 @@
 package com.example.botanify
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -17,8 +15,6 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,13 +29,12 @@ import com.example.botanify.home.HomeScreen
 import com.example.botanify.navigation.bottomNavItem
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
-import java.nio.file.WatchEvent
 
 @Composable
 fun BotanifyApp() {
     Scaffold(
         floatingActionButton = {
-            Box(){
+            Box() {
                 FloatingActionButton(
                     onClick = { /* stub */ },
                     containerColor = PrimaryBase,
@@ -63,10 +58,10 @@ fun BotanifyApp() {
         },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            BottomBarComponent2()
+            BottomBarComponent()
         },
 
-    ) { paddingValues ->
+        ) { paddingValues ->
         HomeScreen(modifier = Modifier.padding(paddingValues))
 
     }
@@ -74,7 +69,7 @@ fun BotanifyApp() {
 
 
 @Composable
-fun BottomBarComponent2() {
+fun BottomBarComponent() {
 
     var selected by remember {
         mutableStateOf(0)
@@ -85,58 +80,33 @@ fun BottomBarComponent2() {
         containerColor = ContentWhite,
         content = {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceAround, // Left-align icons
                 modifier = Modifier.fillMaxWidth()
             ) {
-
                 bottomNavItem.forEachIndexed { index, bottomNavItem ->
+                    val id = bottomNavItem.icon
                     IconButton(
+                        modifier = Modifier.padding(
+                            end = if (id == R.drawable.ic_plant) {
+                                80.dp
+                            } else {
+                                0.dp
+                            }
+                        ),
                         onClick = { selected = index },
                     ) {
                         Icon(
                             modifier = Modifier
                                 .width(25.dp)
-                                .height(25.dp),
+                                .height(25.dp)
+//
+                            ,
                             painter = painterResource(id = bottomNavItem.icon),
                             contentDescription = null
                         )
                     }
                 }
-
             }
         }
     )
-}
-
-@Composable
-fun BottomBarComponent() {
-
-    var selected by remember {
-        mutableStateOf(0)
-    }
-
-    NavigationBar(
-        modifier = Modifier.height(60.dp),
-        containerColor = ContentWhite
-    ) {
-        bottomNavItem.forEachIndexed { index, bottomNavItem ->
-            NavigationBarItem(
-                selected = index == selected,
-                onClick = {
-                    selected = index
-                },
-                icon = {
-                    Icon(
-                        modifier = Modifier
-                            .width(25.dp)
-                            .height(25.dp),
-                        painter = painterResource(id = bottomNavItem.icon),
-                        contentDescription = null
-                    )
-                    Spacer(modifier =  Modifier.width(154.dp))
-                }
-            )
-        }
-
-    }
 }
