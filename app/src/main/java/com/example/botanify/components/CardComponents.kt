@@ -405,7 +405,6 @@ fun TanamanSayaCard(modifier: Modifier) {
 fun SearchBarTanaman(modifier: Modifier) {
     Row(
         modifier = modifier
-            .padding(16.dp)
             .height(45.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))

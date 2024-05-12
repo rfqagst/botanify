@@ -84,17 +84,17 @@ fun HomeScreen(modifier: Modifier) {
                     contentDescription = null, tint = SecondaryBase
                 )
             }
-            SearchBarTanaman(modifier = Modifier)
+            SearchBarTanaman(modifier = Modifier.padding(16.dp))
 
         }
 
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
 
         Column(modifier = Modifier.padding(16.dp)) {
             BannerCard(modifier = Modifier)
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -123,7 +123,6 @@ fun HomeScreen(modifier: Modifier) {
                     color = SecondaryBase,
                     style = TextStyle(
                         fontSize = 12.sp,
-                        lineHeight = 16.sp,
                         fontWeight = FontWeight(600),
                     )
                 )

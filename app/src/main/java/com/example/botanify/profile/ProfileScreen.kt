@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -37,11 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
-import com.example.botanify.components.ExpandableCard
-import com.example.botanify.informasi.DetailInformasiScreen
 
 @Composable
-fun ProfileScreen(modifier: Modifier){
+fun ProfileScreen(modifier: Modifier) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
     Column(modifier.fillMaxWidth()) {
@@ -96,7 +92,7 @@ fun ProfileScreen(modifier: Modifier){
         )
         Spacer(modifier = Modifier.height(26.dp))
         IconButton(
-            onClick = { /*TODO*/ } ,
+            onClick = { /*TODO*/ },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(51.dp)

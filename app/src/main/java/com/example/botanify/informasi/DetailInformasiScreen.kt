@@ -29,53 +29,14 @@ import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
-fun DetailInformasiScreen(modifier: Modifier) {
+fun DetailInformasiScreen() {
 
-    var expandedState by remember { mutableStateOf(false) }
-    val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
-
-    Column(
-        modifier = modifier.background(SurfaceBase)
-    ) {
-        Image(
-            modifier = Modifier
-                .height(216.dp)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Crop,
-            painter = painterResource(id = R.drawable.information_photo1),
-            contentDescription = null
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            modifier = Modifier
-                .background(ContentWhite)
-                .padding(16.dp)
-                .fillMaxWidth(),
-            text = "Pink Philodendron",
-            style = TextStyle(
-                fontSize = 20.sp,
-                lineHeight = 44.sp,
-                fontWeight = FontWeight(700),
-            )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        ExpandableCard(
-            modifier = Modifier,
-            cardTitle = "Keterangan",
-            onClick = { expandedState = !expandedState },
-            rotationState = rotationState,
-            expandedState = expandedState,
-            expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
-        )
-    }
 }
 
-@Composable
 @Preview(showBackground = true)
-fun PreviewDetailInformasi() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        DetailInformasiScreen(modifier = Modifier)
-
-    }
-
+@Composable
+fun DetailInformasiScreenPreview() {
+    DetailInformasiScreen()
 }
+
+

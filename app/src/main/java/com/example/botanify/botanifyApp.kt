@@ -23,18 +23,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.botanify.home.HomeScreen
 import com.example.botanify.navigation.bottomNavItem
 import com.example.botanify.ui.theme.ContentWhite
+import com.example.botanify.ui.theme.Neutral60
 import com.example.botanify.ui.theme.PrimaryBase
+import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun BotanifyApp() {
     Scaffold(
         floatingActionButton = {
-            Box() {
+            Box {
                 FloatingActionButton(
                     onClick = { /* stub */ },
                     containerColor = PrimaryBase,
@@ -77,7 +80,7 @@ fun BottomBarComponent() {
 
     BottomAppBar(
         modifier = Modifier.height(55.dp),
-        containerColor = ContentWhite,
+        containerColor = Color.White,
         content = {
             Row(
                 horizontalArrangement = Arrangement.SpaceAround, // Left-align icons
@@ -99,8 +102,8 @@ fun BottomBarComponent() {
                             modifier = Modifier
                                 .width(25.dp)
                                 .height(25.dp)
-//
                             ,
+                            tint = if (selected == index) PrimaryBase else Neutral60,
                             painter = painterResource(id = bottomNavItem.icon),
                             contentDescription = null
                         )
