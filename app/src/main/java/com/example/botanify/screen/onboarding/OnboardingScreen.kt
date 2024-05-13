@@ -29,7 +29,7 @@ import com.example.botanify.R
 import com.example.botanify.screen.components.OnBoardingPage
 import com.example.botanify.screen.components.OnBoardingPageTwo
 import com.example.botanify.screen.components.PagerIndicator
-import com.example.botanify.screen.components.PrimaryButton
+import com.example.botanify.screen.components.StandartBtn
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -105,7 +105,7 @@ fun OnBoarding(
 
             Spacer(modifier = Modifier .weight(1f))
             if (buttonState.value[0].isNotEmpty()) {
-                PrimaryButton(
+                StandartBtn(
                     text = buttonState.value[0],
                     onClick = {
                         scope.launch {
@@ -118,7 +118,7 @@ fun OnBoarding(
                 )
             }
             else{
-                PrimaryButton(text = buttonState.value[1]) {
+                StandartBtn(text = buttonState.value[1]) {
 
                 }
             }

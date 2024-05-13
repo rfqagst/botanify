@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -72,51 +73,12 @@ fun BannerCard(modifier: Modifier) {
 
 }
 
-@Composable
-fun FilterCard(modifier: Modifier, filterText: String, isActive : Boolean) {
-    Box(
-        modifier = modifier
-            .padding(end = 8.dp)
-            .clip(RoundedCornerShape(5.dp))
-            .background(if(isActive) PrimaryBase else PrimaryLight)
 
-    ) {
-        Text(
-            modifier = Modifier.padding(6.dp),
-            color = if (isActive) ContentWhite else ContentDark,
-            text = filterText,
-            style = TextStyle(
-                fontSize = 12.sp,
-                lineHeight = 16.sp,
-                fontWeight = FontWeight(600),
-            )
-        )
-    }
-}
+
 
 
 @Composable
-fun FilterCardOrange(modifier: Modifier, filterText: String) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(5.dp))
-            .background(SecondaryBase)
-
-    ) {
-        Text(
-            modifier = Modifier.padding(2.dp),
-            text = "Tips dan Trick",
-            color = ContentWhite,
-            style = TextStyle(
-                fontSize = 12.sp,
-                fontWeight = FontWeight(400),
-            )
-        )
-    }
-}
-
-@Composable
-fun InformationHomeCard(modifier: Modifier) {
+fun InformationHomeCard(modifier: Modifier,title : String, date : String, image: Int) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -134,7 +96,8 @@ fun InformationHomeCard(modifier: Modifier) {
                 .background(ContentLightBlue)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.card_plant1),
+                contentScale = ContentScale.Crop,
+                painter = painterResource(id = image),
                 contentDescription = null
             )
         }
@@ -142,7 +105,7 @@ fun InformationHomeCard(modifier: Modifier) {
 
         Column {
             Text(
-                text = "Tips menjaga kelembapan ruangan",
+                text = title,
                 style = TextStyle(
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
@@ -165,7 +128,7 @@ fun InformationHomeCard(modifier: Modifier) {
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "Senin, 24 Maret 2024",
+                    text = date,
                     style = TextStyle(
                         fontSize = 12.sp,
                         lineHeight = 18.sp,
@@ -350,7 +313,6 @@ fun InformationCard(modifier: Modifier) {
                         fontWeight = FontWeight(700),
                     )
                 )
-                FilterCardOrange(modifier = Modifier, "Tips & Trick")
                 Text(
                     text = "Tips merawat tanaman Monstera Deliciosa ...",
                     style = TextStyle(
@@ -585,7 +547,7 @@ fun PreviewCardComponents() {
         Spacer(modifier = Modifier.height(16.dp))
 //        FilterCard(modifier = Modifier, "Tips & Trick")
         Spacer(modifier = Modifier.height(16.dp))
-        InformationHomeCard(modifier = Modifier)
+//        InformationHomeCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
         TanamankuHomeCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))

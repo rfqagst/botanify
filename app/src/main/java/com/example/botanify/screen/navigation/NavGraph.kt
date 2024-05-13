@@ -3,9 +3,12 @@ package com.example.botanify.screen.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.botanify.screen.home.HomeScreen
+import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.profile.ProfileScreen
@@ -19,7 +22,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
-        HomeScreen(modifier = modifier, navController)
+            HomeScreen(modifier = modifier, navController)
         }
         composable(route = Screen.TanamanSaya.route) {
             ListTanamanSayaScreen(modifier = modifier)
@@ -28,8 +31,16 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             ScanTanamanScreen(modifier = modifier)
         }
         composable(route = Screen.Information.route) {
-            ListInformasiScreen(modifier = modifier)
+            ListInformasiScreen(modifier = modifier, navController)
         }
+
+        composable(
+            route = Screen.DetailInformation.route + "/{informationId}",
+        ) {
+            val informationId = it.arguments?.getString("informationId") ?: ""
+            DetailInformasiScreen(modifier = modifier, informationId)
+        }
+
         composable(route = Screen.Profile.route) {
             ProfileScreen(modifier = modifier)
         }
@@ -39,5 +50,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         composable(route = Screen.Search.route) {
             SearchScreen(modifier = modifier)
         }
+
     }
 }

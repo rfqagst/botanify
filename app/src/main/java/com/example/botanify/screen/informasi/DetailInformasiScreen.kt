@@ -17,73 +17,84 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
+import com.example.botanify.data.local.informationData
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.PrimaryBase
 
 @Composable
-fun DetailInformasiScreen(modifier: Modifier) {
-    Column() {
-        Image(
-            modifier = Modifier
-                .height(216.dp)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Crop,
-            painter = painterResource(id = R.drawable.information_photo1),
-            contentDescription = null
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Column(
-            modifier = modifier,
-        ) {
-            Text(
-                text = "7 Tips Merawat Tanaman Hias Supaya Tumbuh Sehat dan Kuat di Rumah",
-                color = ContentDark,
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    lineHeight = 24.sp,
-                    fontWeight = FontWeight(700),
-                )
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = "Danica Adhitiawarman - detikProperti",
-                color = PrimaryBase,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    fontWeight = FontWeight(400),
-                )
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Senin, 29 Apr 2024 07:30 WIB",
-                color = ContentSemiDark,
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    lineHeight = 18.sp,
-                    fontWeight = FontWeight(400),
-                )
+fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
+
+    val informationData = informationData
+    val information = informationData.find { it.id == informationId }
+
+
+    if(information != null) {
+        Column() {
+            Image(
+                modifier = Modifier
+                    .height(216.dp)
+                    .fillMaxWidth(),
+                contentScale = ContentScale.Crop,
+                painter = painterResource(id = information.image),
+                contentDescription = null
             )
             Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "Jakarta - Tanaman hias yang ditaruh di dalam rumah sangat bergantung pada pemiliknya untuk bisa bertahan hidup. Maka, kalau ingin tanaman hias tumbuh optimal, kamu perlu memberi perhatian lebih supaya kebutuhan tanaman terpenuhi.",
-                color = ContentSemiDark,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    fontWeight = FontWeight(400),
+            Column(
+                modifier = modifier.padding(16.dp),
+            ) {
+                Text(
+                    text = information.title,
+                    color = ContentDark,
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        lineHeight = 24.sp,
+                        fontWeight = FontWeight(700),
+                    )
                 )
-            )
-        }
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = information.publisher,
+                    color = PrimaryBase,
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 21.sp,
+                        fontWeight = FontWeight(400),
+                    )
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = information.date,
+                    color = ContentSemiDark,
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        fontWeight = FontWeight(400),
+                    )
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = information.description,
+                    color = ContentSemiDark,
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 24.sp,
+                        fontWeight = FontWeight(400),
+                    )
+                )
+            }
 
+        }
     }
+
+
+
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DetailInformasiScreenPreview() {
-    DetailInformasiScreen(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
+//    DetailInformasiScreen(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
 }
 
 

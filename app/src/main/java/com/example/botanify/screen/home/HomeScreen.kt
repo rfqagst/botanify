@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,8 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.botanify.R
+import com.example.botanify.data.local.informationData
 import com.example.botanify.screen.components.BannerCard
-import com.example.botanify.screen.components.FilterCard
+import com.example.botanify.screen.components.FilterButton
 import com.example.botanify.screen.components.InformationHomeCard
 import com.example.botanify.screen.components.SearchBarTanaman
 import com.example.botanify.screen.navigation.Screen
@@ -37,7 +39,10 @@ import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SecondaryBase
 
 @Composable
-fun HomeScreen(modifier: Modifier, navController : NavHostController) {
+fun HomeScreen(modifier: Modifier, navController: NavHostController) {
+
+    val informationData = informationData
+
     Column(modifier = modifier) {
         Column(modifier = Modifier.background(ContentWhite)) {
             Row(
@@ -80,7 +85,7 @@ fun HomeScreen(modifier: Modifier, navController : NavHostController) {
                         )
                     }
                 }
-                
+
                 IconButton(onClick = { navController.navigate(Screen.Notification.route) }) {
                     Icon(
                         modifier = Modifier
@@ -92,7 +97,9 @@ fun HomeScreen(modifier: Modifier, navController : NavHostController) {
                 }
 
             }
-            SearchBarTanaman(modifier = Modifier.padding(16.dp).clickable { navController.navigate(Screen.Search.route) })
+            SearchBarTanaman(modifier = Modifier
+                .padding(16.dp)
+                .clickable { navController.navigate(Screen.Search.route) })
 
         }
 
@@ -128,7 +135,7 @@ fun HomeScreen(modifier: Modifier, navController : NavHostController) {
                 }
                 Text(
                     modifier = Modifier.clickable {
-                                                  navController.navigate(Screen.Information.route)
+                        navController.navigate(Screen.Information.route)
                     },
                     text = "Lihat semua",
                     color = SecondaryBase,
@@ -141,13 +148,28 @@ fun HomeScreen(modifier: Modifier, navController : NavHostController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Row {
-                FilterCard(modifier = Modifier.clickable {  }, "Tips & Trick", isActive = true)
-                FilterCard(modifier = Modifier.clickable {  }, "Penyakit", isActive = false)
-                FilterCard(modifier = Modifier.clickable {  }, "Hama", isActive = false)
+                FilterButton(modifier = Modifier.clickable { }, "Tips & Trick", isActive = true)
+                FilterButton(modifier = Modifier.clickable { }, "Penyakit", isActive = false)
+                FilterButton(modifier = Modifier.clickable { }, "Hama", isActive = false)
             }
             Spacer(modifier = Modifier.height(16.dp))
-            InformationHomeCard(modifier = Modifier)
-            InformationHomeCard(modifier = Modifier)
+
+            LazyColumn {
+                items(informationData.size) { index ->
+                    informationData[index].let { information ->
+                        InformationHomeCard(
+                            modifier = Modifier.clickable {
+                                val informationId = information.id
+                                navController.navigate(Screen.DetailInformation.route + "/$informationId")
+                            },
+                            title = information.title,
+                            date = information.date, image = information.image
+                        )
+                    }
+                }
+            }
+
+
         }
     }
 }
