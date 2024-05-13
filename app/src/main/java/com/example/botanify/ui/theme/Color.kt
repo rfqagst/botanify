@@ -20,4 +20,4 @@ val SecondaryBase = Color(0xFFFF7B54)
 val ContentLightBlue = Color(0xFFECF8EF)
 val ContentLightOrange = Color(0xFFFFF3F0)
 val Neutral60 = Color(0xFFA6A8A6)
-
+val PrimaryLight = Color(0xFFECF8EF)

@@ -2,6 +2,7 @@ package com.example.botanify.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,17 +26,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.botanify.R
 import com.example.botanify.screen.components.BannerCard
 import com.example.botanify.screen.components.FilterCard
 import com.example.botanify.screen.components.InformationHomeCard
 import com.example.botanify.screen.components.SearchBarTanaman
+import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SecondaryBase
 
 @Composable
-fun HomeScreen(modifier: Modifier) {
-    Column() {
+fun HomeScreen(modifier: Modifier, navController : NavHostController) {
+    Column(modifier = modifier) {
         Column(modifier = Modifier.background(ContentWhite)) {
             Row(
                 modifier = Modifier
@@ -76,15 +80,19 @@ fun HomeScreen(modifier: Modifier) {
                         )
                     }
                 }
-                Icon(
-                    modifier = Modifier
-                        .width(25.dp)
-                        .height(25.dp),
-                    painter = painterResource(id = R.drawable.ic_notification),
-                    contentDescription = null, tint = SecondaryBase
-                )
+                
+                IconButton(onClick = { navController.navigate(Screen.Notification.route) }) {
+                    Icon(
+                        modifier = Modifier
+                            .width(25.dp)
+                            .height(25.dp),
+                        painter = painterResource(id = R.drawable.ic_notification),
+                        contentDescription = null, tint = SecondaryBase
+                    )
+                }
+
             }
-            SearchBarTanaman(modifier = Modifier.padding(16.dp))
+            SearchBarTanaman(modifier = Modifier.padding(16.dp).clickable { navController.navigate(Screen.Search.route) })
 
         }
 
@@ -119,6 +127,9 @@ fun HomeScreen(modifier: Modifier) {
                     )
                 }
                 Text(
+                    modifier = Modifier.clickable {
+                                                  navController.navigate(Screen.Information.route)
+                    },
                     text = "Lihat semua",
                     color = SecondaryBase,
                     style = TextStyle(
@@ -130,12 +141,11 @@ fun HomeScreen(modifier: Modifier) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Row {
-                FilterCard(modifier = Modifier, "Tips & Trick")
-                FilterCard(modifier = Modifier, "Penyakit")
-                FilterCard(modifier = Modifier, "Hama")
+                FilterCard(modifier = Modifier.clickable {  }, "Tips & Trick", isActive = true)
+                FilterCard(modifier = Modifier.clickable {  }, "Penyakit", isActive = false)
+                FilterCard(modifier = Modifier.clickable {  }, "Hama", isActive = false)
             }
             Spacer(modifier = Modifier.height(16.dp))
-            InformationHomeCard(modifier = Modifier)
             InformationHomeCard(modifier = Modifier)
             InformationHomeCard(modifier = Modifier)
         }
@@ -146,8 +156,8 @@ fun HomeScreen(modifier: Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen(
-        modifier = Modifier
-            .padding(16.dp)
-    )
+//    HomeScreen(
+//        modifier = Modifier
+//            .padding(16.dp), navController = NavHostController(L)
+//    )
 }

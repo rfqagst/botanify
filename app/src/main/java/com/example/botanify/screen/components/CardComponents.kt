@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -38,6 +39,7 @@ import com.example.botanify.ui.theme.ContentLightBlue
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
+import com.example.botanify.ui.theme.PrimaryLight
 import com.example.botanify.ui.theme.SecondaryBase
 import com.example.botanify.ui.theme.SurfaceBase
 
@@ -71,17 +73,17 @@ fun BannerCard(modifier: Modifier) {
 }
 
 @Composable
-fun FilterCard(modifier: Modifier, filterText: String) {
+fun FilterCard(modifier: Modifier, filterText: String, isActive : Boolean) {
     Box(
         modifier = modifier
             .padding(end = 8.dp)
             .clip(RoundedCornerShape(5.dp))
-            .background(PrimaryBase)
+            .background(if(isActive) PrimaryBase else PrimaryLight)
 
     ) {
         Text(
             modifier = Modifier.padding(6.dp),
-            color = ContentWhite,
+            color = if (isActive) ContentWhite else ContentDark,
             text = filterText,
             style = TextStyle(
                 fontSize = 12.sp,
@@ -581,7 +583,7 @@ fun PreviewCardComponents() {
         SearchTanamanCard(modifier = Modifier)
         BannerCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
-        FilterCard(modifier = Modifier, "Tips & Trick")
+//        FilterCard(modifier = Modifier, "Tips & Trick")
         Spacer(modifier = Modifier.height(16.dp))
         InformationHomeCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))

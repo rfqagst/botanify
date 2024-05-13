@@ -6,4 +6,6 @@ data object TanamanSaya : Screen("tanamansaya")
 data object ScanTanaman : Screen("scantanaman")
 data object Information : Screen("information")
 data object Profile : Screen("profile")
+data object Notification : Screen("notification")
+data object Search : Screen("search")
 }
