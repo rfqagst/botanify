@@ -39,7 +39,7 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
                 painter = painterResource(id = information.image),
                 contentDescription = null
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Column(
                 modifier = modifier.padding(16.dp),
             ) {
