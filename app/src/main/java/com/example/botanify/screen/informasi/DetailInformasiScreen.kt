@@ -30,7 +30,7 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
 
 
     if(information != null) {
-        Column() {
+        Column(modifier) {
             Image(
                 modifier = Modifier
                     .height(216.dp)
@@ -41,7 +41,7 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Column(
-                modifier = modifier.padding(16.dp),
+                modifier = Modifier.padding(16.dp),
             ) {
                 Text(
                     text = information.title,

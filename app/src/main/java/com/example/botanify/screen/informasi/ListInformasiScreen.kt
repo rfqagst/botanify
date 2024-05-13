@@ -21,8 +21,7 @@ fun ListInformasiScreen(modifier: Modifier, navController: NavHostController) {
     val informationData = informationData
 
     Column(modifier = modifier.padding(16.dp)) {
-        SearchBarTanaman(modifier = Modifier.clickable { navController.navigate(Screen.Search.route) })
-        Spacer(modifier = Modifier.height(24.dp))
+//        SearchBarTanaman(modifier = Modifier.clickable { navController.navigate(Screen.Search.route) })
         LazyColumn {
             items(informationData.size) { index ->
                 informationData[index].let { information ->

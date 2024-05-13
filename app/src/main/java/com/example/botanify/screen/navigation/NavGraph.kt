@@ -51,5 +51,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             SearchScreen(modifier = modifier)
         }
 
+
     }
 }

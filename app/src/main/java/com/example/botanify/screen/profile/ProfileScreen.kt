@@ -40,7 +40,8 @@ import com.example.botanify.R
 fun ProfileScreen(modifier: Modifier) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
-    Column(modifier.fillMaxWidth()) {
+
+    Column(modifier.padding(16.dp)) {
         Image(
             painter = painterResource(id = R.drawable.profile_photo1),
             modifier = Modifier
@@ -50,9 +51,9 @@ fun ProfileScreen(modifier: Modifier) {
             contentDescription = "image description",
             contentScale = ContentScale.FillBounds
         )
+        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Nama",
-            modifier.padding(start = 20.dp, top = 66.dp),
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
@@ -60,19 +61,19 @@ fun ProfileScreen(modifier: Modifier) {
                 color = Color(0xFF6B7280),
             )
         )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Rifqy Barusadar",
-            modifier.padding(start = 20.dp, top = 10.dp),
+            text = "Rifqi Barusadar",
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
                 color = Color(0xFF7F8590),
-
                 )
         )
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = "Email",
-            modifier.padding(start = 20.dp, top = 34.dp),
             style = TextStyle(
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
@@ -80,9 +81,10 @@ fun ProfileScreen(modifier: Modifier) {
                 color = Color(0xFF6B7280),
             )
         )
+        Spacer(modifier = Modifier.height(8.dp))
+
         Text(
             text = "GgG@gmail.com",
-            modifier.padding(start = 20.dp, top = 10.dp),
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
@@ -90,7 +92,8 @@ fun ProfileScreen(modifier: Modifier) {
 
                 )
         )
-        Spacer(modifier = Modifier.height(26.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
         IconButton(
             onClick = { /*TODO*/ },
             modifier = Modifier
@@ -100,7 +103,6 @@ fun ProfileScreen(modifier: Modifier) {
         ) {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {

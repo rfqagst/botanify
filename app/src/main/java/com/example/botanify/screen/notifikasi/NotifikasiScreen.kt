@@ -9,7 +9,7 @@ import com.example.botanify.screen.components.NotificationCard
 
 @Composable
 fun NotificationScreen(modifier: Modifier) {
-    Column {
+    Column(modifier) {
         NotificationCard(modifier = Modifier)
         NotificationCard(modifier = Modifier)
         NotificationCard(modifier = Modifier)

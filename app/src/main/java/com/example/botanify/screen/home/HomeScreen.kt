@@ -44,72 +44,12 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController) {
     val informationData = informationData
 
     Column(modifier = modifier) {
-        Column(modifier = Modifier.background(ContentWhite)) {
-            Row(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(180.dp))
-                            .width(50.dp)
-                            .height(50.dp),
-                        painter = painterResource(id = R.drawable.profile_photo1),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = "Bonjour,",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 22.sp,
-                                fontWeight = FontWeight(400),
-                                fontStyle = FontStyle.Italic,
-                            )
-                        )
-                        Text(
-                            text = "Rifqi Barusadar",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 22.sp,
-                                fontWeight = FontWeight(500),
-                            )
-                        )
-                    }
-                }
-
-                IconButton(onClick = { navController.navigate(Screen.Notification.route) }) {
-                    Icon(
-                        modifier = Modifier
-                            .width(25.dp)
-                            .height(25.dp),
-                        painter = painterResource(id = R.drawable.ic_notification),
-                        contentDescription = null, tint = SecondaryBase
-                    )
-                }
-
-            }
-            SearchBarTanaman(modifier = Modifier
-                .padding(16.dp)
-                .clickable { navController.navigate(Screen.Search.route) })
-
-        }
-
-
         Spacer(modifier = Modifier.height(4.dp))
 
 
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
             BannerCard(modifier = Modifier)
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
