@@ -20,8 +20,7 @@ import com.example.botanify.screen.navigation.Screen
 fun ListInformasiScreen(modifier: Modifier, navController: NavHostController) {
     val informationData = informationData
 
-    Column(modifier = modifier.padding(16.dp)) {
-//        SearchBarTanaman(modifier = Modifier.clickable { navController.navigate(Screen.Search.route) })
+    Column(modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
         LazyColumn {
             items(informationData.size) { index ->
                 informationData[index].let { information ->

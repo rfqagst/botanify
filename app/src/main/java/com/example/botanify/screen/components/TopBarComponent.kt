@@ -2,7 +2,6 @@ package com.example.botanify.screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,13 +18,18 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -52,7 +56,7 @@ fun TopBarComponent(title: String, navController: NavHostController) {
             Text(
                 text = title,
                 style = TextStyle(
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight(500),
                     color = ContentDark,
                     textAlign = TextAlign.Center,
@@ -116,49 +120,6 @@ fun TopBarComponentSearch(navController: NavHostController) {
 }
 
 
-@Composable
-fun TopBarComponentSearchWithBack(navController: NavHostController) {
-    Row(
-        modifier = Modifier
-            .background(ContentWhite)
-            .padding(start = 16.dp, top = 16.dp, bottom = 8.dp, end = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            modifier = Modifier.clickable {
-                navController.popBackStack()
-            }.padding(end = 8.dp),
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Back"
-        )
-        Row(
-            modifier = Modifier
-                .clickable { navController.navigate(Screen.Search.route) }
-                .height(45.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(SurfaceBase),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                tint = SecondaryBase,
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .width(24.dp)
-                    .height(24.dp),
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = null
-            )
-            Text(
-                text = "Cari tanaman",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight(400),
-                )
-            )
-        }
-    }
-}
 
 
 @Composable
@@ -177,6 +138,9 @@ fun TopBarComponentHome(navController: NavHostController) {
             ) {
                 Image(
                     modifier = Modifier
+                        .clickable {
+                            navController.navigate(Screen.Profile.route)
+                        }
                         .clip(RoundedCornerShape(180.dp))
                         .width(50.dp)
                         .height(50.dp),
@@ -224,10 +188,9 @@ fun TopBarComponentHome(navController: NavHostController) {
 }
 
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun TopBarComponentPreview() {
     val context = LocalContext.current
 
-    TopBarComponentSearchWithBack(navController = NavHostController(context))
 }

@@ -472,7 +472,7 @@ fun ExpandableCard(
 }
 
 @Composable
-fun SearchTanamanCard(modifier: Modifier) {
+fun SearchTanamanCard(modifier: Modifier, name : String,description : String, image : Int) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -490,7 +490,8 @@ fun SearchTanamanCard(modifier: Modifier) {
                 .background(ContentLightBlue)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.card_plant1),
+                painter = painterResource(id = image),
+                contentScale = ContentScale.Crop,
                 contentDescription = null
             )
         }
@@ -498,7 +499,7 @@ fun SearchTanamanCard(modifier: Modifier) {
 
         Column {
             Text(
-                text = "Pink Philodendron",
+                text = name,
                 style = TextStyle(
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
@@ -510,8 +511,8 @@ fun SearchTanamanCard(modifier: Modifier) {
 
             Text(
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                text = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. ",
+                maxLines = 1,
+                text = description,
                 color = ContentSemiDark,
                 style = TextStyle(
                     fontSize = 14.sp,
@@ -542,7 +543,7 @@ fun PreviewCardComponents() {
             .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        SearchTanamanCard(modifier = Modifier)
+//        SearchTanamanCard(modifier = Modifier)
         BannerCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
 //        FilterCard(modifier = Modifier, "Tips & Trick")

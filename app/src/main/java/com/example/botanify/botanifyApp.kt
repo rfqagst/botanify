@@ -23,7 +23,6 @@ import com.example.botanify.screen.components.BottomBarComponent
 import com.example.botanify.screen.components.TopBarComponent
 import com.example.botanify.screen.components.TopBarComponentHome
 import com.example.botanify.screen.components.TopBarComponentSearch
-import com.example.botanify.screen.components.TopBarComponentSearchWithBack
 import com.example.botanify.screen.navigation.NavGraph
 import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentWhite
@@ -66,12 +65,28 @@ fun BotanifyApp() {
         topBar = {
             when (currentDestination) {
                 Screen.Home.route -> TopBarComponentHome(navController = navController)
-                Screen.DetailInformation.route + "/{informationId}" -> TopBarComponent(title = "Detail Information",navController = navController)
-                Screen.TanamanSaya.route -> TopBarComponent(title = "Tanaman Saya",navController = navController)
-                Screen.Notification.route -> TopBarComponent(title = "Notification",navController = navController)
-                Screen.Profile.route -> TopBarComponent(title = "Profile",navController = navController)
+                Screen.DetailInformation.route + "/{informationId}" -> TopBarComponent(
+                    title = "Detail Information",
+                    navController = navController
+                )
+
+                Screen.TanamanSaya.route -> TopBarComponent(
+                    title = "Tanaman Saya",
+                    navController = navController
+                )
+
+                Screen.Notification.route -> TopBarComponent(
+                    title = "Notification",
+                    navController = navController
+                )
+
+                Screen.Profile.route -> TopBarComponent(
+                    title = "Profile",
+                    navController = navController
+                )
+
                 Screen.Information.route -> TopBarComponentSearch(navController)
-                Screen.Search.route -> TopBarComponentSearchWithBack(navController)
+//                Screen.Search.route -> TopBarComponentSearchWithBack(navController)
             }
         }
 

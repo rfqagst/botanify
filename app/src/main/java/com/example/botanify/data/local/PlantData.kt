@@ -14,12 +14,7 @@ val plantsData = listOf(
     PlantData(
         id = "1",
         name = "Flamingo Lily Flower",
-        description = """
-            Anthurium andraeanum is a flowering plant species in the family Araceae that 
-            is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
-            's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
-            painter's palette, oilcloth flower, and laceleaf.
-            """,
+        description = "Anthurium andraeanum is a flowering plant species in the family Araceae that",
         image = R.drawable.plantdata_flamingo
     ),
     PlantData(
