@@ -61,7 +61,8 @@ fun LargeBtn(
             containerColor = PrimaryBase,
             contentColor = ContentWhite
         ),
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .height(51.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -136,5 +137,6 @@ private fun ButtonPrev() {
     Column(modifier = Modifier.fillMaxWidth()) {
 //        SmallBtn(text = "Tambah") {
 //        }
+        LargeBtn(text = "Masuk", onClick = { /*TODO*/ }, modifier = Modifier)
     }
 }

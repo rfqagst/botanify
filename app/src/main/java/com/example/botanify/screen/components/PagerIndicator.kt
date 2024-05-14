@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.botanify.ui.theme.ContentSemiDark
+import com.example.botanify.ui.theme.Neutral60
+import com.example.botanify.ui.theme.PrimaryBase
 
 
 @Composable
@@ -49,6 +52,6 @@ fun IndicatorSingleDot(isSelected: Boolean,
         .height(10.dp)
         .width(width.value)
         .clip(CircleShape)
-        .background(if (isSelected) selectedColor else unselectedColor)
+        .background(if (isSelected) PrimaryBase else Neutral60)
     )
 }
