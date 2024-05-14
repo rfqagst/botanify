@@ -72,7 +72,7 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
                         fontWeight = FontWeight(400),
                     )
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     text = information.description,
                     color = ContentSemiDark,

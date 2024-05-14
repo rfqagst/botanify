@@ -1,5 +1,6 @@
 package com.example.botanify.screen.search
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,15 +22,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.botanify.R
 import com.example.botanify.data.local.plantsData
 import com.example.botanify.screen.components.SearchTanamanCard
+import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.SecondaryBase
 import com.example.botanify.ui.theme.SurfaceBase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(modifier: Modifier) {
+fun SearchScreen(modifier: Modifier, navController: NavHostController) {
 
     val plantData = plantsData
 
@@ -92,7 +95,10 @@ fun SearchScreen(modifier: Modifier) {
                         name = plant.name,
                         description = plant.description,
                         image = plant.image,
-                        modifier = Modifier
+                        modifier = Modifier.clickable {
+                            val tanamanId = plant.id
+                            navController.navigate(Screen.DetailTanaman.route + "/$tanamanId")
+                        }
                     )
                 }
 

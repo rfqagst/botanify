@@ -25,7 +25,7 @@ var informationData = listOf(
             Hal yang baik tentang azalea adalah tidak memiliki terlalu banyak persyaratan pertumbuhan, meskipun agak spesifik. Azalea harus ditanam di tanah asam, artinya harus memiliki tingkat pH antara 4,5 dan 6,0. Selain itu Azalea juga harus ditanam di tanah dengan drainase yang baik karena perakarannya yang dangkal. Tanah yang kaya akan bahan organik akan sangat bermanfaat bagi azalea Anda selama masih memiliki drainase yang baik.
             Anda dapat membuat tanah kaya organik sendiri dengan mencampurkan sejumlah besar lumut gambut ke tanah yang sudah Anda miliki. Jika tanah Anda tidak memiliki drainase yang baik, disarankan untuk menempatkan semak ini di bedengan yang ditinggikan.
             Dalam hal sinar matahari, yang terbaik adalah menaruh azalea di tempat teduh sedikit, terutama bila ditanam di tempat dengan iklim hangat. Meski begitu, bunga di iklim yang lebih dingin bisa dibiarkan di tempat terbuka.
-            """
+            """.trimIndent()
     ),
 
     Information(
@@ -41,7 +41,7 @@ var informationData = listOf(
             Hal yang baik tentang azalea adalah tidak memiliki terlalu banyak persyaratan pertumbuhan, meskipun agak spesifik. Azalea harus ditanam di tanah asam, artinya harus memiliki tingkat pH antara 4,5 dan 6,0. Selain itu Azalea juga harus ditanam di tanah dengan drainase yang baik karena perakarannya yang dangkal. Tanah yang kaya akan bahan organik akan sangat bermanfaat bagi azalea Anda selama masih memiliki drainase yang baik.
             Anda dapat membuat tanah kaya organik sendiri dengan mencampurkan sejumlah besar lumut gambut ke tanah yang sudah Anda miliki. Jika tanah Anda tidak memiliki drainase yang baik, disarankan untuk menempatkan semak ini di bedengan yang ditinggikan.
             Dalam hal sinar matahari, yang terbaik adalah menaruh azalea di tempat teduh sedikit, terutama bila ditanam di tempat dengan iklim hangat. Meski begitu, bunga di iklim yang lebih dingin bisa dibiarkan di tempat terbuka.
-            """
+            """.trimIndent()
     ),
 
     Information(
@@ -57,7 +57,7 @@ var informationData = listOf(
             Hal yang baik tentang azalea adalah tidak memiliki terlalu banyak persyaratan pertumbuhan, meskipun agak spesifik. Azalea harus ditanam di tanah asam, artinya harus memiliki tingkat pH antara 4,5 dan 6,0. Selain itu Azalea juga harus ditanam di tanah dengan drainase yang baik karena perakarannya yang dangkal. Tanah yang kaya akan bahan organik akan sangat bermanfaat bagi azalea Anda selama masih memiliki drainase yang baik.
             Anda dapat membuat tanah kaya organik sendiri dengan mencampurkan sejumlah besar lumut gambut ke tanah yang sudah Anda miliki. Jika tanah Anda tidak memiliki drainase yang baik, disarankan untuk menempatkan semak ini di bedengan yang ditinggikan.
             Dalam hal sinar matahari, yang terbaik adalah menaruh azalea di tempat teduh sedikit, terutama bila ditanam di tempat dengan iklim hangat. Meski begitu, bunga di iklim yang lebih dingin bisa dibiarkan di tempat terbuka.
-            """
+            """.trimIndent()
     ),
 
     Information(
@@ -73,7 +73,7 @@ var informationData = listOf(
             Hal yang baik tentang azalea adalah tidak memiliki terlalu banyak persyaratan pertumbuhan, meskipun agak spesifik. Azalea harus ditanam di tanah asam, artinya harus memiliki tingkat pH antara 4,5 dan 6,0. Selain itu Azalea juga harus ditanam di tanah dengan drainase yang baik karena perakarannya yang dangkal. Tanah yang kaya akan bahan organik akan sangat bermanfaat bagi azalea Anda selama masih memiliki drainase yang baik.
             Anda dapat membuat tanah kaya organik sendiri dengan mencampurkan sejumlah besar lumut gambut ke tanah yang sudah Anda miliki. Jika tanah Anda tidak memiliki drainase yang baik, disarankan untuk menempatkan semak ini di bedengan yang ditinggikan.
             Dalam hal sinar matahari, yang terbaik adalah menaruh azalea di tempat teduh sedikit, terutama bila ditanam di tempat dengan iklim hangat. Meski begitu, bunga di iklim yang lebih dingin bisa dibiarkan di tempat terbuka.
-            """
+            """.trimIndent()
     ),
 
     Information(
@@ -89,7 +89,7 @@ var informationData = listOf(
             Hal yang baik tentang azalea adalah tidak memiliki terlalu banyak persyaratan pertumbuhan, meskipun agak spesifik. Azalea harus ditanam di tanah asam, artinya harus memiliki tingkat pH antara 4,5 dan 6,0. Selain itu Azalea juga harus ditanam di tanah dengan drainase yang baik karena perakarannya yang dangkal. Tanah yang kaya akan bahan organik akan sangat bermanfaat bagi azalea Anda selama masih memiliki drainase yang baik.
             Anda dapat membuat tanah kaya organik sendiri dengan mencampurkan sejumlah besar lumut gambut ke tanah yang sudah Anda miliki. Jika tanah Anda tidak memiliki drainase yang baik, disarankan untuk menempatkan semak ini di bedengan yang ditinggikan.
             Dalam hal sinar matahari, yang terbaik adalah menaruh azalea di tempat teduh sedikit, terutama bila ditanam di tempat dengan iklim hangat. Meski begitu, bunga di iklim yang lebih dingin bisa dibiarkan di tempat terbuka.
-            """
+            """.trimIndent()
     ),
 
 

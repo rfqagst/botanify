@@ -3,16 +3,15 @@ package com.example.botanify.screen.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.example.botanify.screen.home.HomeScreen
 import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
+import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.SearchScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 
@@ -48,7 +47,12 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             NotificationScreen(modifier = modifier)
         }
         composable(route = Screen.Search.route) {
-            SearchScreen(modifier = modifier)
+            SearchScreen(modifier = modifier, navController)
+        }
+        composable(route = Screen.DetailTanaman.route + "/{tanamanId}") {
+            val tanamanId = it.arguments?.getString("tanamanId") ?: ""
+
+            DetailTanamanScreen(modifier = modifier, tanamanId)
         }
 
 

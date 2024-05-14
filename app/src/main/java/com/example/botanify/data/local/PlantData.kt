@@ -25,7 +25,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_palem
     ),
     PlantData(
@@ -36,7 +36,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_melati
     ),
     PlantData(
@@ -47,7 +47,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_mawar
     ),
     PlantData(
@@ -58,7 +58,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_krisan
     )
     ,
@@ -70,7 +70,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_keladihias
     ),
     PlantData(
@@ -81,7 +81,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_kambojajepang
     ),
     PlantData(
@@ -92,7 +92,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_herbrasgerbera
     ),
     PlantData(
@@ -103,7 +103,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_hanjuang
     ),
     PlantData(
@@ -114,7 +114,7 @@ val plantsData = listOf(
             is native to Colombia and Ecuador. It is a winner of the Royal Horticultural Society 
             's Award of Garden Merit. Names Common names for plants in the genus Anthurium include flamingo flower, tailflower, 
             painter's palette, oilcloth flower, and laceleaf.
-            """,
+            """.trimIndent(),
         image = R.drawable.plantdata_dracaena
     ),
 )
