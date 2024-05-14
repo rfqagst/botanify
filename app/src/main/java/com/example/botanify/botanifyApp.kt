@@ -86,7 +86,15 @@ fun BotanifyApp() {
                 )
 
                 Screen.Information.route -> TopBarComponentSearch(navController)
-//                Screen.Search.route -> TopBarComponentSearchWithBack(navController)
+                Screen.DetailTanaman.route + "/{tanamanId}"-> TopBarComponent(
+                    title = "Detail Tanaman",
+                    navController
+                )
+
+                Screen.TambahKoleksiTanaman.route -> TopBarComponent(
+                    title = "Tambah Koleksi Tanaman",
+                    navController = navController
+                )
             }
         }
 

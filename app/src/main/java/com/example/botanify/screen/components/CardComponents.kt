@@ -24,8 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -34,18 +32,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.botanify.R
+import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentLightBlue
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
-import com.example.botanify.ui.theme.PrimaryLight
 import com.example.botanify.ui.theme.SecondaryBase
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
-fun BannerCard(modifier: Modifier) {
+fun BannerCard(modifier: Modifier, navController: NavHostController) {
 
     Row(
         modifier
@@ -63,6 +62,11 @@ fun BannerCard(modifier: Modifier) {
                     fontWeight = FontWeight(600),
                 )
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            SmallBtn(modifier = Modifier, text = "Tambah", onClick = {
+                navController.navigate(Screen.TambahKoleksiTanaman.route)
+
+            })
         }
         Image(
             contentScale = ContentScale.FillWidth,
@@ -74,11 +78,8 @@ fun BannerCard(modifier: Modifier) {
 }
 
 
-
-
-
 @Composable
-fun InformationHomeCard(modifier: Modifier,title : String, date : String, image: Int) {
+fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: Int) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -428,9 +429,9 @@ fun ExpandableCard(
     expadableValue: String
 ) {
 
-    Column (
+    Column(
         modifier = modifier.background(ContentWhite)
-    ){
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -472,7 +473,7 @@ fun ExpandableCard(
 }
 
 @Composable
-fun SearchTanamanCard(modifier: Modifier, name : String,description : String, image : Int) {
+fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: Int) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -544,7 +545,7 @@ fun PreviewCardComponents() {
 
     ) {
 //        SearchTanamanCard(modifier = Modifier)
-        BannerCard(modifier = Modifier)
+//        BannerCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
 //        FilterCard(modifier = Modifier, "Tips & Trick")
         Spacer(modifier = Modifier.height(16.dp))

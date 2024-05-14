@@ -10,4 +10,7 @@ data object Profile : Screen("profile")
 data object Notification : Screen("notification")
 data object Search : Screen("search")
 data object DetailTanaman : Screen("detailtanaman")
+data object TambahKoleksiTanaman : Screen("tambahkoleksitanaman")
+
+
 }

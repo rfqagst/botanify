@@ -3,10 +3,12 @@ package com.example.botanify.screen.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -51,6 +53,7 @@ fun StandartBtn(
 fun LargeBtn(
     text: String,
     onClick: () -> Unit,
+    modifier: Modifier
 ) {
     Button(
         onClick = onClick,
@@ -58,8 +61,7 @@ fun LargeBtn(
             containerColor = PrimaryBase,
             contentColor = ContentWhite
         ),
-        modifier = Modifier
-            .width(321.dp)
+        modifier = modifier.fillMaxWidth()
             .height(51.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -79,6 +81,7 @@ fun LargeBtn(
 fun SmallBtn(
     text: String,
     onClick: () -> Unit,
+    modifier: Modifier
 ) {
     Button(
         onClick = onClick,
@@ -87,15 +90,16 @@ fun SmallBtn(
             contentColor = ContentWhite
         ),
         modifier = Modifier
-            .width(100.dp)
-            .height(30.dp),
-        shape = RoundedCornerShape(15.dp)
-    ) {
+            .height(30.dp)
+            .wrapContentWidth()
+        ,
+        shape = RoundedCornerShape(15.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)    ) {
         Text(
             text = text,
             style = TextStyle(
                 fontSize = 14.sp,
-                fontWeight = FontWeight(400),
+                fontWeight = FontWeight(600),
             )
         )
 
@@ -130,7 +134,7 @@ fun FilterButton(modifier: Modifier, filterText: String, isActive: Boolean) {
 @Composable
 private fun ButtonPrev() {
     Column(modifier = Modifier.fillMaxWidth()) {
-        SmallBtn(text = "Tambah") {
-        }
+//        SmallBtn(text = "Tambah") {
+//        }
     }
 }
