@@ -38,7 +38,7 @@ fun BotanifyApp() {
         floatingActionButton = {
             Box {
                 FloatingActionButton(
-                    onClick = { /* stub */ },
+                    onClick = { navController.navigate(Screen.ScanTanaman.route) },
                     containerColor = PrimaryBase,
                     shape = CircleShape,
                     modifier = Modifier

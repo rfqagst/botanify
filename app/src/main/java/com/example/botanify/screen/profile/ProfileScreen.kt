@@ -35,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
+import com.example.botanify.ui.theme.ContentDark
+import com.example.botanify.ui.theme.ContentSemiDark
 
 @Composable
 fun ProfileScreen(modifier: Modifier) {
@@ -55,19 +57,17 @@ fun ProfileScreen(modifier: Modifier) {
         Text(
             text = "Nama",
             style = TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF6B7280),
+                fontSize = 18.sp,
+                fontWeight = FontWeight(600),
+                color = ContentDark,
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "Rifqi Barusadar",
             style = TextStyle(
-                fontSize = 18.sp,
-                lineHeight = 27.sp,
-                color = Color(0xFF7F8590),
+                fontSize = 16.sp,
+                color = ContentSemiDark,
                 )
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -75,10 +75,9 @@ fun ProfileScreen(modifier: Modifier) {
         Text(
             text = "Email",
             style = TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF6B7280),
+                fontSize = 18.sp,
+                fontWeight = FontWeight(600),
+                color = ContentDark,
             )
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -88,7 +87,7 @@ fun ProfileScreen(modifier: Modifier) {
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
-                color = Color(0xFF7F8590),
+                color = ContentSemiDark,
 
                 )
         )
@@ -112,7 +111,7 @@ fun ProfileScreen(modifier: Modifier) {
                         fontSize = 18.sp,
                         lineHeight = 27.sp,
                         fontWeight = FontWeight(700),
-                        color = Color(0xFF7F8590),
+                        color = ContentDark,
                     ),
                     modifier = Modifier.weight(1f)
                 )
