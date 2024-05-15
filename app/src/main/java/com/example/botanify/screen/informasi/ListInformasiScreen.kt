@@ -1,8 +1,10 @@
 package com.example.botanify.screen.informasi
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,12 +17,13 @@ import com.example.botanify.data.local.informationData
 import com.example.botanify.screen.components.InformationHomeCard
 import com.example.botanify.screen.components.SearchBarTanaman
 import com.example.botanify.screen.navigation.Screen
+import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun ListInformasiScreen(modifier: Modifier, navController: NavHostController) {
     val informationData = informationData
 
-    Column(modifier = modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
+    Column(modifier = modifier.fillMaxSize().background(SurfaceBase).padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
         LazyColumn {
             items(informationData.size) { index ->
                 informationData[index].let { information ->

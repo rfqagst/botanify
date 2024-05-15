@@ -22,6 +22,8 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -52,6 +55,7 @@ import com.example.botanify.ui.theme.SurfaceBase
 @Composable
 fun TopBarComponent(title: String, navController: NavHostController) {
     TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(ContentWhite),
         title = {
             Text(
                 text = title,
@@ -88,7 +92,7 @@ fun TopBarComponentSearch(navController: NavHostController) {
     Box(
         modifier = Modifier
             .background(ContentWhite)
-            .padding(start = 16.dp, top = 16.dp, bottom = 8.dp, end = 16.dp)
+            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = 16.dp)
     ) {
         Row(
             modifier = Modifier

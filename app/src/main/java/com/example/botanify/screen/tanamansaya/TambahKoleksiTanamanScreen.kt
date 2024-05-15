@@ -22,10 +22,11 @@ import com.example.botanify.screen.components.DateTimeField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.SmallBtn
 import com.example.botanify.ui.theme.ContentWhite
+import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun TambahKoleksiTanamanScreen(modifier: Modifier) {
-    Column(modifier.padding(16.dp)) {
+    Column(modifier.background(SurfaceBase).padding(16.dp)) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
