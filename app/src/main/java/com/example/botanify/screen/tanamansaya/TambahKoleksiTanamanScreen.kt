@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.botanify.R
+import com.example.botanify.screen.components.DateTimeField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.SmallBtn
 import com.example.botanify.ui.theme.ContentWhite
@@ -43,7 +44,22 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
             }
 
         }
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(32.dp))
+
+
+        DateTimeField(
+            modifier = Modifier,
+            titleTextField = "Durasi Penyiraman",
+            datetime = "Hari"
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        DateTimeField(
+            modifier = Modifier,
+            titleTextField = "Waktu Penyiraman",
+            datetime = "Jam"
+        )
+        Spacer(modifier = Modifier.height(78.dp))
 
         LargeBtn(text = "Tambah Koleksi", onClick = {}, modifier = Modifier)
     }

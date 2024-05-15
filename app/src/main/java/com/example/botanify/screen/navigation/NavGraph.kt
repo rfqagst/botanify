@@ -9,7 +9,9 @@ import com.example.botanify.screen.home.HomeScreen
 import com.example.botanify.screen.home.HomeViewModel
 import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
+import com.example.botanify.screen.login.LoginScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
+import com.example.botanify.screen.onboarding.OnBoardingScreen
 import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
@@ -65,6 +67,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         composable(route = Screen.TambahKoleksiTanaman.route) {
             TambahKoleksiTanamanScreen(modifier= modifier)
         }
+
+
+
 
     }
 }

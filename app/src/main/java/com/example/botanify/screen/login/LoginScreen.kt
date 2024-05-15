@@ -43,10 +43,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.botanify.R
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.PasswordtTextField
+import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.BotanifyTheme
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.Neutral60
@@ -140,8 +142,8 @@ fun LoginScreen() {
 
                 ) {
 
-            }         
-        
+            }
+
         //Text(text = "Lupa Password?", modifier = Modifier.weight(1f), textAlign = TextAlign.Right )
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -236,6 +238,6 @@ fun LoginScreen() {
 @Composable
 private fun LoginScreenPrev() {
     BotanifyTheme {
-        LoginScreen()
+//        LoginScreen()
     }
 }
