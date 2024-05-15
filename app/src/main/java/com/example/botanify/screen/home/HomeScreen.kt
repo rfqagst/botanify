@@ -1,5 +1,6 @@
 package com.example.botanify.screen.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +32,7 @@ import com.example.botanify.screen.components.FilterButton
 import com.example.botanify.screen.components.InformationHomeCard
 import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.SecondaryBase
+import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun HomeScreen(modifier: Modifier, navController: NavHostController, homeViewModel: HomeViewModel) {
@@ -38,7 +41,7 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController, homeViewMod
 
     val filterState = homeViewModel.filters
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.background(SurfaceBase)) {
         Spacer(modifier = Modifier.height(4.dp))
 
         Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {

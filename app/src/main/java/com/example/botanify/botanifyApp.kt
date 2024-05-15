@@ -1,5 +1,7 @@
 package com.example.botanify
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -30,6 +32,7 @@ import com.example.botanify.screen.onboarding.OnBoarding
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BotanifyApp() {
     val navController = rememberNavController()
@@ -38,31 +41,46 @@ fun BotanifyApp() {
 
     Scaffold(
         floatingActionButton = {
-            Box {
-                FloatingActionButton(
-                    onClick = { navController.navigate(Screen.ScanTanaman.route) },
-                    containerColor = PrimaryBase,
-                    shape = CircleShape,
-                    modifier = Modifier
 
-                        .size(50.dp)
-                        .align(Alignment.Center)
-                        .offset(y = 55.dp)
-                ) {
-                    Icon(
+            if (currentDestination !in listOf(
+                    Screen.OnBoarding.route,
+                    Screen.Login.route,
+                    Screen.Register.route
+                )
+            ) {
+                Box {
+                    FloatingActionButton(
+                        onClick = { navController.navigate(Screen.ScanTanaman.route) },
+                        containerColor = PrimaryBase,
+                        shape = CircleShape,
                         modifier = Modifier
-                            .width(25.dp)
-                            .height(25.dp),
-                        tint = ContentWhite,
-                        painter = painterResource(id = R.drawable.ic_scan),
-                        contentDescription = null,
-                    )
+
+                            .size(50.dp)
+                            .align(Alignment.Center)
+                            .offset(y = 55.dp)
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .width(25.dp)
+                                .height(25.dp),
+                            tint = ContentWhite,
+                            painter = painterResource(id = R.drawable.ic_scan),
+                            contentDescription = null,
+                        )
+                    }
                 }
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            BottomBarComponent(navController)
+            if (currentDestination !in listOf(
+                    Screen.OnBoarding.route,
+                    Screen.Login.route,
+                    Screen.Register.route
+                )
+            ) {
+                BottomBarComponent(navController)
+            }
         },
         topBar = {
             when (currentDestination) {
@@ -87,8 +105,13 @@ fun BotanifyApp() {
                     navController = navController
                 )
 
-                Screen.Information.route -> TopBarComponentSearch(navController)
-                Screen.DetailTanaman.route + "/{tanamanId}"-> TopBarComponent(
+                Screen.Information.route -> TopBarComponentSearch(
+                    searchText = "Cari Informasi",
+                    navController = navController,
+                    screen = Screen.SearchInformationScreen.route
+                )
+
+                Screen.DetailTanaman.route + "/{tanamanId}" -> TopBarComponent(
                     title = "Detail Tanaman",
                     navController
                 )

@@ -1,6 +1,7 @@
 package com.example.botanify.screen.informasi
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import com.example.botanify.data.local.informationData
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.PrimaryBase
+import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
@@ -30,7 +32,7 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
 
 
     if(information != null) {
-        Column(modifier) {
+        Column(modifier.background(SurfaceBase)) {
             Image(
                 modifier = Modifier
                     .height(216.dp)
