@@ -128,9 +128,3 @@ fun BotanifyApp() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun OnBoardingPrev() {
-    BotanifyApp()
-}
-
