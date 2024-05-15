@@ -22,20 +22,7 @@
         </State>
       </entry>
       <entry key="app">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="7ba79c8" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-14T03:18:53.542488300Z" />
-        </State>
+        <State />
       </entry>
     </value>
   </component>

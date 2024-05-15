@@ -12,5 +12,13 @@ data object Search : Screen("search")
 data object DetailTanaman : Screen("detailtanaman")
 data object TambahKoleksiTanaman : Screen("tambahkoleksitanaman")
 
+    data object ForgotPassword : Screen("forgot_password")
+
+    data object Login : Screen("login")
+
+    data object OnBoarding : Screen("onboarding")
+
+    data object Register : Screen("register")
+
 
 }

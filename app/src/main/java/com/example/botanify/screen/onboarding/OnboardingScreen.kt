@@ -24,26 +24,30 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.botanify.R
 import com.example.botanify.screen.components.OnBoardingPage
 import com.example.botanify.screen.components.OnBoardingPageTwo
 import com.example.botanify.screen.components.PagerIndicator
 import com.example.botanify.screen.components.StandartBtn
+import com.example.botanify.screen.navigation.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoarding(
-
+navController: NavController
 ) {
-    val navController = rememberNavController()
+
     val scope = rememberCoroutineScope()
     Column(
-        modifier = Modifier.fillMaxSize() .padding(bottom = 22.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 22.dp)
     ) {
         val pagerState = rememberPagerState(initialPage = 0) {
-            pages.size
+            2
         }
         TopAppBar(
             title = { /* Your title here */ },
@@ -93,34 +97,28 @@ fun OnBoarding(
         Row(
             modifier = Modifier .padding(horizontal = 22.dp)
         ) {
-            val buttonState = remember{
-                derivedStateOf {
-                    when(pagerState.currentPage) {
-                        0 -> listOf("Selanjutnya")
-                        1 -> listOf("Masuk")
-                        else -> listOf("", "")
-                    }
-                }
+            val buttonText = when (pagerState.currentPage) {
+                0 -> "Selanjutnya"
+                1 -> "Masuk"
+                else -> ""
             }
 
             Spacer(modifier = Modifier .weight(1f))
-            if (buttonState.value[0].isNotEmpty()) {
+            if (buttonText.isNotEmpty()) {
                 StandartBtn(
-                    text = buttonState.value[0],
+                    text = buttonText,
                     onClick = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(
-                                page = pagerState.currentPage +1
-                            )
+                        if (pagerState.currentPage == 1) {
+                            navController.navigate(Screen.Login.route)
+                        } else {
+                            scope.launch {
+                                pagerState.animateScrollToPage(
+                                    page = pagerState.currentPage + 1
+                                )
+                            }
                         }
-
                     }
                 )
-            }
-            else{
-                StandartBtn(text = buttonState.value[1]) {
-
-                }
             }
         }
 
@@ -132,6 +130,6 @@ fun OnBoarding(
 @Preview(showBackground = true)
 @Composable
 private fun OnBoardingPrev() {
-    OnBoarding()
+    //OnBoarding()
 }
 

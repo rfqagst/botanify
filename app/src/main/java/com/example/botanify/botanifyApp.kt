@@ -1,5 +1,7 @@
 package com.example.botanify
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -28,6 +30,7 @@ import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BotanifyApp() {
     val navController = rememberNavController()

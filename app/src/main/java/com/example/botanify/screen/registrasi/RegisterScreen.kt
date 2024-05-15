@@ -1,4 +1,5 @@
-package com.example.botanify.screen.login
+package com.example.botanify.screen.registrasi
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,11 +20,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,20 +66,31 @@ import com.example.botanify.ui.theme.PrimaryBase
 import com.example.botanify.ui.theme.PrimaryLight
 import com.example.botanify.ui.theme.SurfaceBase
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
-    navController: NavController
-) {
+fun Register(navController : NavController) {
+    TopAppBar(
+        title = {
+            "Registrasi"
 
-
+        },
+        navigationIcon = {
+            IconButton(onClick = {
+                navController.popBackStack()
+            }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        }
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 22.dp, vertical = 30.dp)
     ) {
         var rememberMe by remember { mutableStateOf(false) }
+        Spacer(modifier = Modifier.height(22.dp))
         Text(
-            text = "Masuk",
+            text = "Registrasi",
             style = TextStyle(
                 fontSize = 24.sp,
                 lineHeight = 44.sp,
@@ -84,7 +102,7 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "Selamat datang kembali!",
+            text = "Segera daftarkan diri anda ke aplikasi! ",
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
@@ -95,10 +113,16 @@ fun LoginScreen(
                 )
         )
         Spacer(modifier = Modifier.height(22.dp))
+        IconTextField(modifier = Modifier, titleTextField = "Nama Anda", iconTextField = painterResource(
+            id =  R.drawable.ic_person_input))
+        Spacer(modifier = Modifier.height(22.dp))
         IconTextField(modifier = Modifier, titleTextField = "Email", iconTextField = painterResource(
             id =  R.drawable.ic_email))
         Spacer(modifier = Modifier.height(16.dp))
         PasswordtTextField(modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
+            id = R.drawable.ic_lock))
+        Spacer(modifier = Modifier.height(16.dp))
+        PasswordtTextField(modifier = Modifier, titleTextField = "Konfirmasi Password", iconTextField = painterResource(
             id = R.drawable.ic_lock))
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -119,7 +143,7 @@ fun LoginScreen(
 
 
 
-            )
+                )
 
             Text(
                 text = "Ingat Saya",
@@ -135,115 +159,15 @@ fun LoginScreen(
 
                     )
             )
-            ClickableText(
-                text = AnnotatedString("Lupa Password?"),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
-                    fontWeight = FontWeight(500),
-                    color = Neutral60,
-                    textAlign = TextAlign.Right,
-                ),
 
 
-
-                ) {
-                navController.navigate(Screen.ForgotPassword.route)
-            }         
-        
-        //Text(text = "Lupa Password?", modifier = Modifier.weight(1f), textAlign = TextAlign.Right )
+            //Text(text = "Lupa Password?", modifier = Modifier.weight(1f), textAlign = TextAlign.Right )
         }
         Spacer(modifier = Modifier.height(32.dp))
-        LargeBtn(text = "Masuk", onClick = { navController.navigate("home") }, modifier = Modifier)
+        LargeBtn(text = "Daftar", onClick = { navController.navigate(Screen.Login.route) }, modifier = Modifier)
         Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Atau",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                    //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF9CA3AF),
-
-                    ),
-                textAlign = TextAlign.Center
-            )
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_google),
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(1.dp)
-                    .width(41.dp)
-                    .height(42.dp)
-                    .clickable { }
-                    .background(PrimaryLight, shape = RoundedCornerShape(30.dp))
-                    .clip(shape = CircleShape)
-                )
-            Spacer(modifier = Modifier.width(20.dp))
-            Image(
-                painter = painterResource(id = R.drawable.ic_facebook),
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(1.dp)
-                    .width(41.dp)
-                    .height(42.dp)
-                    .clickable { }
-                    .background(PrimaryLight, shape = RoundedCornerShape(30.dp))
-                    .clip(shape = CircleShape)
-            )
-        }
-        Spacer(modifier = Modifier .defaultMinSize(minHeight = 100.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Belum punya akun?",
-                //fontFamily = Plus_Jakarta_Sans,
-                fontWeight = FontWeight(400),
-                fontSize = 16.sp,
-                color = Color(0xFF696B76)
-            )
-            Spacer(modifier = Modifier.width(2.dp))
-            ClickableText(
-                modifier = Modifier.padding(top = 2.dp),
-                text = AnnotatedString("Daftar"),
-                onClick = {
-                    navController.navigate(Screen.Register.route)
-                },
-                style = TextStyle(
-                    //fontFamily = Plus_Jakarta_Sans,
-                    fontWeight = FontWeight(700),
-                    fontSize = 16.sp,
-
-                    color = Color(0xFF696B76),
-
-                    )
-            )
-        }
-
-
-    }
-}
 
 
 
-@Preview(showBackground = true)
-@Composable
-private fun LoginScreenPrev() {
-    BotanifyTheme {
-        //LoginScreen(navController = NavController(cont))
     }
 }
