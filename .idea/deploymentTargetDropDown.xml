@@ -2,47 +2,12 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-<<<<<<< HEAD
+      <entry key="PreviewHasilScan">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>
-=======
-      <entry key="LoginScreenPrev">
-        <State />
-      </entry>
-      <entry key="OnBoardingPrev">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\daffa_22g8ty4\.android\avd\Pixel_6_API_33_1.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-14T03:10:04.159387900Z" />
-        </State>
-      </entry>
-      <entry key="app">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="7ba79c8" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-14T03:18:53.542488300Z" />
-        </State>
-      </entry>
->>>>>>> origin/master
     </value>
   </component>
 </project>
