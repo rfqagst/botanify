@@ -80,7 +80,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             TambahKoleksiTanamanScreen(modifier = modifier)
         }
 
-<<<<<<< HEAD
         composable(route= Screen.ForgotPassword.route){
             ForgotPassword(navController)
         }
@@ -96,8 +95,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         composable(route=Screen.Register.route){
             Register(navController)
         }
-=======
->>>>>>> 5030b8d116aa998e30ce61eb0be4b622cb967772
 
     }
 }

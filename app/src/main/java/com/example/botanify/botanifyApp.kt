@@ -39,31 +39,46 @@ fun BotanifyApp() {
 
     Scaffold(
         floatingActionButton = {
-            Box {
-                FloatingActionButton(
-                    onClick = { navController.navigate(Screen.ScanTanaman.route) },
-                    containerColor = PrimaryBase,
-                    shape = CircleShape,
-                    modifier = Modifier
 
-                        .size(50.dp)
-                        .align(Alignment.Center)
-                        .offset(y = 55.dp)
-                ) {
-                    Icon(
+            if (currentDestination !in listOf(
+                    Screen.OnBoarding.route,
+                    Screen.Login.route,
+                    Screen.Register.route
+                )
+            ) {
+                Box {
+                    FloatingActionButton(
+                        onClick = { navController.navigate(Screen.ScanTanaman.route) },
+                        containerColor = PrimaryBase,
+                        shape = CircleShape,
                         modifier = Modifier
-                            .width(25.dp)
-                            .height(25.dp),
-                        tint = ContentWhite,
-                        painter = painterResource(id = R.drawable.ic_scan),
-                        contentDescription = null,
-                    )
+
+                            .size(50.dp)
+                            .align(Alignment.Center)
+                            .offset(y = 55.dp)
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .width(25.dp)
+                                .height(25.dp),
+                            tint = ContentWhite,
+                            painter = painterResource(id = R.drawable.ic_scan),
+                            contentDescription = null,
+                        )
+                    }
                 }
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            BottomBarComponent(navController)
+            if (currentDestination !in listOf(
+                    Screen.OnBoarding.route,
+                    Screen.Login.route,
+                    Screen.Register.route
+                )
+            ) {
+                BottomBarComponent(navController)
+            }
         },
         topBar = {
             when (currentDestination) {
@@ -88,8 +103,13 @@ fun BotanifyApp() {
                     navController = navController
                 )
 
-                Screen.Information.route -> TopBarComponentSearch(searchText = "Cari Informasi", navController = navController, screen = Screen.SearchInformationScreen.route)
-                Screen.DetailTanaman.route + "/{tanamanId}"-> TopBarComponent(
+                Screen.Information.route -> TopBarComponentSearch(
+                    searchText = "Cari Informasi",
+                    navController = navController,
+                    screen = Screen.SearchInformationScreen.route
+                )
+
+                Screen.DetailTanaman.route + "/{tanamanId}" -> TopBarComponent(
                     title = "Detail Tanaman",
                     navController
                 )
