@@ -21,7 +21,8 @@ import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.registrasi.Register
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
-import com.example.botanify.screen.search.SearchScreen
+import com.example.botanify.screen.search.SearchInformationScreen
+import com.example.botanify.screen.search.SearchTanamanScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 
@@ -62,8 +63,12 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             NotificationScreen(modifier = modifier)
         }
 
-        composable(route = Screen.Search.route) {
-            SearchScreen(modifier = modifier, navController)
+        composable(route = Screen.SearchTanamanScreen.route) {
+            SearchTanamanScreen(modifier = modifier, navController)
+        }
+
+        composable(route = Screen.SearchInformationScreen.route) {
+            SearchInformationScreen(modifier = modifier, navController)
         }
 
         composable(route = Screen.DetailTanaman.route + "/{tanamanId}") {
@@ -72,9 +77,10 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route = Screen.TambahKoleksiTanaman.route) {
-            TambahKoleksiTanamanScreen(modifier= modifier)
+            TambahKoleksiTanamanScreen(modifier = modifier)
         }
 
+<<<<<<< HEAD
         composable(route= Screen.ForgotPassword.route){
             ForgotPassword(navController)
         }
@@ -90,6 +96,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         composable(route=Screen.Register.route){
             Register(navController)
         }
+=======
+>>>>>>> 5030b8d116aa998e30ce61eb0be4b622cb967772
 
     }
 }

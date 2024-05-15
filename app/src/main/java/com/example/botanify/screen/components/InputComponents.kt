@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.botanify.R
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
+import com.example.botanify.ui.theme.SecondaryBase
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
@@ -60,6 +62,7 @@ fun NormalTextField(
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
                 .background(ContentWhite),
             value = normalText,
             onValueChange = {
@@ -188,6 +191,52 @@ fun PasswordtTextField(
 
 
 @Composable
+fun DateTimeField(modifier: Modifier, titleTextField: String, datetime : String) {
+    Column(modifier = modifier) {
+        var normalText by rememberSaveable {
+            mutableStateOf("")
+        }
+        Text(
+            text = titleTextField,
+            style = TextStyle(
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                fontWeight = FontWeight(700),
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentWhite)
+            ,
+            value = normalText,
+            onValueChange = {
+                normalText = it
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryBase,
+                unfocusedBorderColor = Color.Transparent,
+            ),
+            trailingIcon = {
+                Text(
+                    modifier = Modifier.padding(end = 10.dp),
+                    text = datetime,
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight(400),
+                    ), color = SecondaryBase
+                )
+            }
+
+        )
+    }
+}
+
+
+@Composable
 @Preview(showBackground = true)
 fun PreviewInputComponents() {
     Column(
@@ -211,5 +260,9 @@ fun PreviewInputComponents() {
         PasswordtTextField(modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
             id = R.drawable.ic_lock
         ))
+        Spacer(modifier = Modifier.height(20.dp))
+
+        DateTimeField(modifier = Modifier, titleTextField = "Atur Durasi Penyiraman", datetime = "Hari" )
+
     }
 }

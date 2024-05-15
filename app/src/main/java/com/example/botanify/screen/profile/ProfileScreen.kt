@@ -37,13 +37,14 @@ import androidx.compose.ui.unit.sp
 import com.example.botanify.R
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentSemiDark
+import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun ProfileScreen(modifier: Modifier) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
 
-    Column(modifier.padding(16.dp)) {
+    Column(modifier.fillMaxSize().background(SurfaceBase).padding(16.dp)) {
         Image(
             painter = painterResource(id = R.drawable.profile_photo1),
             modifier = Modifier

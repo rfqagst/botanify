@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.botanify.R
+import com.example.botanify.data.local.informationData
 import com.example.botanify.data.local.plantsData
 import com.example.botanify.screen.components.SearchTanamanCard
 import com.example.botanify.screen.navigation.Screen
@@ -32,9 +33,7 @@ import com.example.botanify.ui.theme.SurfaceBase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
-
-    val plantData = plantsData
+fun SearchInformationScreen(modifier: Modifier, navController: NavHostController) {
 
 
     var textSearch by remember {
@@ -51,7 +50,7 @@ fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
         shape = RoundedCornerShape(10.dp),
         placeholder = {
             Text(
-                text = "Cari Tanaman",
+                text = "Cari Informasi",
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(400),
@@ -79,25 +78,25 @@ fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
             )
         }
     ) {
-        val filteredPlants = if (textSearch.isEmpty()) {
-            plantsData
+        val filteredInformation = if (textSearch.isEmpty()) {
+            informationData
         } else {
-            plantsData.filter { plant ->
-                plant.name.lowercase().contains(textSearch.lowercase()) ||
-                        plant.description.lowercase().contains(textSearch.lowercase())
+            informationData.filter { information ->
+                information.title.lowercase().contains(textSearch.lowercase()) ||
+                        information.description.lowercase().contains(textSearch.lowercase())
             }
         }
 
         LazyColumn(modifier = modifier.padding(16.dp)) {
-            items(filteredPlants.size) { index ->
-                filteredPlants[index].let { plant ->
+            items(filteredInformation.size) { index ->
+                filteredInformation[index].let { information ->
                     SearchTanamanCard(
-                        name = plant.name,
-                        description = plant.description,
-                        image = plant.image,
+                        name = information.title,
+                        description = information.description,
+                        image = information.image,
                         modifier = Modifier.clickable {
-                            val tanamanId = plant.id
-                            navController.navigate(Screen.DetailTanaman.route + "/$tanamanId")
+                            val informationId = information.id
+                            navController.navigate(Screen.DetailInformation.route + "/$informationId")
                         }
                     )
                 }

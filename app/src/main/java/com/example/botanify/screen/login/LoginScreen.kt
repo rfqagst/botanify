@@ -43,14 +43,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+<<<<<<< HEAD
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+=======
+import androidx.navigation.NavHostController
+>>>>>>> 5030b8d116aa998e30ce61eb0be4b622cb967772
 import com.example.botanify.R
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.PasswordtTextField
+<<<<<<< HEAD
 import com.example.botanify.screen.navigation.NavGraph
+=======
+>>>>>>> 5030b8d116aa998e30ce61eb0be4b622cb967772
 import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.BotanifyTheme
 import com.example.botanify.ui.theme.ContentDark
@@ -148,10 +155,15 @@ fun LoginScreen(
 
 
 
+<<<<<<< HEAD
                 ) {
                 navController.navigate(Screen.ForgotPassword.route)
             }         
         
+=======
+            }
+
+>>>>>>> 5030b8d116aa998e30ce61eb0be4b622cb967772
         //Text(text = "Lupa Password?", modifier = Modifier.weight(1f), textAlign = TextAlign.Right )
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -244,6 +256,10 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPrev() {
     BotanifyTheme {
+<<<<<<< HEAD
         //LoginScreen(navController = NavController(cont))
+=======
+//        LoginScreen()
+>>>>>>> 5030b8d116aa998e30ce61eb0be4b622cb967772
     }
 }
