@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -25,6 +26,7 @@ import com.example.botanify.screen.components.TopBarComponentHome
 import com.example.botanify.screen.components.TopBarComponentSearch
 import com.example.botanify.screen.navigation.NavGraph
 import com.example.botanify.screen.navigation.Screen
+import com.example.botanify.screen.onboarding.OnBoarding
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
 
@@ -103,4 +105,9 @@ fun BotanifyApp() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun OnBoardingPrev() {
+    BotanifyApp()
+}
 
