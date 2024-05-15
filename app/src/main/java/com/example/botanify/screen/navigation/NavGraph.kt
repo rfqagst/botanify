@@ -9,13 +9,12 @@ import com.example.botanify.screen.home.HomeScreen
 import com.example.botanify.screen.home.HomeViewModel
 import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
-import com.example.botanify.screen.login.LoginScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
-import com.example.botanify.screen.onboarding.OnBoardingScreen
 import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
-import com.example.botanify.screen.search.SearchScreen
+import com.example.botanify.screen.search.SearchInformationScreen
+import com.example.botanify.screen.search.SearchTanamanScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 
@@ -55,8 +54,12 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             NotificationScreen(modifier = modifier)
         }
 
-        composable(route = Screen.Search.route) {
-            SearchScreen(modifier = modifier, navController)
+        composable(route = Screen.SearchTanamanScreen.route) {
+            SearchTanamanScreen(modifier = modifier, navController)
+        }
+
+        composable(route = Screen.SearchInformationScreen.route) {
+            SearchInformationScreen(modifier = modifier, navController)
         }
 
         composable(route = Screen.DetailTanaman.route + "/{tanamanId}") {
@@ -65,10 +68,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route = Screen.TambahKoleksiTanaman.route) {
-            TambahKoleksiTanamanScreen(modifier= modifier)
+            TambahKoleksiTanamanScreen(modifier = modifier)
         }
-
-
 
 
     }

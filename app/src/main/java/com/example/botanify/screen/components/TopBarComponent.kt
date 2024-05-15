@@ -88,7 +88,7 @@ fun TopBarComponent(title: String, navController: NavHostController) {
 
 
 @Composable
-fun TopBarComponentSearch(navController: NavHostController) {
+fun TopBarComponentSearch(navController: NavHostController, searchText : String, screen : String) {
     Box(
         modifier = Modifier
             .background(ContentWhite)
@@ -96,7 +96,7 @@ fun TopBarComponentSearch(navController: NavHostController) {
     ) {
         Row(
             modifier = Modifier
-                .clickable { navController.navigate(Screen.Search.route) }
+                .clickable { navController.navigate(screen) }
                 .height(45.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
@@ -113,7 +113,7 @@ fun TopBarComponentSearch(navController: NavHostController) {
                 contentDescription = null
             )
             Text(
-                text = "Cari tanaman",
+                text = searchText,
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(400),
@@ -186,7 +186,7 @@ fun TopBarComponentHome(navController: NavHostController) {
         }
         SearchBarTanaman(modifier = Modifier
             .padding(16.dp)
-            .clickable { navController.navigate(Screen.Search.route) })
+            .clickable { navController.navigate(Screen.SearchTanamanScreen.route) })
 
     }
 }
