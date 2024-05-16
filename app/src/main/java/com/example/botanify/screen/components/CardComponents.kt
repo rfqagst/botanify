@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -334,35 +335,41 @@ fun TanamanSayaCard(modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(135.dp)
+            .wrapContentHeight()
             .clip(RoundedCornerShape(10.dp))
-            .background(ContentWhite), verticalAlignment = Alignment.CenterVertically
+            .background(ContentWhite),
+        verticalAlignment = Alignment.Top
     ) {
         Image(
             modifier = Modifier
+                .padding(8.dp)
                 .width(75.dp)
-                .height(115.dp)
-                .padding(5.dp),
+                .height(114.dp),
             painter = painterResource(id = R.drawable.tanamansaya_plant1),
             contentDescription = null
         )
-        Column(modifier = Modifier) {
+        Column(modifier = Modifier.padding(top = 16.dp)) {
             Text(
                 text = "Pilea peperomiodes",
+                color = ContentDark,
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     fontWeight = FontWeight(700),
                 )
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Penyiraman Selanjutnya :",
+                color = ContentSemiDark,
                 style = TextStyle(
                     fontSize = 14.sp,
                     lineHeight = 21.sp,
                     fontWeight = FontWeight(400),
                 )
             )
+            Spacer(modifier = Modifier.height(4.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -378,10 +385,11 @@ fun TanamanSayaCard(modifier: Modifier) {
 
                 Text(
                     text = "Jum’at, 10 Mei",
+                    color = ContentSemiDark,
                     style = TextStyle(
                         fontSize = 14.sp,
                         lineHeight = 21.sp,
-                        fontWeight = FontWeight(400),
+                        fontWeight = FontWeight(600),
                     )
                 )
             }
@@ -453,6 +461,7 @@ fun ExpandableCard(
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
+                    tint = SecondaryBase,
                     contentDescription = null
                 )
             }
@@ -462,10 +471,11 @@ fun ExpandableCard(
             Text(
                 modifier = Modifier.padding(16.dp),
                 text = expadableValue,
+                color = ContentSemiDark,
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    fontWeight = FontWeight(500),
+                    fontWeight = FontWeight(400),
                 )
             )
         }

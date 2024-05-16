@@ -4,21 +4,19 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.botanify.screen.components.OnBoardingPage
 import com.example.botanify.screen.home.HomeScreen
 import com.example.botanify.screen.home.HomeViewModel
 import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
-import com.example.botanify.screen.login.ForgotPassword
-import com.example.botanify.screen.login.LoginScreen
+import com.example.botanify.screen.auth.login.ForgotPassword
+import com.example.botanify.screen.auth.login.LoginScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.onboarding.OnBoarding
 import com.example.botanify.screen.profile.ProfileScreen
-import com.example.botanify.screen.registrasi.Register
+import com.example.botanify.screen.auth.register.RegisterScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.SearchInformationScreen
@@ -93,7 +91,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route=Screen.Register.route){
-            Register(navController)
+            RegisterScreen(navController)
         }
 
     }

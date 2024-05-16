@@ -1,4 +1,4 @@
-package com.example.botanify.screen.login
+package com.example.botanify.screen.auth.login
 
 import android.os.Build
 import androidx.activity.OnBackPressedCallback

@@ -44,12 +44,12 @@ import com.example.botanify.ui.theme.ContentWhite
 
 @Composable
 fun HasilScanScreen(modifier: Modifier) {
-    var expandedState by remember { mutableStateOf(false) }
+    var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(
         targetValue = if (expandedState) 180f else 0f
     )
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -60,7 +60,7 @@ fun HasilScanScreen(modifier: Modifier) {
                 .width(326.dp)
                 .height(221.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .align(Alignment.CenterHorizontally), // Center the image horizontally
+                .align(Alignment.CenterHorizontally),
             contentScale = ContentScale.FillWidth
         )
 
@@ -119,7 +119,7 @@ fun HasilScanScreen(modifier: Modifier) {
             cardTitle = "Keterangan",
             onClick = { /*TODO*/ },
             rotationState = rotationState,
-            expandedState = expandedState,
+            expandedState = expandedState ,
             expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
         )
         Spacer(modifier = Modifier.height(16.dp))

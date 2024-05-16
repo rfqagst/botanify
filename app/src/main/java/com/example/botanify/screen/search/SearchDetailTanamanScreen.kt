@@ -31,7 +31,7 @@ import com.example.botanify.ui.theme.SurfaceBase
 @Composable
 fun DetailTanamanScreen(modifier: Modifier, tanamanId : String) {
 
-    var expandedState by remember { mutableStateOf(false) }
+    var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
 
     val plantData = plantsData
