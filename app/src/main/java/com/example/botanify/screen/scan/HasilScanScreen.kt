@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,50 +41,54 @@ fun HasilScanScreen(modifier: Modifier) {
     )
 
     Column(
-        modifier.padding(horizontal = 16.dp),
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Image(
-            painter = painterResource(id = R.drawable.scantnm),
-            contentDescription = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(221.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.FillWidth
-        )
-        Spacer(modifier = Modifier.height(24.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+    ) {
+        Column(modifier.padding(horizontal = 16.dp)) {
+            Spacer(modifier = Modifier.height(16.dp))
             Image(
                 painter = painterResource(id = R.drawable.scantnm),
-                contentDescription = null,
+                contentDescription = "",
                 modifier = Modifier
-                    .size(114.dp)
-                    .clip(RoundedCornerShape(15.dp)),
-                contentScale = ContentScale.Crop,
+                    .fillMaxWidth()
+                    .height(221.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                contentScale = ContentScale.FillWidth
             )
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Aglaonema",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        lineHeight = 30.sp,
-                        fontWeight = FontWeight(700),
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SmallBtn(
-                    text = "Tambah Koleksi Tanaman",
-                    onClick = { /*TODO*/ },
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.scantnm),
+                    contentDescription = null,
                     modifier = Modifier
+                        .size(114.dp)
+                        .clip(RoundedCornerShape(15.dp)),
+                    contentScale = ContentScale.Crop,
                 )
+                Spacer(modifier = Modifier.width(24.dp))
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Aglaonema",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            lineHeight = 30.sp,
+                            fontWeight = FontWeight(700),
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    SmallBtn(
+                        text = "Tambah Koleksi Tanaman",
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        
         ExpandableCard(
             modifier = Modifier,
             cardTitle = "Keterangan",
@@ -111,8 +116,14 @@ fun HasilScanScreen(modifier: Modifier) {
             expandedState = expandedState,
             expadableValue = "Memastikan sirkulasi udara yang baik di sekitar tanaman, menghindari kelembaban berlebih, dan menggunakan fungisida yang sesuai dapat membantu mengendalikan penyakit ini."
         )
+
+
+
     }
-}
+
+
+    }
+
 
 @Composable
 @Preview(showBackground = true)

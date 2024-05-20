@@ -81,7 +81,7 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     IconButton(modifier = Modifier,
-                        onClick = { /*TODO*/ }) {
+                        onClick = { navController.popBackStack() }) {
                         Icon(
                             modifier = Modifier.size(30.dp),
                             imageVector = Icons.Default.Close,

@@ -1,5 +1,9 @@
 package com.example.botanify.screen.tanamansaya
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,22 +15,45 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
 import com.example.botanify.screen.components.DateTimeField
 import com.example.botanify.screen.components.LargeBtn
+import com.example.botanify.screen.components.NormalTextField
 import com.example.botanify.screen.components.SmallBtn
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
 fun TambahKoleksiTanamanScreen(modifier: Modifier) {
-    Column(modifier.background(SurfaceBase).padding(16.dp)) {
+
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            selectedImageUri = uri
+        }
+
+    val context = LocalContext.current
+
+
+    Column(
+        modifier
+            .background(SurfaceBase)
+            .padding(16.dp)
+    ) {
+
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -34,19 +61,37 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(ContentWhite), contentAlignment = Alignment.Center
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    modifier = Modifier.size(45.dp),
-                    painter = painterResource(id = R.drawable.ic_gallery),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SmallBtn(text = "Unggah Foto", onClick = { /*TODO*/ }, modifier = Modifier)
+
+            if (selectedImageUri != null) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        modifier = Modifier,
+                        painter = rememberAsyncImagePainter(model = selectedImageUri),
+                        contentDescription = null
+                    )
+                }
+
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        modifier = Modifier.size(45.dp),
+                        painter = painterResource(id = R.drawable.ic_gallery),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    SmallBtn(
+                        text = "Unggah Foto",
+                        onClick = { launcher.launch("image/*") },
+                        modifier = Modifier
+                    )
+                }
             }
+
 
         }
         Spacer(modifier = Modifier.height(32.dp))
 
+        NormalTextField(modifier = Modifier, titleTextField = "Nama Tanaman" )
 
         DateTimeField(
             modifier = Modifier,
@@ -62,7 +107,11 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(78.dp))
 
-        LargeBtn(text = "Tambah Koleksi", onClick = {}, modifier = Modifier)
+        LargeBtn(
+            text = "Tambah Koleksi",
+            onClick = { Toast.makeText(context, "Berhasil Menambahkan Koleksi Tanaman Baru", Toast.LENGTH_SHORT).show() },
+            modifier = Modifier
+        )
     }
 }
 

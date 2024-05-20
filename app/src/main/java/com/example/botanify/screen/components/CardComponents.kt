@@ -447,6 +447,7 @@ fun ExpandableCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = cardTitle,
                 style = TextStyle(
                     fontSize = 20.sp,
@@ -468,7 +469,7 @@ fun ExpandableCard(
 
         if (expandedState) {
             Text(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
                 text = expadableValue,
                 color = ContentSemiDark,
                 style = TextStyle(
