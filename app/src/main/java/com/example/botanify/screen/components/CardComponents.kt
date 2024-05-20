@@ -442,8 +442,7 @@ fun ExpandableCard(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -469,7 +468,7 @@ fun ExpandableCard(
 
         if (expandedState) {
             Text(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(8.dp),
                 text = expadableValue,
                 color = ContentSemiDark,
                 style = TextStyle(

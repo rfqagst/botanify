@@ -46,7 +46,9 @@ fun BotanifyApp() {
                     Screen.OnBoarding.route,
                     Screen.Login.route,
                     Screen.Register.route,
+                    Screen.DetailInformation.route,
                     Screen.ScanTanaman.route,
+                    Screen.HasilScan.route,
                 )
             ) {
                 Box {
@@ -78,7 +80,9 @@ fun BotanifyApp() {
                     Screen.OnBoarding.route,
                     Screen.Login.route,
                     Screen.Register.route,
+                    Screen.DetailInformation.route,
                     Screen.ScanTanaman.route,
+                    Screen.HasilScan.route,
                     )
             ) {
                 BottomBarComponent(navController)
@@ -120,6 +124,11 @@ fun BotanifyApp() {
 
                 Screen.TambahKoleksiTanaman.route -> TopBarComponent(
                     title = "Tambah Koleksi Tanaman",
+                    navController = navController
+                )
+
+                Screen.HasilScan.route -> TopBarComponent(
+                    title = "Hasil Scan Tanaman",
                     navController = navController
                 )
             }

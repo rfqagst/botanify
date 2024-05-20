@@ -139,7 +139,7 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
             }
             Image(
                 modifier = Modifier
-                    .size(64.dp)
+                    .size(68.dp)
                     .clickable {
                         if (selectedImageUri != null) {
                             navController.navigate(Screen.HasilScan.route)
