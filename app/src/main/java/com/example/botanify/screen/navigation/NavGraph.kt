@@ -7,16 +7,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.botanify.screen.auth.login.ForgotPassword
+import com.example.botanify.screen.auth.login.LoginScreen
+import com.example.botanify.screen.auth.register.RegisterScreen
 import com.example.botanify.screen.home.HomeScreen
 import com.example.botanify.screen.home.HomeViewModel
 import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
-import com.example.botanify.screen.auth.login.ForgotPassword
-import com.example.botanify.screen.auth.login.LoginScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.onboarding.OnBoarding
 import com.example.botanify.screen.profile.ProfileScreen
-import com.example.botanify.screen.auth.register.RegisterScreen
+import com.example.botanify.screen.scan.HasilScanScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.SearchInformationScreen
@@ -29,7 +30,7 @@ import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
-    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
+    NavHost(navController = navController, startDestination = Screen.ScanTanaman.route) {
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
@@ -38,9 +39,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             ListTanamanSayaScreen(modifier = modifier)
         }
 
-        composable(route = Screen.ScanTanaman.route) {
-            ScanTanamanScreen(modifier = modifier)
-        }
 
         composable(route = Screen.Information.route) {
             ListInformasiScreen(modifier = modifier, navController)
@@ -78,20 +76,28 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             TambahKoleksiTanamanScreen(modifier = modifier)
         }
 
-        composable(route= Screen.ForgotPassword.route){
+        composable(route = Screen.ForgotPassword.route) {
             ForgotPassword(navController)
         }
 
-        composable(route = Screen.Login.route){
+        composable(route = Screen.Login.route) {
             LoginScreen(navController)
         }
-        
-        composable(route= Screen.OnBoarding.route){
+
+        composable(route = Screen.OnBoarding.route) {
             OnBoarding(navController)
         }
 
-        composable(route=Screen.Register.route){
+        composable(route = Screen.Register.route) {
             RegisterScreen(navController)
+        }
+
+        composable(route = Screen.ScanTanaman.route) {
+            ScanTanamanScreen(modifier = modifier, navController)
+        }
+
+        composable(route = Screen.HasilScan.route) {
+            HasilScanScreen(modifier = modifier,)
         }
 
     }

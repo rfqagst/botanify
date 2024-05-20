@@ -45,7 +45,8 @@ fun BotanifyApp() {
             if (currentDestination !in listOf(
                     Screen.OnBoarding.route,
                     Screen.Login.route,
-                    Screen.Register.route
+                    Screen.Register.route,
+                    Screen.ScanTanaman.route,
                 )
             ) {
                 Box {
@@ -76,8 +77,9 @@ fun BotanifyApp() {
             if (currentDestination !in listOf(
                     Screen.OnBoarding.route,
                     Screen.Login.route,
-                    Screen.Register.route
-                )
+                    Screen.Register.route,
+                    Screen.ScanTanaman.route,
+                    )
             ) {
                 BottomBarComponent(navController)
             }
