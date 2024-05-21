@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,7 +34,10 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
 
 
     if(information != null) {
-        Column(modifier.background(SurfaceBase)) {
+        Column(
+            modifier
+                .background(SurfaceBase)
+                .verticalScroll(rememberScrollState())) {
             Image(
                 modifier = Modifier
                     .height(216.dp)
@@ -43,7 +48,8 @@ fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .padding(16.dp),
             ) {
                 Text(
                     text = information.title,
