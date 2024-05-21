@@ -24,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.botanify.screen.components.BottomBarComponent
 import com.example.botanify.screen.components.TopBarComponent
+import com.example.botanify.screen.components.TopBarComponentBack
 import com.example.botanify.screen.components.TopBarComponentHome
 import com.example.botanify.screen.components.TopBarComponentSearch
 import com.example.botanify.screen.navigation.NavGraph
@@ -129,6 +130,10 @@ fun BotanifyApp() {
 
                 Screen.HasilScan.route -> TopBarComponent(
                     title = "Hasil Scan Tanaman",
+                    navController = navController
+                )
+
+                Screen.Register.route -> TopBarComponentBack(
                     navController = navController
                 )
             }

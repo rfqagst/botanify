@@ -87,6 +87,31 @@ fun TopBarComponent(title: String, navController: NavHostController) {
 }
 
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarComponentBack( navController: NavHostController) {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(ContentWhite),
+        title = {
+
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier.clickable {
+                    navController.popBackStack()
+                },
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back"
+            )
+        },
+        modifier = Modifier
+            .background(ContentWhite)
+
+    )
+}
+
+
 @Composable
 fun TopBarComponentSearch(navController: NavHostController, searchText : String, screen : String) {
     Box(

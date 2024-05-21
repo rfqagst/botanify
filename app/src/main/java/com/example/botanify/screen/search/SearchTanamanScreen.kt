@@ -101,8 +101,6 @@ fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
                         }
                     )
                 }
-
-
             }
         }
     }

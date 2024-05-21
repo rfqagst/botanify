@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,9 +67,10 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
             if (selectedImageUri != null) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
-                        modifier = Modifier,
+                        modifier = Modifier.fillMaxSize(),
                         painter = rememberAsyncImagePainter(model = selectedImageUri),
-                        contentDescription = null
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
                     )
                 }
 
@@ -92,6 +95,7 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         Spacer(modifier = Modifier.height(32.dp))
 
         NormalTextField(modifier = Modifier, titleTextField = "Nama Tanaman" )
+        Spacer(modifier = Modifier.height(16.dp))
 
         DateTimeField(
             modifier = Modifier,
