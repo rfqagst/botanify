@@ -30,20 +30,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
+import com.example.botanify.data.local.MyPlantData
+import com.example.botanify.data.local.myplantsData
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.Neutral60
 import com.example.botanify.ui.theme.SecondaryBase
 
 @Composable
-fun DetailTanamanSayaScreen(){
-    Column(modifier = Modifier
-        .background(color = Color(0xFFFFFFFF))) {
+fun DetailTanamanSayaScreen(plant: MyPlantData) {
+    Column(
+        modifier = Modifier
+            .background(color = Color(0xFFFFFFFF))
+            .padding(16.dp)
+    ) {
         Spacer(modifier = Modifier.height(16.dp))
         Image(
-            painter = painterResource(id = R.drawable.scantnm),
+            painter = painterResource(id = plant.image),
             contentDescription = "",
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .fillMaxWidth()
                 .height(221.dp)
                 .clip(RoundedCornerShape(10.dp)),
@@ -52,13 +56,12 @@ fun DetailTanamanSayaScreen(){
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Pilea peperomiodes",
+                text = plant.name,
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
@@ -67,17 +70,16 @@ fun DetailTanamanSayaScreen(){
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Default.FavoriteBorder,
-                    tint = Color.Red, // Replace SecondaryBase with a concrete color value
+                    tint = Color.Red,
                     contentDescription = null
                 )
             }
         }
         Text(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp),
-            text = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak.",
-            color = ContentSemiDark,
+            text = plant.description,
+            color = Color(0xFF141916),
             style = TextStyle(
                 fontSize = 14.sp,
                 lineHeight = 24.sp,
@@ -85,15 +87,16 @@ fun DetailTanamanSayaScreen(){
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(modifier = Modifier.padding(start = 16.dp),text = "Penyiraman Selanjutnya :",
+        Text(
+            text = "Penyiraman Selanjutnya :",
             style = TextStyle(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
-            ))
+            )
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 16.dp)
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 tint = SecondaryBase,
@@ -104,10 +107,9 @@ fun DetailTanamanSayaScreen(){
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(5.dp))
-
             Text(
-                text = "Jum’at, 10 Mei",
-                color = ContentSemiDark,
+                text = plant.schedule,
+                color = Color(0xFF141916),
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 21.sp,
@@ -116,12 +118,7 @@ fun DetailTanamanSayaScreen(){
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        }
     }
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewDetailTanaman() {
-    DetailTanamanSayaScreen()
 }
+
+

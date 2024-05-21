@@ -1,5 +1,6 @@
 package com.example.botanify.screen.tanamansaya
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,53 +27,58 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.botanify.data.local.MyPlantData
+import com.example.botanify.data.local.myplantsData
 import com.example.botanify.screen.components.TanamanSayaCard
 import com.example.botanify.ui.theme.SurfaceBase
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun ListTanamanSayaScreen(modifier: Modifier) {
+fun ListTanamanSayaScreen(modifier: Modifier = Modifier) {
     var showBottomSheet by remember { mutableStateOf(false) }
+    var selectedPlant by remember { mutableStateOf<MyPlantData?>(null) }
+    val myPlantData = myplantsData
 
-        Column(modifier = modifier
-            .background(SurfaceBase)
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                items(10) { tanaman ->
+    Column(
+        modifier = modifier
+            .background(Color(0xFFEFEFEF))
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(myPlantData.size) { index ->
+                myPlantData[index].let { plant ->
                     TanamanSayaCard(
                         modifier = Modifier
                             .padding(bottom = 16.dp)
                             .clickable {
+                                selectedPlant = plant
                                 showBottomSheet = true
-                            }
+                            },
+                        title = plant.name,
+                        image = plant.image,
+                        schedule = plant.schedule
                     )
                 }
             }
-
-            if (showBottomSheet) {
-                BottomSheet(
-                    onDismissRequest = { showBottomSheet = false },
-                    content = {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(IntrinsicSize.Max)
-                        ) {
-                            DetailTanamanSayaScreen()
-                        }
-                    }
-                )
-            }
         }
+
+        if (showBottomSheet && selectedPlant != null) {
+            BottomSheet(
+                onDismissRequest = { showBottomSheet = false },
+                plant = selectedPlant!!
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(
     onDismissRequest: () -> Unit,
-    content: @Composable ColumnScope.() -> Unit
+    plant: MyPlantData
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -80,9 +86,16 @@ fun BottomSheet(
         containerColor = Color(0xFFFFFFFF),
         contentColor = MaterialTheme.colorScheme.onSurface,
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        scrimColor = Color.Black.copy(alpha = 0.5f),
-        content = content
-    )
+        scrimColor = Color.Black.copy(alpha = 0.5f)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            DetailTanamanSayaScreen(plant)
+        }
+    }
 }
 
 @Preview(showBackground = true)

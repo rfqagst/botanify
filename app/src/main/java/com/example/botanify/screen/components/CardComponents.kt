@@ -331,7 +331,7 @@ fun InformationCard(modifier: Modifier) {
 }
 
 @Composable
-fun TanamanSayaCard(modifier: Modifier) {
+fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: String) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -345,12 +345,12 @@ fun TanamanSayaCard(modifier: Modifier) {
                 .padding(8.dp)
                 .width(75.dp)
                 .height(114.dp),
-            painter = painterResource(id = R.drawable.tanamansaya_plant1),
+            painter = painterResource(id = image),
             contentDescription = null
         )
         Column(modifier = Modifier.padding(top = 16.dp)) {
             Text(
-                text = "Pilea peperomiodes",
+                text = title,
                 color = ContentDark,
                 style = TextStyle(
                     fontSize = 16.sp,
@@ -384,7 +384,7 @@ fun TanamanSayaCard(modifier: Modifier) {
                 Spacer(modifier = Modifier.width(5.dp))
 
                 Text(
-                    text = "Jum’at, 10 Mei",
+                    text = schedule,
                     color = ContentSemiDark,
                     style = TextStyle(
                         fontSize = 14.sp,
@@ -566,7 +566,6 @@ fun PreviewCardComponents() {
         NotificationCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
         InformationCard(modifier = Modifier)
-        TanamanSayaCard(modifier = Modifier)
         SearchBarTanaman(modifier = Modifier)
     }
 }
