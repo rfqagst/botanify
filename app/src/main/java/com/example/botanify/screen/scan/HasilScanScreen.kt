@@ -34,95 +34,112 @@ import com.example.botanify.screen.components.ExpandableCard
 import com.example.botanify.screen.components.SmallBtn
 
 @Composable
-fun HasilScanScreen(modifier: Modifier) {
-    var expandedState by remember { mutableStateOf(true) }
-    val rotationState by animateFloatAsState(
-        targetValue = if (expandedState) 180f else 0f, label = ""
+fun HasilScanScreen(modifier: Modifier = Modifier) {
+
+    var expandedStateKeterangan by remember { mutableStateOf(false) }
+    var expandedStateDiagnosa by remember { mutableStateOf(false) }
+    var expandedStatePenanganan by remember { mutableStateOf(false) }
+
+    val rotationStateKeterangan by animateFloatAsState(
+        targetValue = if (expandedStateKeterangan) 180f else 0f, label = ""
+    )
+    val rotationStateDiagnosa by animateFloatAsState(
+        targetValue = if (expandedStateDiagnosa) 180f else 0f, label = ""
+    )
+    val rotationStatePenanganan by animateFloatAsState(
+        targetValue = if (expandedStatePenanganan) 180f else 0f, label = ""
     )
 
-    Column(
+    Column(modifier = modifier.padding(horizontal = 16.dp)) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Image(
+            painter = painterResource(id = R.drawable.scantnm),
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(221.dp)
+                .clip(RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.FillWidth
+        )
+        Spacer(modifier = Modifier.height(24.dp))
 
-    ) {
-        Column(modifier.padding(horizontal = 16.dp)) {
-            Spacer(modifier = Modifier.height(16.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = R.drawable.scantnm),
-                contentDescription = "",
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(221.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.FillWidth
+                    .size(114.dp)
+                    .clip(RoundedCornerShape(15.dp)),
+                contentScale = ContentScale.Crop,
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.width(24.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.scantnm),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(114.dp)
-                        .clip(RoundedCornerShape(15.dp)),
-                    contentScale = ContentScale.Crop,
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "Aglaonema",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        lineHeight = 30.sp,
+                        fontWeight = FontWeight(700),
+                    )
                 )
-                Spacer(modifier = Modifier.width(24.dp))
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Aglaonema",
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            lineHeight = 30.sp,
-                            fontWeight = FontWeight(700),
-                        )
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    SmallBtn(
-                        text = "Tambah Koleksi Tanaman",
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                    )
-                }
+                Spacer(modifier = Modifier.height(8.dp))
+                SmallBtn(
+                    text = "Tambah Ke Tanaman",
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                )
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        
         ExpandableCard(
             modifier = Modifier,
             cardTitle = "Keterangan",
-            onClick = { expandedState = !expandedState },
-            rotationState = rotationState,
-            expandedState = expandedState,
+            onClick = {
+                expandedStateKeterangan = !expandedStateKeterangan
+                if (expandedStateKeterangan) {
+                    expandedStateDiagnosa = false
+                    expandedStatePenanganan = false
+                }
+            },
+            rotationState = rotationStateKeterangan,
+            expandedState = expandedStateKeterangan,
             expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
         )
         Spacer(modifier = Modifier.height(16.dp))
         ExpandableCard(
             modifier = Modifier,
             cardTitle = "Hasil Diagnosa",
-            onClick = { /*TODO*/ },
-            rotationState = rotationState,
-            expandedState = expandedState,
-            expadableValue = "Nama Penyakit: Penyakit Embun Tepung\n" +
-                    "Hama: Jamur Erysiphales."
+            onClick = {
+                expandedStateDiagnosa = !expandedStateDiagnosa
+                if (expandedStateDiagnosa) {
+                    expandedStateKeterangan = false
+                    expandedStatePenanganan = false
+                }
+            },
+            rotationState = rotationStateDiagnosa,
+            expandedState = expandedStateDiagnosa,
+            expadableValue = "Nama Penyakit: Penyakit Embun Tepung\nHama: Jamur Erysiphales."
         )
         Spacer(modifier = Modifier.height(16.dp))
         ExpandableCard(
             modifier = Modifier,
             cardTitle = "Penanganan",
-            onClick = { /*TODO*/ },
-            rotationState = rotationState,
-            expandedState = expandedState,
+            onClick = {
+                expandedStatePenanganan = !expandedStatePenanganan
+                if (expandedStatePenanganan) {
+                    expandedStateKeterangan = false
+                    expandedStateDiagnosa = false
+                }
+            },
+            rotationState = rotationStatePenanganan,
+            expandedState = expandedStatePenanganan,
             expadableValue = "Memastikan sirkulasi udara yang baik di sekitar tanaman, menghindari kelembaban berlebih, dan menggunakan fungisida yang sesuai dapat membantu mengendalikan penyakit ini."
         )
-
-
-
     }
-
-
-    }
+}
 
 
 @Composable
