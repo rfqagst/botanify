@@ -105,7 +105,6 @@ fun SmallBtn(
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()
         )
 
     }

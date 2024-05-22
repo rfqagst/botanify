@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -29,7 +28,6 @@ import com.example.botanify.screen.components.TopBarComponentHome
 import com.example.botanify.screen.components.TopBarComponentSearch
 import com.example.botanify.screen.navigation.NavGraph
 import com.example.botanify.screen.navigation.Screen
-import com.example.botanify.screen.onboarding.OnBoarding
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
 
@@ -47,9 +45,10 @@ fun BotanifyApp() {
                     Screen.OnBoarding.route,
                     Screen.Login.route,
                     Screen.Register.route,
-                    Screen.DetailInformation.route,
+                    Screen.DetailInformation.route + "/{informationId}",
                     Screen.ScanTanaman.route,
                     Screen.HasilScan.route,
+                    Screen.DetailTanaman.route + "/{tanamanId}",
                 )
             ) {
                 Box {
@@ -81,9 +80,10 @@ fun BotanifyApp() {
                     Screen.OnBoarding.route,
                     Screen.Login.route,
                     Screen.Register.route,
-                    Screen.DetailInformation.route,
                     Screen.ScanTanaman.route,
                     Screen.HasilScan.route,
+                    Screen.DetailInformation.route + "/{informationId}",
+                    Screen.DetailTanaman.route + "/{tanamanId}",
                     )
             ) {
                 BottomBarComponent(navController)

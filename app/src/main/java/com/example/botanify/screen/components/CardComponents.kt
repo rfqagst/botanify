@@ -66,7 +66,6 @@ fun BannerCard(modifier: Modifier, navController: NavHostController) {
             Spacer(modifier = Modifier.height(8.dp))
             SmallBtn(modifier = Modifier, text = "Tambah", onClick = {
                 navController.navigate(Screen.TambahKoleksiTanaman.route)
-
             })
         }
         Image(
@@ -344,9 +343,13 @@ fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: Str
             modifier = Modifier
                 .padding(8.dp)
                 .width(75.dp)
-                .height(114.dp),
+                .height(114.dp)
+                .clip(RoundedCornerShape(15.dp))
+
+            ,
             painter = painterResource(id = image),
-            contentDescription = null
+            contentDescription = null,
+            contentScale = ContentScale.Crop
         )
         Column(modifier = Modifier.padding(top = 16.dp)) {
             Text(

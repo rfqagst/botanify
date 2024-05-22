@@ -1,5 +1,6 @@
 package com.example.botanify.screen.scan
 
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +50,8 @@ fun HasilScanScreen(modifier: Modifier = Modifier) {
     val rotationStatePenanganan by animateFloatAsState(
         targetValue = if (expandedStatePenanganan) 180f else 0f, label = ""
     )
+
+    val context = LocalContext.current
 
     Column(modifier = modifier.padding(horizontal = 16.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -85,8 +88,14 @@ fun HasilScanScreen(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SmallBtn(
-                    text = "Tambah Ke Tanaman",
-                    onClick = { /*TODO*/ },
+                    text = "Tambah Ke Koleksi Tanaman",
+                    onClick = {
+                        Toast.makeText(
+                            context,
+                            "Berhasil Menambah Tanaman Ke Koleksi",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
                     modifier = Modifier
                 )
             }
