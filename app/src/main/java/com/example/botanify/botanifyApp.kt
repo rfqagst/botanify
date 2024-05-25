@@ -49,6 +49,8 @@ fun BotanifyApp() {
                     Screen.ScanTanaman.route,
                     Screen.HasilScan.route,
                     Screen.DetailTanaman.route + "/{tanamanId}",
+                    Screen.TambahKoleksiTanaman.route
+
                 )
             ) {
                 Box {
@@ -84,6 +86,7 @@ fun BotanifyApp() {
                     Screen.HasilScan.route,
                     Screen.DetailInformation.route + "/{informationId}",
                     Screen.DetailTanaman.route + "/{tanamanId}",
+                    Screen.TambahKoleksiTanaman.route
                     )
             ) {
                 BottomBarComponent(navController)

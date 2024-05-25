@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         if (!hasRequiredPermissions()) {
             ActivityCompat.requestPermissions(
-                this, CAMERAX_PERMISSIONS, 0
+                this, REQUIRED_PERMISSIONS, 0
             )
         }
         setContent {
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun hasRequiredPermissions(): Boolean {
-        return CAMERAX_PERMISSIONS.all {
+        return REQUIRED_PERMISSIONS.all {
             ContextCompat.checkSelfPermission(
                 applicationContext,
                 it
@@ -50,7 +50,13 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
-        private val CAMERAX_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSIONS = mutableListOf(
+            Manifest.permission.CAMERA
+        ).apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }.toTypedArray()
     }
 
 }

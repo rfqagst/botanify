@@ -54,6 +54,11 @@ dependencies {
 
     val room_version = "2.6.1"
 
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:1.3.0")
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:1.3.0")
+
+
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
     implementation (libs.androidx.room.ktx)
