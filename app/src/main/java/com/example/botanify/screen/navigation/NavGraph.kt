@@ -18,10 +18,11 @@ import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.onboarding.OnBoarding
-import com.example.botanify.screen.profile.ProfileScreen
+import com.example.botanify.screen.search.profile.ProfileScreen
 import com.example.botanify.screen.scan.HasilScanScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
+import com.example.botanify.screen.search.PlantViewModel
 import com.example.botanify.screen.search.SearchInformationScreen
 import com.example.botanify.screen.search.SearchTanamanScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
@@ -62,7 +63,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route = Screen.SearchTanamanScreen.route) {
-            SearchTanamanScreen(modifier = modifier, navController)
+            val plantViewModel: PlantViewModel = hiltViewModel()
+            SearchTanamanScreen(modifier = modifier, navController,plantViewModel)
         }
 
         composable(route = Screen.SearchInformationScreen.route) {

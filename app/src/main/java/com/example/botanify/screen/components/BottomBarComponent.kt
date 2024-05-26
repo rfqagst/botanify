@@ -52,7 +52,7 @@ fun BottomBarComponent(navController: NavHostController) {
                         IconButton(
                             modifier = Modifier.padding(
                                 end = if (id.icon == R.drawable.ic_plant) {
-                                    80.dp
+                                    83.dp
                                 } else {
                                     0.dp
                                 }
@@ -75,7 +75,7 @@ fun BottomBarComponent(navController: NavHostController) {
                         Text(
                             modifier = Modifier.padding(
                                 end = if (id.icon == R.drawable.ic_plant) {
-                                    80.dp
+                                    83.dp
                                 } else {
                                     0.dp
                                 }

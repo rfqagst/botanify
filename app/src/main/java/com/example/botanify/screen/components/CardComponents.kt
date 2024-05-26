@@ -34,6 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.example.botanify.R
 import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentDark
@@ -344,9 +347,7 @@ fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: Str
                 .padding(8.dp)
                 .width(75.dp)
                 .height(114.dp)
-                .clip(RoundedCornerShape(15.dp))
-
-            ,
+                .clip(RoundedCornerShape(15.dp)),
             painter = painterResource(id = image),
             contentDescription = null,
             contentScale = ContentScale.Crop
@@ -472,7 +473,9 @@ fun ExpandableCard(
 
         if (expandedState) {
             Text(
-                modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp),
                 text = expadableValue,
                 color = ContentSemiDark,
                 style = TextStyle(
@@ -486,7 +489,7 @@ fun ExpandableCard(
 }
 
 @Composable
-fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: Int) {
+fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: String) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -503,6 +506,77 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
                 .clip(RoundedCornerShape(10.dp))
                 .background(ContentLightBlue)
         ) {
+
+
+           Image(
+               modifier = Modifier
+                   .fillMaxSize(),
+             painter = rememberAsyncImagePainter(model = image),
+              contentScale = ContentScale.Crop,
+               contentDescription = null
+           )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column {
+            Text(
+                text = name,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight(600),
+                    color = ContentDark,
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                text = description,
+                color = ContentSemiDark,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight(400),
+                )
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun SearchInformationCard(modifier: Modifier, name: String, description: String, image: Int) {
+    Row(
+        modifier = modifier
+            .padding(bottom = 8.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(ContentWhite)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(8.dp)
+                .width(60.dp)
+                .height(60.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentLightBlue)
+        ) {
+
+//            AsyncImage(
+//                model = image, contentDescription = null, contentScale = ContentScale.Crop,
+//            )
+
             Image(
                 painter = painterResource(id = image),
                 contentScale = ContentScale.Crop,
@@ -545,6 +619,8 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
 
     }
 }
+
+
 
 @Composable
 @Preview(showBackground = true)
