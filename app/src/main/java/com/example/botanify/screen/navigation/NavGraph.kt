@@ -4,9 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.auth.login.ForgotPassword
 import com.example.botanify.screen.auth.login.LoginScreen
 import com.example.botanify.screen.auth.register.RegisterScreen
@@ -30,7 +32,7 @@ import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
+    NavHost(navController = navController, startDestination = Screen.Register.route) {
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
@@ -88,7 +90,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route = Screen.Register.route) {
-            RegisterScreen(modifier = modifier ,navController, )
+            val authViewModel : AuthViewModel = hiltViewModel()
+            RegisterScreen(modifier = modifier ,navController, authViewModel )
         }
 
         composable(route = Screen.ScanTanaman.route) {

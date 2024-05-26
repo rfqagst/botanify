@@ -1,6 +1,7 @@
 package com.example.botanify.screen.auth.register
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.botanify.R
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.PasswordtTextField
@@ -32,10 +33,17 @@ import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.Neutral60
 import com.example.botanify.ui.theme.SurfaceBase
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun RegisterScreen(modifier: Modifier, navController: NavController) {
+fun RegisterScreen(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel) {
     val context = LocalContext.current
+
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmpassword by remember { mutableStateOf("") }
+
+
 
     Column(
         modifier = modifier
@@ -43,7 +51,7 @@ fun RegisterScreen(modifier: Modifier, navController: NavController) {
             .background(SurfaceBase)
             .padding(horizontal = 16.dp, vertical = 0.dp)
     ) {
-        var rememberMe by remember { mutableStateOf(false) }
+
         Spacer(modifier = Modifier.height(22.dp))
         Text(
             text = "Registrasi",
@@ -68,21 +76,33 @@ fun RegisterScreen(modifier: Modifier, navController: NavController) {
         )
         Spacer(modifier = Modifier.height(22.dp))
         IconTextField(
-            modifier = Modifier, titleTextField = "Nama Anda", iconTextField = painterResource(
+            modifier = Modifier,
+            titleTextField = "Nama Anda",
+            iconTextField = painterResource(
                 id = R.drawable.ic_person_input
-            )
+            ),
+            value = name,
+            onValueChange = { name = it }
         )
         Spacer(modifier = Modifier.height(22.dp))
         IconTextField(
-            modifier = Modifier, titleTextField = "Email", iconTextField = painterResource(
+            modifier = Modifier,
+            titleTextField = "Email",
+            iconTextField = painterResource(
                 id = R.drawable.ic_email
-            )
+            ),
+            value = email,
+            onValueChange = { email = it }
         )
         Spacer(modifier = Modifier.height(16.dp))
         PasswordtTextField(
-            modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
+            modifier = Modifier,
+            titleTextField = "Password",
+            iconTextField = painterResource(
                 id = R.drawable.ic_lock
-            )
+            ),
+            value = password,
+            onValueChange = { password = it }
         )
         Spacer(modifier = Modifier.height(16.dp))
         PasswordtTextField(
@@ -90,7 +110,9 @@ fun RegisterScreen(modifier: Modifier, navController: NavController) {
             titleTextField = "Konfirmasi Password",
             iconTextField = painterResource(
                 id = R.drawable.ic_lock
-            )
+            ),
+            value = confirmpassword,
+            onValueChange = { confirmpassword = it }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -100,7 +122,8 @@ fun RegisterScreen(modifier: Modifier, navController: NavController) {
         LargeBtn(
             text = "Daftar",
             onClick = {
-
+                Log.d("RegisterScreen", "Name: $name, Email: $email, Password: $password")
+                authViewModel.signUp(name,email,password)
                 Toast.makeText(context, "Berhasil Daftar Akun", Toast.LENGTH_LONG).show()
                 navController.navigate(Screen.Login.route)
             },

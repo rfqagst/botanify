@@ -82,12 +82,15 @@ fun NormalTextField(
 fun IconTextField(
     modifier: Modifier,
     titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
     iconTextField: Painter
 ) {
     Column(modifier = modifier) {
         var normalText by rememberSaveable {
             mutableStateOf("")
         }
+
         Text(
             text = titleTextField,
             style = TextStyle(
@@ -113,10 +116,8 @@ fun IconTextField(
                 .background(ContentWhite, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp)),
             shape = RoundedCornerShape(10.dp),
-            value = normalText,
-            onValueChange = {
-                normalText = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = PrimaryBase,
                 unfocusedBorderColor = Color.Transparent,
@@ -130,7 +131,9 @@ fun IconTextField(
 fun PasswordtTextField(
     modifier: Modifier,
     titleTextField: String,
-    iconTextField: Painter
+    iconTextField: Painter,
+    value: String,
+    onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
         var normalText by rememberSaveable {
@@ -170,10 +173,8 @@ fun PasswordtTextField(
                 .background(ContentWhite, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp)),
             shape = RoundedCornerShape(10.dp),
-            value = normalText,
-            onValueChange = {
-                normalText = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = PrimaryBase,
                 unfocusedBorderColor = Color.Transparent,
@@ -252,17 +253,17 @@ fun PreviewInputComponents() {
             titleTextField = "Nama Tanaman"
         )
 
-        IconTextField(
-            modifier = Modifier,
-            titleTextField = "Email",
-            iconTextField = painterResource(id = R.drawable.ic_person_input)
-        )
+//        IconTextField(
+//            modifier = Modifier,
+//            titleTextField = "Email",
+//            iconTextField = painterResource(id = R.drawable.ic_person_input)
+//        )
 
-        PasswordtTextField(
-            modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
-                id = R.drawable.ic_lock
-            )
-        )
+//        PasswordtTextField(
+//            modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
+//                id = R.drawable.ic_lock
+//            )
+//        )
         Spacer(modifier = Modifier.height(20.dp))
 
 

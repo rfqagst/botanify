@@ -1,8 +1,6 @@
 package com.example.botanify.screen.auth.login
 
 import android.os.Build
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -21,12 +19,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,13 +36,15 @@ import com.example.botanify.R
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.navigation.Screen
-import kotlinx.coroutines.launch
-import java.time.format.TextStyle
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPassword(navController: NavController) {
+
+    var email by remember { mutableStateOf("") }
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -84,7 +85,11 @@ fun ForgotPassword(navController: NavController) {
             IconTextField(
                 modifier = Modifier,
                 titleTextField = "",
-                iconTextField = painterResource(id = R.drawable.ic_email)
+                iconTextField = painterResource(id = R.drawable.ic_email),
+                value = email,
+                onValueChange = {
+                    email = it
+                }
             )
             Spacer(modifier = Modifier.height(32.dp))
             LargeBtn(

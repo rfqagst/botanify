@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -55,6 +56,12 @@ import com.example.botanify.ui.theme.SurfaceBase
 fun LoginScreen(
     navController: NavController
 ) {
+    val context = LocalContext.current
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +74,6 @@ fun LoginScreen(
             style = TextStyle(
                 fontSize = 24.sp,
                 lineHeight = 44.sp,
-                //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                 fontWeight = FontWeight(700),
                 color = ContentDark,
 
@@ -79,7 +85,6 @@ fun LoginScreen(
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
-                //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                 fontWeight = FontWeight(500),
                 color = Neutral60,
 
@@ -87,15 +92,21 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(22.dp))
         IconTextField(
-            modifier = Modifier, titleTextField = "Email", iconTextField = painterResource(
+            modifier = Modifier, titleTextField = "Email",
+            iconTextField = painterResource(
                 id = R.drawable.ic_email
-            )
+            ),
+            value = email,
+            onValueChange = { email = it },
         )
         Spacer(modifier = Modifier.height(16.dp))
         PasswordtTextField(
-            modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
+            modifier = Modifier, titleTextField = "Password",
+            iconTextField = painterResource(
                 id = R.drawable.ic_lock
-            )
+            ),
+            value = password,
+            onValueChange = { password = it },
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -113,10 +124,7 @@ fun LoginScreen(
                     checkedColor = PrimaryBase,
                     checkmarkColor = SurfaceBase
                 ),
-
-
-                )
-
+            )
             Text(
                 text = "Ingat Saya",
                 modifier = Modifier
@@ -125,7 +133,6 @@ fun LoginScreen(
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    //fontFamily = FontFamily(Font(R.font.dm sans)),
                     fontWeight = FontWeight(500),
                     color = ContentDark,
 
@@ -136,7 +143,6 @@ fun LoginScreen(
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                     fontWeight = FontWeight(500),
                     color = Neutral60,
                     textAlign = TextAlign.Right,
@@ -149,7 +155,6 @@ fun LoginScreen(
 
         }
 
-        //Text(text = "Lupa Password?", modifier = Modifier.weight(1f), textAlign = TextAlign.Right )
 
         Spacer(modifier = Modifier.height(32.dp))
         LargeBtn(text = "Masuk", onClick = { navController.navigate("home") }, modifier = Modifier)
@@ -164,7 +169,6 @@ fun LoginScreen(
                 style = TextStyle(
                     fontSize = 14.sp,
                     lineHeight = 21.sp,
-                    //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                     fontWeight = FontWeight(500),
                     color = Color(0xFF9CA3AF),
 
@@ -208,7 +212,6 @@ fun LoginScreen(
         ) {
             Text(
                 text = "Belum punya akun?",
-                //fontFamily = Plus_Jakarta_Sans,
                 fontWeight = FontWeight(400),
                 fontSize = 16.sp,
                 color = Color(0xFF696B76)
@@ -221,7 +224,6 @@ fun LoginScreen(
                     navController.navigate(Screen.Register.route)
                 },
                 style = TextStyle(
-                    //fontFamily = Plus_Jakarta_Sans,
                     fontWeight = FontWeight(700),
                     fontSize = 16.sp,
 
@@ -234,7 +236,6 @@ fun LoginScreen(
 
     }
 }
-
 
 
 @Preview(showBackground = true)
