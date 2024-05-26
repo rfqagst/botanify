@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.botanify.R
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.navigation.Screen
@@ -40,7 +41,7 @@ import com.example.botanify.screen.navigation.Screen
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ForgotPassword(navController: NavController) {
+fun ForgotPassword(modifier: Modifier, navController: NavController, authViewModel: AuthViewModel) {
 
     var email by remember { mutableStateOf("") }
 

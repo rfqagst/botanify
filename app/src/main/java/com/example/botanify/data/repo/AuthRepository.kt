@@ -19,6 +19,7 @@ class AuthRepository(
             Resource.Success(authResult.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("AuthRepositoryLogin", "$email,login: ${e.message}")
             Resource.Error(e.message ?: "An unknown error occurred")
         }
     }

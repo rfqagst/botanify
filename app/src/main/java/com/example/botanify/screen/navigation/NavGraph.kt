@@ -32,7 +32,7 @@ import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
-    NavHost(navController = navController, startDestination = Screen.Register.route) {
+    NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
@@ -53,7 +53,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route = Screen.Profile.route) {
-            ProfileScreen(modifier = modifier)
+            val authViewModel: AuthViewModel = hiltViewModel()
+            ProfileScreen(modifier = modifier,authViewModel)
         }
 
         composable(route = Screen.Notification.route) {
@@ -77,22 +78,27 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             TambahKoleksiTanamanScreen(modifier = modifier)
         }
 
-        composable(route = Screen.ForgotPassword.route) {
-            ForgotPassword(navController)
-        }
 
-        composable(route = Screen.Login.route) {
-            LoginScreen(navController)
-        }
 
         composable(route = Screen.OnBoarding.route) {
             OnBoarding(navController)
         }
 
         composable(route = Screen.Register.route) {
-            val authViewModel : AuthViewModel = hiltViewModel()
-            RegisterScreen(modifier = modifier ,navController, authViewModel )
+            val authViewModel: AuthViewModel = hiltViewModel()
+            RegisterScreen(modifier = modifier, navController, authViewModel)
         }
+
+        composable(route = Screen.Login.route) {
+            val authViewModel: AuthViewModel = hiltViewModel()
+            LoginScreen(modifier, navController, authViewModel)
+        }
+
+        composable(route = Screen.ForgotPassword.route) {
+            val authViewModel: AuthViewModel = hiltViewModel()
+            ForgotPassword(modifier,navController,authViewModel)
+        }
+
 
         composable(route = Screen.ScanTanaman.route) {
             ScanTanamanScreen(modifier = modifier, navController)

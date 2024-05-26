@@ -1,6 +1,7 @@
 package com.example.botanify.screen.auth.login
 
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,8 +21,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.botanify.R
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.PasswordtTextField
@@ -51,16 +56,21 @@ import com.example.botanify.ui.theme.Neutral60
 import com.example.botanify.ui.theme.PrimaryBase
 import com.example.botanify.ui.theme.PrimaryLight
 import com.example.botanify.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    modifier: Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel
 ) {
     val context = LocalContext.current
+    var rememberMe by remember { mutableStateOf(false) }
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    val loginFlow = authViewModel.loginFlow.collectAsState()
 
     Column(
         modifier = Modifier
@@ -68,7 +78,6 @@ fun LoginScreen(
             .background(SurfaceBase)
             .padding(horizontal = 16.dp, vertical = 34.dp)
     ) {
-        var rememberMe by remember { mutableStateOf(false) }
         Text(
             text = "Masuk",
             style = TextStyle(
@@ -154,10 +163,11 @@ fun LoginScreen(
             }
 
         }
-
-
         Spacer(modifier = Modifier.height(32.dp))
-        LargeBtn(text = "Masuk", onClick = { navController.navigate("home") }, modifier = Modifier)
+        LargeBtn(text = "Masuk", onClick = {
+            authViewModel.login(email, password)
+        }, modifier = Modifier)
+
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -232,8 +242,27 @@ fun LoginScreen(
                     )
             )
         }
+    }
 
-
+    loginFlow.value.let {
+        when(it) {
+            is Resource.Error -> {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+            is Resource.Loading -> {
+                CircularProgressIndicator()
+            }
+            is Resource.Success -> {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+            null -> { /* Do nothing */ }
+        }
     }
 }
 

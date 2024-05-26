@@ -45,12 +45,12 @@ fun SearchInformationScreen(modifier: Modifier, navController: NavHostController
     }
 
     SearchBar(
-        modifier = Modifier,
+        modifier = modifier,
         colors = SearchBarDefaults.colors(SurfaceBase),
         shape = RoundedCornerShape(10.dp),
         placeholder = {
             Text(
-                text = "Cari Informasi",
+                text = "Cara Menanam Bunga Anggrek",
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(400),
@@ -87,7 +87,7 @@ fun SearchInformationScreen(modifier: Modifier, navController: NavHostController
             }
         }
 
-        LazyColumn(modifier = modifier.padding(16.dp)) {
+        LazyColumn(modifier = Modifier.padding(16.dp)) {
             items(filteredInformation.size) { index ->
                 filteredInformation[index].let { information ->
                     SearchTanamanCard(

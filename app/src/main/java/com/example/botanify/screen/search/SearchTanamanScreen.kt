@@ -34,9 +34,6 @@ import com.example.botanify.ui.theme.SurfaceBase
 @Composable
 fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
 
-    val plantData = plantsData
-
-
     var textSearch by remember {
         mutableStateOf("")
     }
@@ -46,12 +43,12 @@ fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
     }
 
     SearchBar(
-        modifier = Modifier,
+        modifier = modifier,
         colors = SearchBarDefaults.colors(SurfaceBase),
         shape = RoundedCornerShape(10.dp),
         placeholder = {
             Text(
-                text = "Cari Tanaman",
+                text = "Kamboja Jepang",
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight(400),
@@ -88,7 +85,7 @@ fun SearchTanamanScreen(modifier: Modifier, navController: NavHostController) {
             }
         }
 
-        LazyColumn(modifier = modifier.padding(16.dp)) {
+        LazyColumn(modifier = Modifier.padding(16.dp)) {
             items(filteredPlants.size) { index ->
                 filteredPlants[index].let { plant ->
                     SearchTanamanCard(

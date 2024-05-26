@@ -152,7 +152,7 @@ fun TopBarComponentSearch(navController: NavHostController, searchText : String,
 
 
 @Composable
-fun TopBarComponentHome(navController: NavHostController) {
+fun TopBarComponentHome(name : String,navController: NavHostController) {
     Column(modifier = Modifier.background(ContentWhite)) {
         Row(
             modifier = Modifier
@@ -188,7 +188,7 @@ fun TopBarComponentHome(navController: NavHostController) {
                         )
                     )
                     Text(
-                        text = "Rifqi Barusadar",
+                        text = name,
                         style = TextStyle(
                             fontSize = 16.sp,
                             lineHeight = 22.sp,

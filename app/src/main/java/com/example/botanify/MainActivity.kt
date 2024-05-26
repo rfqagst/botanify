@@ -34,6 +34,8 @@ class MainActivity : ComponentActivity() {
                 this, REQUIRED_PERMISSIONS, 0
             )
         }
+
+        val authViewModel: AuthViewModel by viewModels()
         setContent {
             BotanifyTheme {
 
@@ -43,7 +45,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
 
-                    BotanifyApp()
+                    BotanifyApp(authViewModel = authViewModel)
                 }
             }
         }
