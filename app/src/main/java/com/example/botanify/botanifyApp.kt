@@ -67,14 +67,14 @@ fun BotanifyApp(
                         shape = CircleShape,
                         modifier = Modifier
 
-                            .size(58.dp)
+                            .size(60.dp)
                             .align(Alignment.Center)
-                            .offset(y = 64.dp)
+                            .offset(y = 60.dp)
                     ) {
                         Icon(
                             modifier = Modifier
-                                .width(28.dp)
-                                .height(28.dp),
+                                .width(30.dp)
+                                .height(30.dp),
                             tint = ContentWhite,
                             painter = painterResource(id = R.drawable.ic_scan),
                             contentDescription = null,

@@ -1,10 +1,13 @@
 package com.example.botanify.data.repo
 
 import android.util.Log
+import com.example.botanify.data.model.User
 import com.example.botanify.utils.Resource
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.database
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository(
@@ -24,13 +27,15 @@ class AuthRepository(
         }
     }
 
-    suspend fun signup( email: String, password: String,name: String): Resource<FirebaseUser> {
+    suspend fun signup( email: String, password: String, name: String): Resource<FirebaseUser> {
 
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             authResult.user?.updateProfile(
                 UserProfileChangeRequest.Builder().setDisplayName(name).build()
             )
+            val user = authResult.user!!
+            addUserToDatabase(user, name)
             Resource.Success(authResult.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -42,5 +47,15 @@ class AuthRepository(
 
     fun logout() {
         firebaseAuth.signOut()
+    }
+    private suspend fun addUserToDatabase(user: FirebaseUser, name: String) {
+        val database = Firebase.database
+        val userRef = database.getReference("users").child(user.uid)
+        val newUser = User(
+            id = user.uid,
+            name = name,
+            email = user.email ?: ""
+        )
+        userRef.setValue(newUser).await()
     }
 }
