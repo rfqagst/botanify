@@ -14,21 +14,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlantViewModel @Inject constructor(
-    val plantRepository: PlantRepository
+    private val plantRepository: PlantRepository
 ) : ViewModel() {
 
     private val _plants = MutableStateFlow<Resource<List<Plant>>>(Resource.Loading(null))
     val plants: StateFlow<Resource<List<Plant>>> = _plants
 
+
+    private val _plantsById = MutableStateFlow<Resource<Plant>>(Resource.Loading(null))
+    val plantsById: StateFlow<Resource<Plant>> = _plantsById
+
     init {
         fetchPlants()
     }
 
-    fun fetchPlants() {
+    private fun fetchPlants() {
         viewModelScope.launch {
             plantRepository.fetchPlants().collect { plantsData ->
                 _plants.value = plantsData
                 Log.d("plantssssssssss", plantsData.toString())
+            }
+        }
+    }
+
+
+    fun fetchPlantById(plantId: String) {
+        viewModelScope.launch {
+            Log.d("PlantViewModel", "Fetching plant with ID: $plantId")
+            plantRepository.fetchPlantById(plantId).collect { plantData ->
+                _plantsById.value = plantData
+                Log.d("PlantViewModel", "Plant data fetched: $plantData")
             }
         }
     }

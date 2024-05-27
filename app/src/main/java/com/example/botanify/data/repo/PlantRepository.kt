@@ -38,4 +38,30 @@ class PlantRepository() {
         return plantsFlow
     }
 
+
+    fun fetchPlantById(plantId: String): Flow<Resource<Plant>> {
+        val plantFlow = MutableStateFlow<Resource<Plant>>(Resource.Loading(null))
+
+        plantRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val plant = snapshot.getValue(Plant::class.java)
+                    if (plant?.id == plantId) {
+                        plantFlow.value = Resource.Success(plant)
+                        Log.d("PlantRepository", "Found plant with ID: $plantId")
+                        return
+                    }
+                }
+                plantFlow.value = Resource.Error("Plant not found", null)
+                Log.d("PlantRepository", "Plant not found for ID: $plantId")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                plantFlow.value = Resource.Error(databaseError.message, null)
+                Log.w("PlantRepository", "fetchPlantById:onCancelled", databaseError.toException())
+            }
+        })
+
+        return plantFlow
+    }
 }

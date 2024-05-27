@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.auth.login.ForgotPassword
 import com.example.botanify.screen.auth.login.LoginScreen
@@ -18,13 +20,13 @@ import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.onboarding.OnBoarding
-import com.example.botanify.screen.search.profile.ProfileScreen
 import com.example.botanify.screen.scan.HasilScanScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.PlantViewModel
 import com.example.botanify.screen.search.SearchInformationScreen
 import com.example.botanify.screen.search.SearchTanamanScreen
+import com.example.botanify.screen.search.profile.ProfileScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 
@@ -55,7 +57,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable(route = Screen.Profile.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
-            ProfileScreen(modifier = modifier,authViewModel)
+            ProfileScreen(modifier = modifier, authViewModel)
         }
 
         composable(route = Screen.Notification.route) {
@@ -64,16 +66,21 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable(route = Screen.SearchTanamanScreen.route) {
             val plantViewModel: PlantViewModel = hiltViewModel()
-            SearchTanamanScreen(modifier = modifier, navController,plantViewModel)
+            SearchTanamanScreen(modifier = modifier, navController, plantViewModel)
         }
 
         composable(route = Screen.SearchInformationScreen.route) {
             SearchInformationScreen(modifier = modifier, navController)
         }
 
-        composable(route = Screen.DetailTanaman.route + "/{tanamanId}") {
+        composable(
+            route = Screen.DetailTanaman.route + "/{tanamanId}",
+            arguments = listOf(navArgument("tanamanId") { type = NavType.StringType })
+
+        ) {
+            val plantViewModel: PlantViewModel = hiltViewModel()
             val tanamanId = it.arguments?.getString("tanamanId") ?: ""
-            DetailTanamanScreen(modifier = modifier, tanamanId)
+            DetailTanamanScreen(modifier = modifier, tanamanId, plantViewModel)
         }
 
         composable(route = Screen.TambahKoleksiTanaman.route) {
@@ -98,7 +105,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable(route = Screen.ForgotPassword.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
-            ForgotPassword(modifier,navController,authViewModel)
+            ForgotPassword(modifier, navController, authViewModel)
         }
 
 

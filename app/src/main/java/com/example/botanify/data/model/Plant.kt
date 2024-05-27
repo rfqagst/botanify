@@ -1,10 +1,10 @@
 package com.example.botanify.data.model
 
 data class Plant(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val image: String
+    val id: String = "",
+    val name: String = "",
+    val description: String = "",
+    val image: String = ""
 ) {
-    constructor() : this(0, "", "", "")
+    constructor() : this("", "", "", "")
 }

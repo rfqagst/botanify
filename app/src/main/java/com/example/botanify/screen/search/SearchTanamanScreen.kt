@@ -119,8 +119,6 @@ fun SearchTanamanScreen(
                                     navController.navigate(Screen.DetailTanaman.route + "/$tanamanId")
                                 }
                             )
-                            Log.d("SearchTanamanCard", "Loading image from URL: ${plant.image}")
-
                         }
                     }
                 }
