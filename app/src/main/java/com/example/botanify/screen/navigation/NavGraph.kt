@@ -30,7 +30,7 @@ import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
+    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
