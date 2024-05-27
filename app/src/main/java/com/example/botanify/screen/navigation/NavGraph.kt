@@ -41,7 +41,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
         }
 
         composable(route = Screen.TanamanSaya.route) {
-            ListTanamanSayaScreen(modifier = modifier)
+            ListTanamanSayaScreen(modifier = modifier, navController)
         }
 
         composable(route = Screen.Information.route) {
