@@ -1,6 +1,7 @@
 package com.example.botanify.data.repo
 
 import android.util.Log
+import com.example.botanify.data.model.PlantCollection
 import com.example.botanify.data.model.User
 import com.example.botanify.utils.Resource
 import com.google.firebase.Firebase
@@ -48,6 +49,9 @@ class AuthRepository(
     fun logout() {
         firebaseAuth.signOut()
     }
+
+
+
     private suspend fun addUserToDatabase(user: FirebaseUser, name: String) {
         val database = Firebase.database
         val userRef = database.getReference("users").child(user.uid)
@@ -58,4 +62,19 @@ class AuthRepository(
         )
         userRef.setValue(newUser).await()
     }
+
+    suspend fun addPlantCollectionToUser(userId: String, plantCollection: PlantCollection): Resource<Boolean> {
+        return try {
+            val database = Firebase.database
+            val userRef = database.getReference("users").child(userId)
+            val plantCollectionId = userRef.child("plantCollections").push().key ?: throw Exception("Cannot generate a new plant collection ID")
+            userRef.child("plantCollections").child(plantCollectionId).setValue(plantCollection).await()
+            Resource.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("AuthRepository", "addPlantCollectionToUser: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
+    }
+
 }

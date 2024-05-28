@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.botanify.R
-import com.example.botanify.data.local.plantsData
 import com.example.botanify.data.model.Plant
 import com.example.botanify.screen.components.SearchTanamanCard
 import com.example.botanify.screen.navigation.Screen

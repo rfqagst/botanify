@@ -60,29 +60,24 @@ kapt {
 dependencies {
 
 
-
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
-    implementation(libs.firebase.database)
     kapt(libs.hilt.android.compiler)
 
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.activity.ktx)
     implementation (libs.androidx.lifecycle.viewmodel.compose)
 
-
-
     implementation (libs.kotlinx.coroutines.core)
     implementation (libs.kotlinx.coroutines.play.services)
 
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
 
     implementation (libs.core)
     implementation (libs.calendar)
     implementation (libs.clock)
-
-
 
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
@@ -102,6 +97,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

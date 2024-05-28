@@ -38,7 +38,6 @@ class PlantRepository() {
         return plantsFlow
     }
 
-
     fun fetchPlantById(plantId: String): Flow<Resource<Plant>> {
         val plantFlow = MutableStateFlow<Resource<Plant>>(Resource.Loading(null))
 

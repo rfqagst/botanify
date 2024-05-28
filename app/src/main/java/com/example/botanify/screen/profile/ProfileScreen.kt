@@ -1,4 +1,4 @@
-package com.example.botanify.screen.search.profile
+package com.example.botanify.screen.profile
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image

@@ -26,7 +26,7 @@ import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.PlantViewModel
 import com.example.botanify.screen.search.SearchInformationScreen
 import com.example.botanify.screen.search.SearchTanamanScreen
-import com.example.botanify.screen.search.profile.ProfileScreen
+import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 
@@ -35,7 +35,7 @@ import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
-    NavHost(navController = navController, startDestination = Screen.Register.route) {
+    NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
