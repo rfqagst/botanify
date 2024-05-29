@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.model.Plant
-import com.example.botanify.data.repo.PlantRepository
+import com.example.botanify.data.repository.firebase.PlantRepository
 import com.example.botanify.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +30,7 @@ class PlantViewModel @Inject constructor(
 
     private fun fetchPlants() {
         viewModelScope.launch {
-            plantRepository.fetchPlants().collect { plantsData ->
+            plantRepository.fetchPlantsFirebase().collect { plantsData ->
                 _plants.value = plantsData
                 Log.d("plantssssssssss", plantsData.toString())
             }
@@ -41,7 +41,7 @@ class PlantViewModel @Inject constructor(
     fun fetchPlantById(plantId: String) {
         viewModelScope.launch {
             Log.d("PlantViewModel", "Fetching plant with ID: $plantId")
-            plantRepository.fetchPlantById(plantId).collect { plantData ->
+            plantRepository.fetchPlantByIdFirebase(plantId).collect { plantData ->
                 _plantsById.value = plantData
                 Log.d("PlantViewModel", "Plant data fetched: $plantData")
             }

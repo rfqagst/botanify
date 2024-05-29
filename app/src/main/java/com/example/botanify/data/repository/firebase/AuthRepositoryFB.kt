@@ -1,21 +1,21 @@
-package com.example.botanify.data.repo
+package com.example.botanify.data.repository.firebase
 
 import android.util.Log
 import com.example.botanify.data.model.User
 import com.example.botanify.utils.Resource
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.database.database
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.tasks.await
 
 class AuthRepository(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseDatabase: FirebaseDatabase
 ) {
 
-    val currentUser = firebaseAuth.currentUser
-    suspend fun login(email: String, password: String): Resource<FirebaseUser> {
+    val currentUserFirebase = firebaseAuth.currentUser
+    suspend fun loginFirebase(email: String, password: String): Resource<FirebaseUser> {
 
         return try {
             val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -27,7 +27,7 @@ class AuthRepository(
         }
     }
 
-    suspend fun signup( email: String, password: String, name: String): Resource<FirebaseUser> {
+    suspend fun signupFirebase(email: String, password: String, name: String): Resource<FirebaseUser> {
 
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
@@ -35,7 +35,7 @@ class AuthRepository(
                 UserProfileChangeRequest.Builder().setDisplayName(name).build()
             )
             val user = authResult.user!!
-            addUserToDatabase(user, name)
+            addUserToDatabaseFirebase(user, name)
             Resource.Success(authResult.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -45,12 +45,13 @@ class AuthRepository(
         }
     }
 
-    fun logout() {
+    fun logoutFirebase() {
         firebaseAuth.signOut()
     }
-    private suspend fun addUserToDatabase(user: FirebaseUser, name: String) {
-        val database = Firebase.database
-        val userRef = database.getReference("users").child(user.uid)
+
+
+    private suspend fun addUserToDatabaseFirebase(user: FirebaseUser, name: String) {
+        val userRef = firebaseDatabase.getReference("users").child(user.uid)
         val newUser = User(
             id = user.uid,
             name = name,
@@ -58,4 +59,5 @@ class AuthRepository(
         )
         userRef.setValue(newUser).await()
     }
+
 }

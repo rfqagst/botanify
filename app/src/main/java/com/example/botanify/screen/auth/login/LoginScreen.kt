@@ -280,6 +280,9 @@ fun LoginScreen(
                 }
             }
             null -> { /* Do nothing */ }
+            is Resource.Idle -> {
+                // Do nothing
+            }
         }
     }
 }

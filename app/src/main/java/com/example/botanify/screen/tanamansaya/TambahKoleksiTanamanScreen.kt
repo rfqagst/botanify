@@ -25,8 +25,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,20 +37,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
+import com.example.botanify.data.model.PlantCollection
+import com.example.botanify.data.model.Reminder
 import com.example.botanify.screen.alarmnotification.NotificationPenyiramanReceiver
 import com.example.botanify.screen.components.DateTimeField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.NormalTextField
 import com.example.botanify.screen.components.SmallBtn
 import com.example.botanify.ui.theme.ContentWhite
+import com.example.botanify.ui.theme.PrimaryBase
 import com.example.botanify.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -63,9 +72,13 @@ import java.util.Calendar
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TambahKoleksiTanamanScreen(modifier: Modifier) {
+fun TambahKoleksiTanamanScreen(
+    modifier: Modifier,
+    tanamanSayaViewModel: TanamanSayaViewModel,
+) {
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var namaTanaman by remember { mutableStateOf("") }
     var durasiPenyiraman by remember { mutableStateOf("") }
     var waktuPenyiraman by remember { mutableStateOf("") }
 
@@ -86,6 +99,7 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
 
     val context = LocalContext.current
 
+    val addPlantState by tanamanSayaViewModel.addPlantState.collectAsState()
 
 
     CalendarDialog(
@@ -104,8 +118,8 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
     ClockDialog(
         state = clockState,
         selection = ClockSelection.HoursMinutes { hours, minutes ->
-            selectedTime.value = LocalTime.of(hours, minutes,0)
-            waktuPenyiraman = LocalTime.of(hours, minutes,0).toString()
+            selectedTime.value = LocalTime.of(hours, minutes, 0)
+            waktuPenyiraman = LocalTime.of(hours, minutes, 0).toString()
         },
         config = ClockConfig(
             defaultTime = selectedTime.value,
@@ -117,8 +131,10 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         modifier
             .background(SurfaceBase)
             .padding(16.dp)
-            .fillMaxSize()
-    ) {
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        ) {
 
 
         Box(
@@ -159,7 +175,11 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-        NormalTextField(modifier = Modifier, titleTextField = "Nama Tanaman")
+        NormalTextField(
+            modifier = Modifier,
+            titleTextField = "Nama Tanaman",
+            value = namaTanaman,
+            onValueChange = { namaTanaman = it })
         Spacer(modifier = Modifier.height(16.dp))
 
         DateTimeField(
@@ -190,34 +210,104 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         LargeBtn(
             text = "Tambah Koleksi",
             onClick = {
-                scheduleNotification(context,selectedTime.value)
-                Toast.makeText(
-                    context,
-                    "Berhasil Menambahkan Reminder Penyiraman",
-                    Toast.LENGTH_SHORT
-                ).show()
+                selectedImageUri?.let { uri ->
+                    tanamanSayaViewModel.uploadImageToStorage(uri, context) { imageUrl ->
+                        val reminder = Reminder(
+                            dates = selectedDates.value.map { it.format(dateFormatter) },
+                            time = selectedTime.value.toString()
+                        )
+
+                        val plantCollection = PlantCollection(
+                            plantName = namaTanaman,
+                            plantImage = imageUrl,
+                            reminder = mapOf("reminder1" to reminder)
+                        )
+
+                        tanamanSayaViewModel.addKoleksiTanaman(
+                            plantCollection
+                        )
+                    }
+                }
             },
             modifier = Modifier
         )
+
+
+        when (addPlantState) {
+            is Resource.Error -> {
+                Text(
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(vertical = 32.dp),
+                    color = Color.Red,
+                    text = "Berhasil Menambahkan Koleksi Tanaman"
+                )
+            }
+
+            is Resource.Success -> {
+                scheduleNotification(context, selectedDates.value, selectedTime.value)
+                namaTanaman = ""
+                durasiPenyiraman = ""
+                waktuPenyiraman = ""
+                selectedImageUri = null
+                Text(
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(vertical = 32.dp),
+                    color = PrimaryBase,
+                    text = "Berhasil Menambahkan Koleksi Tanaman"
+                )
+            }
+
+            is Resource.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
+                        .size(48.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+            }
+
+            is Resource.Idle -> {
+                // Do nothing
+            }
+        }
+
+
     }
+
 }
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun scheduleNotification(context: Context, selectedTime: LocalTime) {
+fun scheduleNotification(
+    context: Context,
+    selectedDates: List<LocalDate>,
+    selectedTime: LocalTime
+) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, NotificationPenyiramanReceiver::class.java)
-    val pendingIntent =
-        PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-    val calendar = Calendar.getInstance().apply {
-        set(Calendar.HOUR_OF_DAY, selectedTime.hour)
-        set(Calendar.MINUTE, selectedTime.minute)
-        set(Calendar.SECOND, selectedTime.second)
+    selectedDates.forEach { date ->
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, date.year)
+            set(Calendar.MONTH, date.monthValue - 1)
+            set(Calendar.DAY_OF_MONTH, date.dayOfMonth)
+            set(Calendar.HOUR_OF_DAY, selectedTime.hour)
+            set(Calendar.MINUTE, selectedTime.minute)
+            set(Calendar.SECOND, selectedTime.second)
+        }
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            date.toEpochDay().toInt(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
-
-    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
 }
+
 
 @Composable
 @Preview(showBackground = true, showSystemUi = true)

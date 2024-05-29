@@ -45,7 +45,9 @@ import com.example.botanify.ui.theme.SurfaceBase
 @Composable
 fun NormalTextField(
     modifier: Modifier,
-    titleTextField: String
+    titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
         var normalText by rememberSaveable {
@@ -66,10 +68,8 @@ fun NormalTextField(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
                 .background(ContentWhite),
-            value = normalText,
-            onValueChange = {
-                normalText = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = PrimaryBase,
                 unfocusedBorderColor = Color.Transparent,
@@ -248,10 +248,10 @@ fun PreviewInputComponents() {
             .background(SurfaceBase),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        NormalTextField(
-            modifier = Modifier,
-            titleTextField = "Nama Tanaman"
-        )
+//        NormalTextField(
+//            modifier = Modifier,
+//            titleTextField = "Nama Tanaman"
+//        )
 
 //        IconTextField(
 //            modifier = Modifier,

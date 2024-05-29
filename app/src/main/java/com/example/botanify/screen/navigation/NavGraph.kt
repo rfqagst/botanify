@@ -20,15 +20,16 @@ import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.onboarding.OnBoarding
+import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.scan.HasilScanScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.PlantViewModel
 import com.example.botanify.screen.search.SearchInformationScreen
 import com.example.botanify.screen.search.SearchTanamanScreen
-import com.example.botanify.screen.search.profile.ProfileScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
+import com.example.botanify.screen.tanamansaya.TanamanSayaViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -36,13 +37,14 @@ import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
 
-    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
+    NavHost(navController = navController, startDestination = Screen.Home.route) {
+
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
 
         composable(route = Screen.TanamanSaya.route) {
-            ListTanamanSayaScreen(modifier = modifier)
+            ListTanamanSayaScreen(modifier = modifier, navController)
         }
 
         composable(route = Screen.Information.route) {
@@ -84,8 +86,11 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             DetailTanamanScreen(modifier = modifier, tanamanId, plantViewModel)
         }
 
-        composable(route = Screen.TambahKoleksiTanaman.route) {
-            TambahKoleksiTanamanScreen(modifier = modifier)
+        composable(
+            route = Screen.TambahKoleksiTanaman.route,
+        ) {
+            val tanamanSayaViewModel: TanamanSayaViewModel = hiltViewModel()
+            TambahKoleksiTanamanScreen(modifier = modifier, tanamanSayaViewModel)
         }
 
 
