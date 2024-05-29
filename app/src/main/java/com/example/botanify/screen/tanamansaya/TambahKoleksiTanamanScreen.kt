@@ -41,6 +41,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
+import com.example.botanify.data.model.PlantCollection
+import com.example.botanify.data.model.Reminder
 import com.example.botanify.screen.alarmnotification.NotificationPenyiramanReceiver
 import com.example.botanify.screen.components.DateTimeField
 import com.example.botanify.screen.components.LargeBtn
@@ -63,9 +65,13 @@ import java.util.Calendar
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TambahKoleksiTanamanScreen(modifier: Modifier) {
+fun TambahKoleksiTanamanScreen(
+    modifier: Modifier,
+    tanamanSayaViewModel: TanamanSayaViewModel,
+) {
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var namaTanaman by remember { mutableStateOf("") }
     var durasiPenyiraman by remember { mutableStateOf("") }
     var waktuPenyiraman by remember { mutableStateOf("") }
 
@@ -104,8 +110,8 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
     ClockDialog(
         state = clockState,
         selection = ClockSelection.HoursMinutes { hours, minutes ->
-            selectedTime.value = LocalTime.of(hours, minutes,0)
-            waktuPenyiraman = LocalTime.of(hours, minutes,0).toString()
+            selectedTime.value = LocalTime.of(hours, minutes, 0)
+            waktuPenyiraman = LocalTime.of(hours, minutes, 0).toString()
         },
         config = ClockConfig(
             defaultTime = selectedTime.value,
@@ -159,7 +165,11 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         }
         Spacer(modifier = Modifier.height(32.dp))
 
-        NormalTextField(modifier = Modifier, titleTextField = "Nama Tanaman")
+        NormalTextField(
+            modifier = Modifier,
+            titleTextField = "Nama Tanaman",
+            value = namaTanaman,
+            onValueChange = { namaTanaman = it })
         Spacer(modifier = Modifier.height(16.dp))
 
         DateTimeField(
@@ -190,12 +200,32 @@ fun TambahKoleksiTanamanScreen(modifier: Modifier) {
         LargeBtn(
             text = "Tambah Koleksi",
             onClick = {
-                scheduleNotification(context,selectedTime.value)
-                Toast.makeText(
-                    context,
-                    "Berhasil Menambahkan Reminder Penyiraman",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+                selectedImageUri?.let { uri ->
+                    tanamanSayaViewModel.uploadImageToStorage(uri, context) { imageUrl ->
+                        val reminder = Reminder(
+                            dates = selectedDates.value.map { it.format(dateFormatter) },
+                            time = selectedTime.value.toString()
+                        )
+
+                        tanamanSayaViewModel.addKoleksiTanaman(
+                            PlantCollection(
+                                plantName = namaTanaman,
+                                plantImage = imageUrl,
+                                reminder = mapOf("reminder1" to reminder)
+                            )
+                        )
+                        scheduleNotification(context, selectedTime.value)
+                        Toast.makeText(
+                            context,
+                            "Berhasil Menambahkan Reminder Penyiraman",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                }
+
+
             },
             modifier = Modifier
         )

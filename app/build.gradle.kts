@@ -60,8 +60,10 @@ kapt {
 dependencies {
 
 
+
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
+    implementation(libs.firebase.storage)
     kapt(libs.hilt.android.compiler)
 
     implementation (libs.androidx.lifecycle.viewmodel.ktx)

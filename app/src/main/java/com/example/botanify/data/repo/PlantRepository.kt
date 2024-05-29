@@ -1,20 +1,35 @@
 package com.example.botanify.data.repo
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import com.example.botanify.data.model.Plant
+import com.example.botanify.data.model.PlantCollection
 import com.example.botanify.utils.Resource
-import com.google.firebase.Firebase
+import com.example.botanify.utils.uriToBitmap
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.database
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
+import java.util.UUID
+import javax.inject.Inject
 
-class PlantRepository() {
+class PlantRepository (
+    private val firebaseAuth: FirebaseAuth,
+    private val firebaseDatabase: FirebaseDatabase,
+    private val firebaseStorage: FirebaseStorage
+    ) {
 
-    private val database = Firebase.database
-    private val plantRef = database.getReference("plants")
+    private val plantRef = firebaseDatabase.getReference("plants")
+
+    val currentUser = firebaseAuth.currentUser
 
     fun fetchPlants(): Flow<Resource<List<Plant>>> {
         val plantsFlow = MutableStateFlow<Resource<List<Plant>>>(Resource.Loading(null))
@@ -62,5 +77,70 @@ class PlantRepository() {
         })
 
         return plantFlow
+    }
+
+
+    suspend fun addPlantCollectionToUser(
+        userId: String,
+        plantCollection: PlantCollection
+    ): Resource<Boolean> {
+        return try {
+            val userRef = firebaseDatabase.getReference("users").child(userId)
+            val plantCollectionId = userRef.child("plantCollections").push().key ?: throw Exception(
+                "Cannot generate a new plant collection ID"
+            )
+            userRef.child("plantCollections").child(plantCollectionId).setValue(plantCollection)
+                .await()
+            Resource.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("AuthRepository", "addPlantCollectionToUser: ${e.message}")
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
+    }
+
+
+    fun fetchKoleksiTanaman(userId: String): Flow<Resource<List<PlantCollection>>> {
+        val plantCollectionFlow =
+            MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Loading(null))
+        val collectionRef = plantRef.child(userId).child("plantCollections")
+
+        collectionRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val plantCollections = mutableListOf<PlantCollection>()
+                for (child in snapshot.children) {
+                    val plantCollection = child.getValue(PlantCollection::class.java)
+                    plantCollection?.let { plantCollections.add(it) }
+                }
+                plantCollectionFlow.value = Resource.Success(plantCollections)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                plantCollectionFlow.value = Resource.Error(error.message, null)
+                Log.w("PlantRepository", "fetchKoleksiTanaman:onCancelled", error.toException())
+            }
+
+        })
+        return plantCollectionFlow
+
+    }
+
+
+    fun uploadImageToFirebaseStorage(uri: Uri, context: Context, onSuccess: (String) -> Unit) {
+        val storageRef = firebaseStorage.reference.child("userupload/${UUID.randomUUID()}.jpg")
+        val bitmap = uriToBitmap(uri, context)
+        val baos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        val uploadTask = storageRef.putBytes(data)
+        uploadTask.addOnSuccessListener {
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                onSuccess(uri.toString())
+            }
+        }.addOnFailureListener {
+            it.printStackTrace()
+            // Handle any errors
+        }
     }
 }
