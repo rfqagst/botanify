@@ -123,6 +123,10 @@ fun SearchTanamanScreen(
                 }
 
             }
+
+            is Resource.Idle -> {
+                // Do nothing
+            }
         }
 //
 //        val filteredPlants = if (textSearch.isEmpty()) {

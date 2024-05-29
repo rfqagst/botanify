@@ -25,8 +25,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +52,7 @@ import com.example.botanify.screen.components.NormalTextField
 import com.example.botanify.screen.components.SmallBtn
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -92,6 +95,7 @@ fun TambahKoleksiTanamanScreen(
 
     val context = LocalContext.current
 
+    val addPlantState by tanamanSayaViewModel.addPlantState.collectAsState()
 
 
     CalendarDialog(
@@ -200,7 +204,6 @@ fun TambahKoleksiTanamanScreen(
         LargeBtn(
             text = "Tambah Koleksi",
             onClick = {
-
                 selectedImageUri?.let { uri ->
                     tanamanSayaViewModel.uploadImageToStorage(uri, context) { imageUrl ->
                         val reminder = Reminder(
@@ -208,46 +211,92 @@ fun TambahKoleksiTanamanScreen(
                             time = selectedTime.value.toString()
                         )
 
-                        tanamanSayaViewModel.addKoleksiTanaman(
-                            PlantCollection(
-                                plantName = namaTanaman,
-                                plantImage = imageUrl,
-                                reminder = mapOf("reminder1" to reminder)
-                            )
+                        val plantCollection = PlantCollection(
+                            plantName = namaTanaman,
+                            plantImage = imageUrl,
+                            reminder = mapOf("reminder1" to reminder)
                         )
-                        scheduleNotification(context, selectedTime.value)
-                        Toast.makeText(
-                            context,
-                            "Berhasil Menambahkan Reminder Penyiraman",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                        tanamanSayaViewModel.addKoleksiTanaman(
+                            plantCollection
+                        )
                     }
-
                 }
-
-
             },
             modifier = Modifier
         )
+
+
+        when (addPlantState) {
+            is Resource.Error -> {
+                Toast.makeText(
+                    context,
+                    addPlantState.message ?: "Error occurred",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is Resource.Success -> {
+                scheduleNotification(context, selectedDates.value, selectedTime.value)
+                namaTanaman = ""
+                durasiPenyiraman = ""
+                waktuPenyiraman = ""
+                selectedImageUri = null
+                Toast.makeText(context, "Berhasil Menambahkan Koleksi Tanaman", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            is Resource.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
+                        .size(48.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+            }
+
+            is Resource.Idle -> {
+                // Do nothing
+            }
+        }
+
+
     }
+
 }
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun scheduleNotification(context: Context, selectedTime: LocalTime) {
+fun scheduleNotification(
+    context: Context,
+    selectedDates: List<LocalDate>,
+    selectedTime: LocalTime
+) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, NotificationPenyiramanReceiver::class.java)
-    val pendingIntent =
-        PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-    val calendar = Calendar.getInstance().apply {
-        set(Calendar.HOUR_OF_DAY, selectedTime.hour)
-        set(Calendar.MINUTE, selectedTime.minute)
-        set(Calendar.SECOND, selectedTime.second)
+    selectedDates.forEach { date ->
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, date.year)
+            set(Calendar.MONTH, date.monthValue - 1)
+            set(Calendar.DAY_OF_MONTH, date.dayOfMonth)
+            set(Calendar.HOUR_OF_DAY, selectedTime.hour)
+            set(Calendar.MINUTE, selectedTime.minute)
+            set(Calendar.SECOND, selectedTime.second)
+        }
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            date.toEpochDay().toInt(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
-
-    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
 }
+
 
 @Composable
 @Preview(showBackground = true, showSystemUi = true)

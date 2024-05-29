@@ -161,6 +161,10 @@ fun RegisterScreen(modifier: Modifier, navController: NavController, authViewMod
 
             null -> { /* Do nothing */
             }
+
+            is Resource.Idle -> {
+                // Do nothing
+            }
         }
     }
 }

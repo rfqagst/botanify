@@ -88,7 +88,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
             route = Screen.TambahKoleksiTanaman.route,
         ) {
             val tanamanSayaViewModel: TanamanSayaViewModel = hiltViewModel()
-            TambahKoleksiTanamanScreen(modifier = modifier, tanamanSayaViewModel,)
+            TambahKoleksiTanamanScreen(modifier = modifier, tanamanSayaViewModel)
         }
 
 
