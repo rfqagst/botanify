@@ -15,12 +15,12 @@ var bottomNavItem = listOf(
         route = "home"
     ),
     BottomNavItem(
-        title = "TanamanSaya",
+        title = "Tanaman",
         icon = R.drawable.ic_plant,
         route = "tanamansaya"
     ),
     BottomNavItem(
-        title = "Information",
+        title = "Info",
         icon = R.drawable.ic_book,
         route = "information"
     ),

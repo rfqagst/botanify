@@ -1,6 +1,7 @@
 package com.example.botanify.screen.auth.login
 
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,10 +19,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.botanify.R
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.components.IconTextField
 import com.example.botanify.screen.components.LargeBtn
 import com.example.botanify.screen.components.PasswordtTextField
@@ -50,24 +58,47 @@ import com.example.botanify.ui.theme.Neutral60
 import com.example.botanify.ui.theme.PrimaryBase
 import com.example.botanify.ui.theme.PrimaryLight
 import com.example.botanify.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    modifier: Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel
 ) {
+    val context = LocalContext.current
+    var rememberMe by remember { mutableStateOf(false) }
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    val loginFlow = authViewModel.loginFlow.collectAsState()
+    var showErrorDialog by remember { mutableStateOf(false) }
+
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("Error") },
+            text = { Text("Kombinasi email dan password salah") },
+            confirmButton = {
+                Button(onClick = { showErrorDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(SurfaceBase)
             .padding(horizontal = 16.dp, vertical = 34.dp)
     ) {
-        var rememberMe by remember { mutableStateOf(false) }
         Text(
             text = "Masuk",
             style = TextStyle(
                 fontSize = 24.sp,
                 lineHeight = 44.sp,
-                //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                 fontWeight = FontWeight(700),
                 color = ContentDark,
 
@@ -79,7 +110,6 @@ fun LoginScreen(
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
-                //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                 fontWeight = FontWeight(500),
                 color = Neutral60,
 
@@ -87,15 +117,21 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(22.dp))
         IconTextField(
-            modifier = Modifier, titleTextField = "Email", iconTextField = painterResource(
+            modifier = Modifier, titleTextField = "Email",
+            iconTextField = painterResource(
                 id = R.drawable.ic_email
-            )
+            ),
+            value = email,
+            onValueChange = { email = it },
         )
         Spacer(modifier = Modifier.height(16.dp))
         PasswordtTextField(
-            modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
+            modifier = Modifier, titleTextField = "Password",
+            iconTextField = painterResource(
                 id = R.drawable.ic_lock
-            )
+            ),
+            value = password,
+            onValueChange = { password = it },
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -113,10 +149,7 @@ fun LoginScreen(
                     checkedColor = PrimaryBase,
                     checkmarkColor = SurfaceBase
                 ),
-
-
-                )
-
+            )
             Text(
                 text = "Ingat Saya",
                 modifier = Modifier
@@ -125,7 +158,6 @@ fun LoginScreen(
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    //fontFamily = FontFamily(Font(R.font.dm sans)),
                     fontWeight = FontWeight(500),
                     color = ContentDark,
 
@@ -136,7 +168,6 @@ fun LoginScreen(
                 style = TextStyle(
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                     fontWeight = FontWeight(500),
                     color = Neutral60,
                     textAlign = TextAlign.Right,
@@ -148,11 +179,11 @@ fun LoginScreen(
             }
 
         }
-
-        //Text(text = "Lupa Password?", modifier = Modifier.weight(1f), textAlign = TextAlign.Right )
-
         Spacer(modifier = Modifier.height(32.dp))
-        LargeBtn(text = "Masuk", onClick = { navController.navigate("home") }, modifier = Modifier)
+        LargeBtn(text = "Masuk", onClick = {
+            authViewModel.login(email, password)
+        }, modifier = Modifier)
+
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -164,7 +195,6 @@ fun LoginScreen(
                 style = TextStyle(
                     fontSize = 14.sp,
                     lineHeight = 21.sp,
-                    //fontFamily = FontFamily(Font(R.font.plus jakarta sans)),
                     fontWeight = FontWeight(500),
                     color = Color(0xFF9CA3AF),
 
@@ -208,7 +238,6 @@ fun LoginScreen(
         ) {
             Text(
                 text = "Belum punya akun?",
-                //fontFamily = Plus_Jakarta_Sans,
                 fontWeight = FontWeight(400),
                 fontSize = 16.sp,
                 color = Color(0xFF696B76)
@@ -221,7 +250,6 @@ fun LoginScreen(
                     navController.navigate(Screen.Register.route)
                 },
                 style = TextStyle(
-                    //fontFamily = Plus_Jakarta_Sans,
                     fontWeight = FontWeight(700),
                     fontSize = 16.sp,
 
@@ -230,11 +258,31 @@ fun LoginScreen(
                     )
             )
         }
+    }
 
+    loginFlow.value.let {
+        when(it) {
+            is Resource.Error -> {
+                showErrorDialog= true
+                authViewModel.clearLoginFlow()
 
+            }
+            is Resource.Loading -> {
+                CircularProgressIndicator()
+            }
+            is Resource.Success -> {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+            null -> { /* Do nothing */ }
+        }
     }
 }
-
 
 
 @Preview(showBackground = true)
@@ -243,5 +291,6 @@ private fun LoginScreenPrev() {
     BotanifyTheme {
         //LoginScreen(navController = NavController(cont))
 //        LoginScreen()
+
     }
 }

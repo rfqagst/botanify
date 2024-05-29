@@ -9,12 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -80,12 +82,15 @@ fun NormalTextField(
 fun IconTextField(
     modifier: Modifier,
     titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
     iconTextField: Painter
 ) {
     Column(modifier = modifier) {
         var normalText by rememberSaveable {
             mutableStateOf("")
         }
+
         Text(
             text = titleTextField,
             style = TextStyle(
@@ -111,10 +116,8 @@ fun IconTextField(
                 .background(ContentWhite, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp)),
             shape = RoundedCornerShape(10.dp),
-            value = normalText,
-            onValueChange = {
-                normalText = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = PrimaryBase,
                 unfocusedBorderColor = Color.Transparent,
@@ -123,11 +126,14 @@ fun IconTextField(
     }
 
 }
+
 @Composable
 fun PasswordtTextField(
     modifier: Modifier,
     titleTextField: String,
-    iconTextField: Painter
+    iconTextField: Painter,
+    value: String,
+    onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
         var normalText by rememberSaveable {
@@ -167,10 +173,8 @@ fun PasswordtTextField(
                 .background(ContentWhite, RoundedCornerShape(10.dp))
                 .clip(RoundedCornerShape(10.dp)),
             shape = RoundedCornerShape(10.dp),
-            value = normalText,
-            onValueChange = {
-                normalText = it
-            },
+            value = value,
+            onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = PrimaryBase,
                 unfocusedBorderColor = Color.Transparent,
@@ -191,11 +195,15 @@ fun PasswordtTextField(
 
 
 @Composable
-fun DateTimeField(modifier: Modifier, titleTextField: String, datetime : String) {
+fun DateTimeField(
+    modifier: Modifier,
+    titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    onClickIcon: () -> Unit,
+    icon : ImageVector
+) {
     Column(modifier = modifier) {
-        var normalText by rememberSaveable {
-            mutableStateOf("")
-        }
         Text(
             text = titleTextField,
             style = TextStyle(
@@ -210,25 +218,19 @@ fun DateTimeField(modifier: Modifier, titleTextField: String, datetime : String)
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp))
-                .background(ContentWhite)
-            ,
-            value = normalText,
-            onValueChange = {
-                normalText = it
-            },
+                .background(ContentWhite),
+            value = value,
+            onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = PrimaryBase,
                 unfocusedBorderColor = Color.Transparent,
             ),
             trailingIcon = {
-                Text(
-                    modifier = Modifier.padding(end = 10.dp),
-                    text = datetime,
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(400),
-                    ), color = SecondaryBase
-                )
+
+                IconButton(onClickIcon) {
+                    Icon(imageVector = icon, contentDescription = null, tint = SecondaryBase)
+                }
+
             }
 
         )
@@ -251,18 +253,19 @@ fun PreviewInputComponents() {
             titleTextField = "Nama Tanaman"
         )
 
-        IconTextField(
-            modifier = Modifier,
-            titleTextField = "Email",
-            iconTextField = painterResource(id = R.drawable.ic_person_input)
-        )
+//        IconTextField(
+//            modifier = Modifier,
+//            titleTextField = "Email",
+//            iconTextField = painterResource(id = R.drawable.ic_person_input)
+//        )
 
-        PasswordtTextField(modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
-            id = R.drawable.ic_lock
-        ))
+//        PasswordtTextField(
+//            modifier = Modifier, titleTextField = "Password", iconTextField = painterResource(
+//                id = R.drawable.ic_lock
+//            )
+//        )
         Spacer(modifier = Modifier.height(20.dp))
 
-        DateTimeField(modifier = Modifier, titleTextField = "Atur Durasi Penyiraman", datetime = "Hari" )
 
     }
 }

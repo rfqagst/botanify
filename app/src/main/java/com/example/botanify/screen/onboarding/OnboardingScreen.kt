@@ -18,26 +18,38 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.botanify.R
+import com.example.botanify.data.datastore.OnboardingManager
 import com.example.botanify.screen.components.OnBoardingPage
 import com.example.botanify.screen.components.OnBoardingPageTwo
 import com.example.botanify.screen.components.PagerIndicator
 import com.example.botanify.screen.components.StandartBtn
-import com.example.botanify.screen.navigation.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoarding(
-    navController: NavController
+    onboardingManager: OnboardingManager,
+    onFinish: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0) { 2 }
+    val isOnboardingCompleted by onboardingManager.isOnboardingCompleted.collectAsState(initial = false)
+
+    // Jika onboarding sudah selesai, panggil onFinish dan kembali
+    if (isOnboardingCompleted) {
+        LaunchedEffect(Unit) {
+            onFinish()
+        }
+        return
+    }
 
     Column(
         modifier = Modifier
@@ -112,7 +124,8 @@ fun OnBoarding(
                 onClick = {
                     scope.launch {
                         if (pagerState.currentPage == pages.size - 1) {
-                            navController.navigate(Screen.Login.route)
+
+                          onboardingManager.setOnboardingCompleted(true)
                         } else {
                             pagerState.animateScrollToPage(
                                 page = pagerState.currentPage + 1

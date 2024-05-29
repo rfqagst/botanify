@@ -1,4 +1,4 @@
-package com.example.botanify.screen.profile
+package com.example.botanify.screen.search.profile
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -35,16 +35,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
-fun ProfileScreen(modifier: Modifier) {
+fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
 
-    Column(modifier.fillMaxSize().background(SurfaceBase).padding(16.dp)) {
+    val currentUser = authViewModel.currentUser
+
+    Column(
+        modifier
+            .fillMaxSize()
+            .background(SurfaceBase)
+            .padding(16.dp)) {
         Image(
             painter = painterResource(id = R.drawable.profile_photo1),
             modifier = Modifier
@@ -65,11 +72,11 @@ fun ProfileScreen(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Rifqi Barusadar",
+            text = currentUser?.displayName ?: "",
             style = TextStyle(
                 fontSize = 16.sp,
                 color = ContentSemiDark,
-                )
+            )
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -84,7 +91,7 @@ fun ProfileScreen(modifier: Modifier) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "GgG@gmail.com",
+            text = currentUser?.email ?: "",
             style = TextStyle(
                 fontSize = 18.sp,
                 lineHeight = 27.sp,
@@ -134,7 +141,7 @@ fun ProfileScreen(modifier: Modifier) {
 @Preview(showBackground = true)
 fun PreviewProfile() {
     Column(modifier = Modifier.fillMaxSize()) {
-        ProfileScreen(modifier = Modifier)
+//        ProfileScreen(modifier = Modifier)
 
     }
 

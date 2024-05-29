@@ -18,26 +18,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.components.BottomBarComponent
 import com.example.botanify.screen.components.TopBarComponent
+import com.example.botanify.screen.components.TopBarComponentBack
 import com.example.botanify.screen.components.TopBarComponentHome
 import com.example.botanify.screen.components.TopBarComponentSearch
 import com.example.botanify.screen.navigation.NavGraph
 import com.example.botanify.screen.navigation.Screen
-import com.example.botanify.screen.onboarding.OnBoarding
 import com.example.botanify.ui.theme.ContentWhite
 import com.example.botanify.ui.theme.PrimaryBase
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BotanifyApp() {
+fun BotanifyApp(
+    authViewModel: AuthViewModel
+) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.route
+
+    val currentUser = authViewModel.currentUser?.displayName ?: ""
 
     Scaffold(
         floatingActionButton = {
@@ -46,9 +50,14 @@ fun BotanifyApp() {
                     Screen.OnBoarding.route,
                     Screen.Login.route,
                     Screen.Register.route,
-                    Screen.DetailInformation.route,
+                    Screen.DetailInformation.route + "/{informationId}",
                     Screen.ScanTanaman.route,
                     Screen.HasilScan.route,
+                    Screen.DetailTanaman.route + "/{tanamanId}",
+                    Screen.TambahKoleksiTanaman.route,
+                    Screen.SearchInformationScreen.route,
+                    Screen.SearchTanamanScreen.route
+
                 )
             ) {
                 Box {
@@ -58,14 +67,14 @@ fun BotanifyApp() {
                         shape = CircleShape,
                         modifier = Modifier
 
-                            .size(50.dp)
+                            .size(60.dp)
                             .align(Alignment.Center)
-                            .offset(y = 55.dp)
+                            .offset(y = 60.dp)
                     ) {
                         Icon(
                             modifier = Modifier
-                                .width(25.dp)
-                                .height(25.dp),
+                                .width(30.dp)
+                                .height(30.dp),
                             tint = ContentWhite,
                             painter = painterResource(id = R.drawable.ic_scan),
                             contentDescription = null,
@@ -80,9 +89,13 @@ fun BotanifyApp() {
                     Screen.OnBoarding.route,
                     Screen.Login.route,
                     Screen.Register.route,
-                    Screen.DetailInformation.route,
                     Screen.ScanTanaman.route,
                     Screen.HasilScan.route,
+                    Screen.DetailInformation.route + "/{informationId}",
+                    Screen.DetailTanaman.route + "/{tanamanId}",
+                    Screen.TambahKoleksiTanaman.route,
+                    Screen.SearchInformationScreen.route,
+                    Screen.SearchTanamanScreen.route
                     )
             ) {
                 BottomBarComponent(navController)
@@ -90,7 +103,7 @@ fun BotanifyApp() {
         },
         topBar = {
             when (currentDestination) {
-                Screen.Home.route -> TopBarComponentHome(navController = navController)
+                Screen.Home.route -> TopBarComponentHome(name = currentUser,navController = navController)
                 Screen.DetailInformation.route + "/{informationId}" -> TopBarComponent(
                     title = "Detail Information",
                     navController = navController
@@ -129,6 +142,18 @@ fun BotanifyApp() {
 
                 Screen.HasilScan.route -> TopBarComponent(
                     title = "Hasil Scan Tanaman",
+                    navController = navController
+                )
+
+                Screen.Register.route -> TopBarComponentBack(
+                    navController = navController
+                )
+                Screen.SearchTanamanScreen.route -> TopBarComponent(
+                    title = "Cari Tanaman",
+                    navController = navController
+                )
+                Screen.SearchInformationScreen.route -> TopBarComponent(
+                    title = "Cari Informasi",
                     navController = navController
                 )
             }

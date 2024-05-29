@@ -34,6 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.example.botanify.R
 import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentDark
@@ -66,7 +69,6 @@ fun BannerCard(modifier: Modifier, navController: NavHostController) {
             Spacer(modifier = Modifier.height(8.dp))
             SmallBtn(modifier = Modifier, text = "Tambah", onClick = {
                 navController.navigate(Screen.TambahKoleksiTanaman.route)
-
             })
         }
         Image(
@@ -331,7 +333,7 @@ fun InformationCard(modifier: Modifier) {
 }
 
 @Composable
-fun TanamanSayaCard(modifier: Modifier) {
+fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: String) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -344,13 +346,15 @@ fun TanamanSayaCard(modifier: Modifier) {
             modifier = Modifier
                 .padding(8.dp)
                 .width(75.dp)
-                .height(114.dp),
-            painter = painterResource(id = R.drawable.tanamansaya_plant1),
-            contentDescription = null
+                .height(114.dp)
+                .clip(RoundedCornerShape(15.dp)),
+            painter = painterResource(id = image),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
         )
         Column(modifier = Modifier.padding(top = 16.dp)) {
             Text(
-                text = "Pilea peperomiodes",
+                text = title,
                 color = ContentDark,
                 style = TextStyle(
                     fontSize = 16.sp,
@@ -384,7 +388,7 @@ fun TanamanSayaCard(modifier: Modifier) {
                 Spacer(modifier = Modifier.width(5.dp))
 
                 Text(
-                    text = "Jum’at, 10 Mei",
+                    text = schedule,
                     color = ContentSemiDark,
                     style = TextStyle(
                         fontSize = 14.sp,
@@ -447,6 +451,7 @@ fun ExpandableCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = cardTitle,
                 style = TextStyle(
                     fontSize = 20.sp,
@@ -468,7 +473,9 @@ fun ExpandableCard(
 
         if (expandedState) {
             Text(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp),
                 text = expadableValue,
                 color = ContentSemiDark,
                 style = TextStyle(
@@ -482,7 +489,7 @@ fun ExpandableCard(
 }
 
 @Composable
-fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: Int) {
+fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: String) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -499,6 +506,77 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
                 .clip(RoundedCornerShape(10.dp))
                 .background(ContentLightBlue)
         ) {
+
+
+           Image(
+               modifier = Modifier
+                   .fillMaxSize(),
+             painter = rememberAsyncImagePainter(model = image),
+              contentScale = ContentScale.Crop,
+               contentDescription = null
+           )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column {
+            Text(
+                text = name,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight(600),
+                    color = ContentDark,
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                text = description,
+                color = ContentSemiDark,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight(400),
+                )
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun SearchInformationCard(modifier: Modifier, name: String, description: String, image: Int) {
+    Row(
+        modifier = modifier
+            .padding(bottom = 8.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(ContentWhite)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(8.dp)
+                .width(60.dp)
+                .height(60.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentLightBlue)
+        ) {
+
+//            AsyncImage(
+//                model = image, contentDescription = null, contentScale = ContentScale.Crop,
+//            )
+
             Image(
                 painter = painterResource(id = image),
                 contentScale = ContentScale.Crop,
@@ -542,6 +620,8 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
     }
 }
 
+
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewCardComponents() {
@@ -565,7 +645,6 @@ fun PreviewCardComponents() {
         NotificationCard(modifier = Modifier)
         Spacer(modifier = Modifier.height(16.dp))
         InformationCard(modifier = Modifier)
-        TanamanSayaCard(modifier = Modifier)
         SearchBarTanaman(modifier = Modifier)
     }
 }

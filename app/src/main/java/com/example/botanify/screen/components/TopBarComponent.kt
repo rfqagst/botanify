@@ -87,6 +87,31 @@ fun TopBarComponent(title: String, navController: NavHostController) {
 }
 
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarComponentBack( navController: NavHostController) {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(ContentWhite),
+        title = {
+
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier.clickable {
+                    navController.popBackStack()
+                },
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back"
+            )
+        },
+        modifier = Modifier
+            .background(ContentWhite)
+
+    )
+}
+
+
 @Composable
 fun TopBarComponentSearch(navController: NavHostController, searchText : String, screen : String) {
     Box(
@@ -127,7 +152,7 @@ fun TopBarComponentSearch(navController: NavHostController, searchText : String,
 
 
 @Composable
-fun TopBarComponentHome(navController: NavHostController) {
+fun TopBarComponentHome(name : String,navController: NavHostController) {
     Column(modifier = Modifier.background(ContentWhite)) {
         Row(
             modifier = Modifier
@@ -163,7 +188,7 @@ fun TopBarComponentHome(navController: NavHostController) {
                         )
                     )
                     Text(
-                        text = "Rifqi Barusadar",
+                        text = name,
                         style = TextStyle(
                             fontSize = 16.sp,
                             lineHeight = 22.sp,

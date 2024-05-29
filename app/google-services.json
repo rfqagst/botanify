@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "104085415267",
+    "firebase_url": "https://botanify-ecd46-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "botanify-ecd46",
+    "storage_bucket": "botanify-ecd46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104085415267:android:eb8077ea37529d1e289f56",
+        "android_client_info": {
+          "package_name": "com.example.botanify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbwLqk1EWVgaep7CQbLXlXZkXbySn9OLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
