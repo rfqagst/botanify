@@ -1,4 +1,4 @@
-package com.example.botanify.data.repo
+package com.example.botanify.data.repository.firebase
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,7 +6,6 @@ import android.net.Uri
 import android.util.Log
 import com.example.botanify.data.model.Plant
 import com.example.botanify.data.model.PlantCollection
-import com.example.botanify.data.model.Reminder
 import com.example.botanify.utils.Resource
 import com.example.botanify.utils.uriToBitmap
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.util.UUID
-import javax.inject.Inject
 
 class PlantRepository (
     private val firebaseAuth: FirebaseAuth,
@@ -32,7 +30,7 @@ class PlantRepository (
 
     val currentUser = firebaseAuth.currentUser
 
-    fun fetchPlants(): Flow<Resource<List<Plant>>> {
+    fun fetchPlantsFirebase(): Flow<Resource<List<Plant>>> {
         val plantsFlow = MutableStateFlow<Resource<List<Plant>>>(Resource.Loading(null))
 
         plantRef.addValueEventListener(object : ValueEventListener {
@@ -54,7 +52,7 @@ class PlantRepository (
         return plantsFlow
     }
 
-    fun fetchPlantById(plantId: String): Flow<Resource<Plant>> {
+    fun fetchPlantByIdFirebase(plantId: String): Flow<Resource<Plant>> {
         val plantFlow = MutableStateFlow<Resource<Plant>>(Resource.Loading(null))
 
         plantRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -81,7 +79,7 @@ class PlantRepository (
     }
 
 
-    suspend fun addPlantCollectionToUser(
+    suspend fun addPlantCollectionToUserFirebase(
         userId: String,
         plantCollection: PlantCollection
     ): Resource<Boolean> {
@@ -101,7 +99,7 @@ class PlantRepository (
     }
 
 
-    fun fetchKoleksiTanaman(userId: String): Flow<Resource<List<PlantCollection>>> {
+    fun fetchKoleksiTanamanFirebase(userId: String): Flow<Resource<List<PlantCollection>>> {
         val plantCollectionFlow =
             MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Loading(null))
         val collectionRef = plantRef.child(userId).child("plantCollections")

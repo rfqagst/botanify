@@ -1,9 +1,8 @@
 package com.example.botanify.di
 
-import com.example.botanify.data.repo.AuthRepository
-import com.example.botanify.data.repo.PlantRepository
+import com.example.botanify.data.repository.firebase.AuthRepository
+import com.example.botanify.data.repository.firebase.PlantRepository
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
@@ -14,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object FirebaseModule {
 
     @Provides
     @Singleton

@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.model.PlantCollection
-import com.example.botanify.data.repo.PlantRepository
+import com.example.botanify.data.repository.firebase.PlantRepository
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,19 +19,18 @@ class TanamanSayaViewModel @Inject constructor(
     private val repository: PlantRepository
 ) : ViewModel() {
 
-    private val _addPlantState = MutableStateFlow<Resource<Unit>>(Resource.Idle())
-    val addPlantState: StateFlow<Resource<Unit>> = _addPlantState
+    private val _addPlantState = MutableStateFlow<Resource<PlantCollection>>(Resource.Loading(null))
+    val addPlantState: StateFlow<Resource<PlantCollection>> = _addPlantState
 
     val currentUser: FirebaseUser?
         get() = repository.currentUser
 
     fun addKoleksiTanaman(plantCollection: PlantCollection) {
         currentUser?.let { user ->
-            _addPlantState.value = Resource.Loading()
             viewModelScope.launch {
                 try {
-                    repository.addPlantCollectionToUser(user.uid, plantCollection)
-                    _addPlantState.value = Resource.Success(Unit)
+                    repository.addPlantCollectionToUserFirebase(user.uid, plantCollection)
+                    _addPlantState.value = Resource.Success(plantCollection)
                 } catch (e: Exception) {
                     _addPlantState.value = Resource.Error(e.message ?: "Unknown Error")
                 }
@@ -41,7 +40,7 @@ class TanamanSayaViewModel @Inject constructor(
 
     fun fetchKoleksiTanaman(userId: String) {
         viewModelScope.launch {
-            repository.fetchKoleksiTanaman(userId)
+            repository.fetchKoleksiTanamanFirebase(userId)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.botanify.data.repo
+package com.example.botanify.data.repository.firebase
 
 import android.util.Log
 import com.example.botanify.data.model.User
@@ -14,8 +14,8 @@ class AuthRepository(
     private val firebaseDatabase: FirebaseDatabase
 ) {
 
-    val currentUser = firebaseAuth.currentUser
-    suspend fun login(email: String, password: String): Resource<FirebaseUser> {
+    val currentUserFirebase = firebaseAuth.currentUser
+    suspend fun loginFirebase(email: String, password: String): Resource<FirebaseUser> {
 
         return try {
             val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -27,7 +27,7 @@ class AuthRepository(
         }
     }
 
-    suspend fun signup(email: String, password: String, name: String): Resource<FirebaseUser> {
+    suspend fun signupFirebase(email: String, password: String, name: String): Resource<FirebaseUser> {
 
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
@@ -35,7 +35,7 @@ class AuthRepository(
                 UserProfileChangeRequest.Builder().setDisplayName(name).build()
             )
             val user = authResult.user!!
-            addUserToDatabase(user, name)
+            addUserToDatabaseFirebase(user, name)
             Resource.Success(authResult.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -45,12 +45,12 @@ class AuthRepository(
         }
     }
 
-    fun logout() {
+    fun logoutFirebase() {
         firebaseAuth.signOut()
     }
 
 
-    private suspend fun addUserToDatabase(user: FirebaseUser, name: String) {
+    private suspend fun addUserToDatabaseFirebase(user: FirebaseUser, name: String) {
         val userRef = firebaseDatabase.getReference("users").child(user.uid)
         val newUser = User(
             id = user.uid,

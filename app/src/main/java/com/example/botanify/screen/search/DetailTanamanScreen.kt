@@ -100,7 +100,7 @@ fun DetailTanamanScreen(modifier: Modifier, tanamanId: String, plantViewModel: P
         }
 
         is Resource.Idle -> {
-            // Do notuing
+            // Do nothing
         }
     }
 
