@@ -1,7 +1,7 @@
 package com.example.botanify.di
 
-import com.example.botanify.data.repository.firebase.AuthRepository
-import com.example.botanify.data.repository.firebase.PlantRepository
+import com.example.botanify.data.firebase.repository.AuthRepository
+import com.example.botanify.data.firebase.repository.PlantRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage

@@ -1,6 +1,6 @@
 package com.example.botanify.di
 
-import com.example.botanify.data.network.ApiServices
+import com.example.botanify.data.retrofit.ApiServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +25,6 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit): ApiServices {
         return retrofit.create(ApiServices::class.java)
     }
+
 
 }

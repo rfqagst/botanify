@@ -1,6 +1,6 @@
-package com.example.botanify.data.repository.website
+package com.example.botanify.data.retrofit.repository
 
-import com.example.botanify.data.network.ApiServices
+import com.example.botanify.data.retrofit.ApiServices
 import javax.inject.Inject
 
 class PlantRepository @Inject constructor(

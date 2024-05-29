@@ -3,7 +3,7 @@ package com.example.botanify.screen.auth
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.botanify.data.repository.firebase.AuthRepository
+import com.example.botanify.data.firebase.repository.AuthRepository
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel

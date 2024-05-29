@@ -1,4 +1,4 @@
-package com.example.botanify.data.repository.firebase
+package com.example.botanify.data.firebase.repository
 
 import android.util.Log
 import com.example.botanify.data.model.User

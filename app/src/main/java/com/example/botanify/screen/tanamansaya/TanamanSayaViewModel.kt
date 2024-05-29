@@ -2,16 +2,22 @@ package com.example.botanify.screen.tanamansaya
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.model.PlantCollection
-import com.example.botanify.data.repository.firebase.PlantRepository
+import com.example.botanify.data.model.Reminder
+import com.example.botanify.data.firebase.repository.PlantRepository
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +25,7 @@ class TanamanSayaViewModel @Inject constructor(
     private val repository: PlantRepository
 ) : ViewModel() {
 
-    private val _addPlantState = MutableStateFlow<Resource<PlantCollection>>(Resource.Loading(null))
+    private val _addPlantState = MutableStateFlow<Resource<PlantCollection>>(Resource.Idle())
     val addPlantState: StateFlow<Resource<PlantCollection>> = _addPlantState
 
     val currentUser: FirebaseUser?
@@ -45,8 +51,36 @@ class TanamanSayaViewModel @Inject constructor(
     }
 
 
-    fun uploadImageToStorage(uri: Uri, context: Context, onSuccess: (String) -> Unit) {
-        repository.uploadImageToFirebaseStorage(uri, context, onSuccess)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun uploadImageAndCollectionToStorage(
+        plantName: String,
+        uri: Uri,
+        selectedDates: List<LocalDate>,
+        selectedTime: LocalTime,
+        context: Context,
+    ) {
+
+        viewModelScope.launch {
+            _addPlantState.value = Resource.Loading(null)
+            repository.uploadImageToFirebaseStorage(uri, context) { imageUrl ->
+                val dateFormatter = DateTimeFormatter.ofPattern("MM-dd")
+                val reminder = Reminder(
+                    dates = selectedDates.map { it.format(dateFormatter) },
+                    time = selectedTime.toString()
+                )
+
+                val plantCollection = PlantCollection(
+                    plantName = plantName,
+                    plantImage = imageUrl,
+                    reminder = mapOf("reminder1" to reminder)
+                )
+
+                addKoleksiTanaman(plantCollection)
+
+            }
+
+        }
+
     }
 
 
