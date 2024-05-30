@@ -69,7 +69,7 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
     ) {
         Column(
             modifier = Modifier
-                .height(340.dp)
+                .height(300.dp)
                 .fillMaxWidth()
                 .background(color = PrimaryBase)
                 .align(Alignment.TopCenter),
