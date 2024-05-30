@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.botanify" />
+                  <option name="mobileSdkAppId" value="1:104085415267:android:eb8077ea37529d1e289f56" />
+                  <option name="projectId" value="botanify-ecd46" />
+                  <option name="projectNumber" value="104085415267" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

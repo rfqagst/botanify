@@ -1,5 +1,6 @@
 package com.example.botanify.screen.navigation
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.botanify.data.datastore.OnboardingManager
 import com.example.botanify.screen.auth.AuthViewModel
 import com.example.botanify.screen.auth.login.ForgotPassword
 import com.example.botanify.screen.auth.login.LoginScreen
@@ -34,9 +36,11 @@ import com.example.botanify.screen.tanamansaya.TanamanSayaViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavGraph(navController: NavHostController, modifier: Modifier) {
+fun NavGraph(navController: NavHostController, modifier: Modifier, context: Context) {
 
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
+    val onboardingManager by lazy { OnboardingManager(context) }
+    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
+
         composable(route = Screen.Home.route) {
             HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
         }
@@ -58,7 +62,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
         composable(route = Screen.Profile.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
-            ProfileScreen(modifier = modifier, authViewModel)
+            ProfileScreen(modifier = modifier, authViewModel,navController)
         }
 
         composable(route = Screen.Notification.route) {
@@ -94,7 +98,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier) {
 
 
         composable(route = Screen.OnBoarding.route) {
-            OnBoarding(navController)
+           OnBoarding(
+               onboardingManager = onboardingManager,
+               onFinish = {
+                   navController.navigate(Screen.Login.route) {
+                       popUpTo(Screen.OnBoarding.route) { inclusive = true }
+                   }
+               }
+           )
         }
 
         composable(route = Screen.Register.route) {

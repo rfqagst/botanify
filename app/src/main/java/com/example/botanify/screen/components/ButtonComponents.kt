@@ -54,7 +54,8 @@ fun StandartBtn(
 fun LargeBtn(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
@@ -65,7 +66,8 @@ fun LargeBtn(
         modifier = modifier
             .fillMaxWidth()
             .height(51.dp),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        enabled = enabled
     ) {
         Text(
             text = text,

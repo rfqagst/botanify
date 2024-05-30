@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -71,6 +73,29 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
 
     val loginFlow = authViewModel.loginFlow.collectAsState()
+    var showErrorDialog by remember { mutableStateOf(false) }
+
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text("Error") },
+            text = { Text("Kombinasi email dan password salah") },
+            confirmButton = {
+                Button(onClick = { showErrorDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+    if (authViewModel.isLoggedIn()) {
+        LaunchedEffect(Unit) {
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Home.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -247,7 +272,9 @@ fun LoginScreen(
     loginFlow.value.let {
         when(it) {
             is Resource.Error -> {
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                showErrorDialog= true
+                authViewModel.clearLoginFlow()
+
             }
             is Resource.Loading -> {
                 CircularProgressIndicator()
@@ -276,5 +303,6 @@ private fun LoginScreenPrev() {
     BotanifyTheme {
         //LoginScreen(navController = NavController(cont))
 //        LoginScreen()
+
     }
 }
