@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.model.Plant
-import com.example.botanify.data.repository.firebase.PlantRepository
+import com.example.botanify.data.firebase.repository.PlantRepository
 import com.example.botanify.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

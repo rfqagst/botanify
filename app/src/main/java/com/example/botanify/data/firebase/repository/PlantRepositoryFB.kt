@@ -1,4 +1,4 @@
-package com.example.botanify.data.repository.firebase
+package com.example.botanify.data.firebase.repository
 
 import android.content.Context
 import android.graphics.Bitmap

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -46,8 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
-import com.example.botanify.data.model.PlantCollection
-import com.example.botanify.data.model.Reminder
 import com.example.botanify.screen.alarmnotification.NotificationPenyiramanReceiver
 import com.example.botanify.screen.components.DateTimeField
 import com.example.botanify.screen.components.LargeBtn
@@ -211,22 +208,13 @@ fun TambahKoleksiTanamanScreen(
             text = "Tambah Koleksi",
             onClick = {
                 selectedImageUri?.let { uri ->
-                    tanamanSayaViewModel.uploadImageToStorage(uri, context) { imageUrl ->
-                        val reminder = Reminder(
-                            dates = selectedDates.value.map { it.format(dateFormatter) },
-                            time = selectedTime.value.toString()
+                    tanamanSayaViewModel.uploadImageAndCollectionToStorage(
+                        uri = uri,
+                        plantName = namaTanaman,
+                        selectedTime = selectedTime.value,
+                        selectedDates = selectedDates.value,
+                        context = context,
                         )
-
-                        val plantCollection = PlantCollection(
-                            plantName = namaTanaman,
-                            plantImage = imageUrl,
-                            reminder = mapOf("reminder1" to reminder)
-                        )
-
-                        tanamanSayaViewModel.addKoleksiTanaman(
-                            plantCollection
-                        )
-                    }
                 }
             },
             modifier = Modifier
