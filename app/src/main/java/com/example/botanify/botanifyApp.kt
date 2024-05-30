@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,6 +38,7 @@ import com.example.botanify.ui.theme.PrimaryBase
 fun BotanifyApp(
     authViewModel: AuthViewModel
 ) {
+
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.route
@@ -160,7 +162,7 @@ fun BotanifyApp(
         }
 
     ) { paddingValues ->
-        NavGraph(navController = navController, modifier = Modifier.padding(paddingValues))
+        NavGraph(navController = navController, modifier = Modifier.padding(paddingValues), context = LocalContext.current)
     }
 }
 

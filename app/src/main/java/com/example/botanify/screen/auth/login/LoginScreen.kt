@@ -87,6 +87,15 @@ fun LoginScreen(
             }
         )
     }
+    if (authViewModel.isLoggedIn()) {
+        LaunchedEffect(Unit) {
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Home.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier

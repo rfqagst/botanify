@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoarding(
     onboardingManager: OnboardingManager,
-    onFinish: () -> Unit
+    onFinish:  () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0) { 2 }

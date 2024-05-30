@@ -49,7 +49,7 @@ import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.PlantViewModel
 import com.example.botanify.screen.search.SearchInformationScreen
 import com.example.botanify.screen.search.SearchTanamanScreen
-import com.example.botanify.screen.search.profile.ProfileScreen
+//import com.example.botanify.screen.search.profile.ProfileScreen
 import com.example.botanify.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.screen.tanamansaya.TambahKoleksiTanamanScreen
 import com.example.botanify.ui.theme.BotanifyTheme
@@ -81,27 +81,29 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
-                        composable(Screen.OnBoarding.route) {
-                            OnBoarding(
-                                onboardingManager = onboardingManager,
-                                onFinish = {
-                                    navController.navigate(Screen.Login.route) {
-                                        popUpTo(Screen.OnBoarding.route) { inclusive = true }
-                                    }
-                                }
-                            )
-                        }
-                        composable(Screen.Register.route){
-                            val authViewModel: AuthViewModel = hiltViewModel()
-                            RegisterScreen(modifier = Modifier, navController, authViewModel)
-                        }
-                        composable(route = Screen.Login.route) {
-                            val authViewModel: AuthViewModel = hiltViewModel()
-                            LoginScreen(Modifier, navController, authViewModel)
-                        }
-                    }
+
+                    BotanifyApp(authViewModel = authViewModel)
+//                    val navController = rememberNavController()
+//                    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
+//                        composable(Screen.OnBoarding.route) {
+//                            OnBoarding(
+//                                onboardingManager = onboardingManager,
+//                                onFinish = {
+//                                    navController.navigate(Screen.Login.route) {
+//                                        popUpTo(Screen.OnBoarding.route) { inclusive = true }
+//                                    }
+//                                }
+//                            )
+//                        }
+//                        composable(Screen.Register.route){
+//                            val authViewModel: AuthViewModel = hiltViewModel()
+//                            RegisterScreen(modifier = Modifier, navController, authViewModel)
+//                        }
+//                        composable(route = Screen.Login.route) {
+//                            val authViewModel: AuthViewModel = hiltViewModel()
+//                            LoginScreen(Modifier, navController, authViewModel)
+//                        }
+//                    }
                 }
 
             }

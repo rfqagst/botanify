@@ -15,6 +15,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -34,17 +37,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.botanify.R
 import com.example.botanify.screen.auth.AuthViewModel
+import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.ContentDark
 import com.example.botanify.ui.theme.ContentSemiDark
 import com.example.botanify.ui.theme.SurfaceBase
 
 @Composable
-fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel) {
+fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navController: NavController) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
-
+    var showLogoutDialog by remember { mutableStateOf(false) }
     val currentUser = authViewModel.currentUser
 
     Column(
@@ -132,10 +137,71 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel) {
             }
 
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        IconButton(
+            onClick = { showLogoutDialog = true  },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(51.dp)
+                .background(color = Color(0xFFF9FAFB), shape = RoundedCornerShape(size = 8.dp))
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Keluar",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        lineHeight = 27.sp,
+                        fontWeight = FontWeight(700),
+                        color = ContentDark,
+                    ),
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.Default.Logout,
+                    contentDescription = "",
+                    tint = Color(0xFF7F8590),
+                    modifier = Modifier.padding(start = 20.dp)
+                )
+            }
+
+        }
+
+
+        if (showLogoutDialog) {
+            AlertDialog(
+                onDismissRequest = { showLogoutDialog = false },
+                title = { Text(text = "Konfirmasi Logout") },
+                text = { Text(text = "Apakah Anda yakin ingin logout?") },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showLogoutDialog = false
+                            authViewModel.logout()
+                            navController.navigate(Screen.Login.route)
+                        }
+                    ) {
+                        Text("Ya")
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { showLogoutDialog = false }
+                    ) {
+                        Text("Tidak")
+                    }
+                }
+            )
+        }
+
+        }
 
 
     }
-}
+
 
 @Composable
 @Preview(showBackground = true)
