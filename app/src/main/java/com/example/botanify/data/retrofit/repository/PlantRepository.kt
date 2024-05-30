@@ -8,4 +8,6 @@ class PlantRepository @Inject constructor(
 ) {
     suspend fun getPlants() = apiServices.fetchPlant()
 
+//    suspend fun fetchUserPlantCollection() = apiServices.fetchUserPlantCollection()
+
 }

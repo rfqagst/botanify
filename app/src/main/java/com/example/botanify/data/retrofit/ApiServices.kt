@@ -3,6 +3,7 @@ package com.example.botanify.data.retrofit
 import com.example.botanify.data.model.Information
 import com.example.botanify.data.model.Plant
 import com.example.botanify.data.model.PlantCollection
+import com.example.botanify.data.model.User
 import com.example.botanify.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.DELETE
@@ -17,11 +18,6 @@ interface ApiServices {
     @GET
     suspend fun fetchUserPlantCollection(userId: String): Flow<Resource<List<PlantCollection>>>
 
-    @GET
-    suspend fun fetchInformationArticle(): Flow<Resource<List<Information>>>
-
-    @GET
-    suspend fun fetchInformationArticleById(): Flow<Resource<List<Information>>>
 
     @GET
     suspend fun fetchPlantById(plantId: String): Flow<Resource<Plant>>
@@ -39,6 +35,20 @@ interface ApiServices {
         plantCollection: PlantCollection
     ): Flow<Resource<PlantCollection>>
 
+
+    @GET
+    suspend fun fetchInformationArticle(): Flow<Resource<List<Information>>>
+
+    @GET
+    suspend fun fetchInformationArticleById(): Flow<Resource<List<Information>>>
+
+
+    @POST
+    suspend fun addUserToDatabase(
+        name: String,
+        email: String,
+        password: String
+    ): Flow<Resource<User>>
 
 
 }
