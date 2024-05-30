@@ -29,6 +29,7 @@ lottie = "6.4.0"
 materialIconsExtended = "1.6.7"
 navigationCompose = "2.7.7"
 retrofitVersion = "2.9.0"
+swipe = "1.0.0"
 uiTextGoogleFonts = "1.6.7"
 googleGmsGoogleServices = "4.4.1"
 firebaseDatabase = "21.0.0"
@@ -83,6 +84,7 @@ lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -1,6 +1,7 @@
 package com.example.botanify.screen.tanamansaya
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,11 +13,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -40,6 +47,8 @@ import com.example.botanify.data.local.myplantsData
 import com.example.botanify.screen.components.TanamanSayaCard
 import com.example.botanify.screen.navigation.Screen
 import com.example.botanify.ui.theme.SurfaceBase
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
@@ -47,6 +56,21 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPlant by remember { mutableStateOf<MyPlantData?>(null) }
     val myPlantData = myplantsData
+    var deletePlant by remember { mutableStateOf(false) }
+    val delete = SwipeAction(
+        onSwipe = {
+            deletePlant = true
+        },
+        icon = {
+            Icon(imageVector = Icons.Default.Delete, contentDescription = "",
+                tint = Color(0xFFBA1200),
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .size(60.dp)
+            )
+        },
+        background = Color.Transparent
+    )
 
     Column(
         modifier = modifier
@@ -59,17 +83,22 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
         ) {
             items(myPlantData.size) { index ->
                 myPlantData[index].let { plant ->
-                    TanamanSayaCard(
-                        modifier = Modifier
-                            .padding(bottom = 16.dp)
-                            .clickable {
-                                selectedPlant = plant
-                                showBottomSheet = true
-                            },
-                        title = plant.name,
-                        image = plant.image,
-                        schedule = plant.schedule
-                    )
+                    SwipeableActionsBox(endActions = listOf(delete),
+                        backgroundUntilSwipeThreshold = Color.Transparent,
+                        swipeThreshold = 200.dp) {
+                        TanamanSayaCard(
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .clickable {
+                                    selectedPlant = plant
+                                    showBottomSheet = true
+                                },
+                            title = plant.name,
+                            image = plant.image,
+                            schedule = plant.schedule
+                        )
+                    }
+
                 }
             }
         }
@@ -96,6 +125,29 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
             Icon(imageVector = Icons.Filled.Add, contentDescription = "")
         }
 
+    }
+    if (deletePlant) {
+        AlertDialog(
+            onDismissRequest = { deletePlant = false },
+            title = { Text(text = "Konfirmasi Hapus") },
+            text = { Text(text = "Apakah Anda yakin ingin menghapus tanaman ini?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+
+                    }
+                ) {
+                    Text("Ya")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { deletePlant = false }
+                ) {
+                    Text("Tidak")
+                }
+            }
+        )
     }
 }
 
