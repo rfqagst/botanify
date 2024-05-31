@@ -22,16 +22,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.botanify.screen.auth.AuthViewModel
-import com.example.botanify.screen.components.BottomBarComponent
-import com.example.botanify.screen.components.TopBarComponent
-import com.example.botanify.screen.components.TopBarComponentBack
-import com.example.botanify.screen.components.TopBarComponentHome
-import com.example.botanify.screen.components.TopBarComponentSearch
-import com.example.botanify.screen.navigation.NavGraph
-import com.example.botanify.screen.navigation.Screen
-import com.example.botanify.ui.theme.ContentWhite
-import com.example.botanify.ui.theme.PrimaryBase
+import com.example.botanify.presentation.components.BottomBarComponent
+import com.example.botanify.presentation.components.TopBarComponent
+import com.example.botanify.presentation.components.TopBarComponentBack
+import com.example.botanify.presentation.components.TopBarComponentHome
+import com.example.botanify.presentation.components.TopBarComponentSearch
+import com.example.botanify.presentation.navigation.NavGraph
+import com.example.botanify.presentation.navigation.Screen
+import com.example.botanify.presentation.screen.auth.AuthViewModel
+import com.example.botanify.presentation.ui.theme.ContentWhite
+import com.example.botanify.presentation.ui.theme.PrimaryBase
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
