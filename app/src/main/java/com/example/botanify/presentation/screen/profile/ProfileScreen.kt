@@ -3,7 +3,6 @@ package com.example.botanify.screen.profile
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,18 +16,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,14 +43,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.decode.ImageSource
 import com.example.botanify.R
-import com.example.botanify.screen.auth.AuthViewModel
-import com.example.botanify.screen.navigation.Screen
-import com.example.botanify.ui.theme.ContentDark
-import com.example.botanify.ui.theme.ContentSemiDark
-import com.example.botanify.ui.theme.PrimaryBase
-import com.example.botanify.ui.theme.SurfaceBase
+import com.example.botanify.presentation.navigation.Screen
+import com.example.botanify.presentation.screen.auth.AuthViewModel
+import com.example.botanify.presentation.ui.theme.ContentDark
+import com.example.botanify.presentation.ui.theme.PrimaryBase
+import com.example.botanify.presentation.ui.theme.SurfaceBase
+
 
 @Composable
 fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navController: NavController) {
@@ -103,16 +99,19 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                 )
             )
         }
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 100.dp),
-            contentAlignment = Alignment.Center){
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 100.dp),
+            contentAlignment = Alignment.Center
+        ) {
             Box(
                 modifier = Modifier
-                    .width(320.dp)
+                    .width(350.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .background(color = Color(0xFFFFFFFF))
-                    .padding(start = 10.dp, end = 10.dp)){
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+            ) {
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
                     IconButton(
@@ -130,10 +129,12 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Default.Edit,
+                            Icon(
+                                imageVector = Icons.Default.Edit,
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .padding(end = 20.dp))
+                                    .padding(end = 20.dp)
+                            )
                             Text(
                                 text = "Edit Profile",
                                 style = TextStyle(
@@ -148,6 +149,9 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                         }
 
                     }
+
+                    HorizontalDivider()
+
                     IconButton(
                         onClick = { /*TODO*/ },
                         modifier = Modifier
@@ -163,10 +167,12 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Default.Lock,
+                            Icon(
+                                imageVector = Icons.Default.Lock,
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .padding(end = 20.dp))
+                                    .padding(end = 20.dp)
+                            )
                             Text(
                                 text = "Ganti Kata Sandi",
                                 style = TextStyle(
@@ -181,6 +187,8 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                         }
 
                     }
+                    HorizontalDivider()
+
                     IconButton(
                         onClick = { /*TODO*/ },
                         modifier = Modifier
@@ -196,10 +204,12 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Default.Delete,
+                            Icon(
+                                imageVector = Icons.Default.Delete,
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .padding(end = 20.dp))
+                                    .padding(end = 20.dp)
+                            )
                             Text(
                                 text = "Hapus Akun",
                                 style = TextStyle(
@@ -214,8 +224,10 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                         }
 
                     }
+                    HorizontalDivider()
+
                     IconButton(
-                        onClick = { showLogoutDialog = true  },
+                        onClick = { showLogoutDialog = true },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(51.dp)
@@ -229,10 +241,12 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Default.Logout,
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Logout,
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .padding(end = 20.dp))
+                                    .padding(end = 20.dp)
+                            )
                             Text(
                                 text = "Keluar",
                                 style = TextStyle(
@@ -279,13 +293,10 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
             }
 
         }
-        }
-
-    
-
-
-
     }
+
+
+}
 
 
 @Composable

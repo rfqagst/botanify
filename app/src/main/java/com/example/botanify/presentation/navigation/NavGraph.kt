@@ -22,7 +22,6 @@ import com.example.botanify.presentation.screen.informasi.DetailInformasiScreen
 import com.example.botanify.presentation.screen.informasi.ListInformasiScreen
 import com.example.botanify.presentation.screen.notifikasi.NotificationScreen
 import com.example.botanify.presentation.screen.onboarding.OnBoarding
-import com.example.botanify.presentation.screen.profile.ProfileScreen
 import com.example.botanify.presentation.screen.scan.HasilScanScreen
 import com.example.botanify.presentation.screen.scan.ScanTanamanScreen
 import com.example.botanify.presentation.screen.search.DetailTanamanScreen
@@ -32,6 +31,7 @@ import com.example.botanify.presentation.screen.search.SearchTanamanScreen
 import com.example.botanify.presentation.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.presentation.screen.tanamansaya.TambahKoleksiTanamanScreen
 import com.example.botanify.presentation.screen.tanamansaya.TanamanSayaViewModel
+import com.example.botanify.screen.profile.ProfileScreen
 
 
 @RequiresApi(Build.VERSION_CODES.O)
