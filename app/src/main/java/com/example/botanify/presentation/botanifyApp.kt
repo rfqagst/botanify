@@ -28,11 +28,11 @@ import com.example.botanify.presentation.components.TopBarComponent
 import com.example.botanify.presentation.components.TopBarComponentBack
 import com.example.botanify.presentation.components.TopBarComponentHome
 import com.example.botanify.presentation.components.TopBarComponentSearch
-import com.example.botanify.presentation.navigation.NavGraph
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.screen.auth.AuthViewModel
 import com.example.botanify.presentation.ui.theme.ContentWhite
 import com.example.botanify.presentation.ui.theme.PrimaryBase
+import com.example.botanify.presentation.navigation.NavGraph
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

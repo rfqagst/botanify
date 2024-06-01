@@ -1,4 +1,4 @@
-package com.example.botanify.screen.scan
+package com.example.botanify.presentation.screen.scan
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.botanify.R
-import com.example.botanify.screen.components.LargeBtn
-import com.example.botanify.screen.navigation.Screen
-import com.example.botanify.ui.theme.ContentDark
+import com.example.botanify.presentation.components.LargeBtn
+import com.example.botanify.presentation.navigation.Screen
+import com.example.botanify.presentation.ui.theme.ContentDark
 
 @Composable
 fun InstruksiScanScreen(modifier: Modifier, navController: NavController) {
