@@ -7,20 +7,16 @@ data class FilterData(
 
 val categoryList = listOf(
     FilterData(
-        category = "Tips & Trik",
+        category = "Semua",
         isActive = true
     ),
     FilterData(
-        category = "Penyakit",
+        category = "Tips & Trick",
+        ),
+    FilterData(
+        category = "Penyakit & Hama",
     ),
     FilterData(
-        category = "Hama",
+        category = "Informasi",
     ),
-    FilterData(
-        category = "Budidaya",
-    ),
-    FilterData(
-        category = "Event",
-    )
-
 )

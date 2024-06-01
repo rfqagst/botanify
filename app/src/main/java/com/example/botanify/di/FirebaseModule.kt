@@ -1,9 +1,9 @@
 package com.example.botanify.di
 
 import com.example.botanify.data.firebase.repository.AuthRepository
-import com.example.botanify.data.firebase.repository.PlantRepository
+import com.example.botanify.data.firebase.repository.InformationRepositoryFB
+import com.example.botanify.data.firebase.repository.PlantRepositoryFB
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
@@ -35,9 +35,14 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun providePlantRepository(): PlantRepository = PlantRepository(
+    fun providePlantRepository(): PlantRepositoryFB = PlantRepositoryFB(
         provideFirebaseAuth(), provideFirebaseDatabase(),
         provideFirebaseStorage()
     )
 
+    @Provides
+    @Singleton
+    fun provideInformationRepository(): InformationRepositoryFB = InformationRepositoryFB(
+        provideFirebaseDatabase(),
+    )
 }

@@ -20,7 +20,7 @@ import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
-class PlantRepository (
+class PlantRepositoryFB (
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,
     private val firebaseStorage: FirebaseStorage
@@ -61,17 +61,17 @@ class PlantRepository (
                     val plant = snapshot.getValue(Plant::class.java)
                     if (plant?.id == plantId) {
                         plantFlow.value = Resource.Success(plant)
-                        Log.d("PlantRepository", "Found plant with ID: $plantId")
+                        Log.d("PlantRepositoryFB", "Found plant with ID: $plantId")
                         return
                     }
                 }
                 plantFlow.value = Resource.Error("Plant not found", null)
-                Log.d("PlantRepository", "Plant not found for ID: $plantId")
+                Log.d("PlantRepositoryFB", "Plant not found for ID: $plantId")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 plantFlow.value = Resource.Error(databaseError.message, null)
-                Log.w("PlantRepository", "fetchPlantById:onCancelled", databaseError.toException())
+                Log.w("PlantRepositoryFB", "fetchPlantById:onCancelled", databaseError.toException())
             }
         })
 
@@ -116,7 +116,7 @@ class PlantRepository (
 
             override fun onCancelled(error: DatabaseError) {
                 plantCollectionFlow.value = Resource.Error(error.message, null)
-                Log.w("PlantRepository", "fetchKoleksiTanaman:onCancelled", error.toException())
+                Log.w("PlantRepositoryFB", "fetchKoleksiTanaman:onCancelled", error.toException())
             }
 
         })
