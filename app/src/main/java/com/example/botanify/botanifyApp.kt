@@ -121,11 +121,6 @@ fun BotanifyApp(
                     navController = navController
                 )
 
-                Screen.Profile.route -> TopBarComponent(
-                    title = "Profile",
-                    navController = navController
-                )
-
                 Screen.Information.route -> TopBarComponentSearch(
                     searchText = "Cari Informasi",
                     navController = navController,
@@ -144,6 +139,16 @@ fun BotanifyApp(
 
                 Screen.HasilScan.route -> TopBarComponent(
                     title = "Hasil Scan Tanaman",
+                    navController = navController
+                )
+
+                Screen.EditProfile.route -> TopBarComponent(
+                    title = "Edit Profile",
+                    navController = navController
+                )
+
+                Screen.GantiPassword.route -> TopBarComponent(
+                    title = "Ganti Kata Sandi",
                     navController = navController
                 )
 

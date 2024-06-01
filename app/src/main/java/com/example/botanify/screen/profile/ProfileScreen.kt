@@ -69,7 +69,7 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
     ) {
         Column(
             modifier = Modifier
-                .height(300.dp)
+                .height(350.dp)
                 .fillMaxWidth()
                 .background(color = PrimaryBase)
                 .align(Alignment.TopCenter),
@@ -78,7 +78,7 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
             Image(
                 painter = painterResource(id = R.drawable.profile_photo1),
                 modifier = Modifier
-                    .padding(top = 32.dp)
+                    .padding(top = 56.dp)
                     .size(160.dp)
                     .clip(CircleShape),
                 contentDescription = "Profile Image",
@@ -116,7 +116,7 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate(Screen.EditProfile.route) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(51.dp)
@@ -149,7 +149,7 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
 
                     }
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate(Screen.GantiPassword.route) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(51.dp)
@@ -182,7 +182,9 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
 
                     }
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(51.dp)

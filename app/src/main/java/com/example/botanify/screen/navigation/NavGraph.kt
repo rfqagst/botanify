@@ -22,8 +22,11 @@ import com.example.botanify.screen.informasi.DetailInformasiScreen
 import com.example.botanify.screen.informasi.ListInformasiScreen
 import com.example.botanify.screen.notifikasi.NotificationScreen
 import com.example.botanify.screen.onboarding.OnBoarding
+import com.example.botanify.screen.profile.EditProfileScreen
+import com.example.botanify.screen.profile.GantiPasswordScreen
 import com.example.botanify.screen.profile.ProfileScreen
 import com.example.botanify.screen.scan.HasilScanScreen
+import com.example.botanify.screen.scan.InstruksiScanScreen
 import com.example.botanify.screen.scan.ScanTanamanScreen
 import com.example.botanify.screen.search.DetailTanamanScreen
 import com.example.botanify.screen.search.PlantViewModel
@@ -63,6 +66,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
         composable(route = Screen.Profile.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
             ProfileScreen(modifier = modifier, authViewModel,navController)
+        }
+        
+        composable(route = Screen.EditProfile.route) {
+            EditProfileScreen(modifier = Modifier)
+        }
+        
+        composable(route = Screen.GantiPassword.route) {
+            GantiPasswordScreen(modifier = Modifier)
         }
 
         composable(route = Screen.Notification.route) {
@@ -130,6 +141,10 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
         composable(route = Screen.HasilScan.route) {
             HasilScanScreen(modifier = modifier)
+        }
+        
+        composable(route = Screen.InstruksiScan.route) {
+            InstruksiScanScreen(modifier = Modifier, navController)
         }
 
 

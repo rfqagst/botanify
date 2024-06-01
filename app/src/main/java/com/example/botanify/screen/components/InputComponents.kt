@@ -79,6 +79,43 @@ fun NormalTextField(
 }
 
 @Composable
+fun NormalTextFieldGreen(
+    modifier: Modifier,
+    titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+    Column(modifier = modifier) {
+        var normalText by rememberSaveable {
+            mutableStateOf("")
+        }
+        Text(
+            text = titleTextField,
+            style = TextStyle(
+                fontSize = 18.sp,
+                lineHeight = 24.sp,
+                color = Color(0XFF142A3B),
+                fontWeight = FontWeight(400),
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentWhite),
+            value = value,
+            onValueChange = onValueChange,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryBase,
+                unfocusedBorderColor = PrimaryBase,
+            ),
+        )
+    }
+}
+
+@Composable
 fun IconTextField(
     modifier: Modifier,
     titleTextField: String,
@@ -193,6 +230,63 @@ fun PasswordtTextField(
     }
 }
 
+@Composable
+fun PasswordtTextFieldGreen(
+    modifier: Modifier,
+    titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+    Column(modifier = modifier) {
+        var normalText by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        var passwordVisibility by remember {
+            mutableStateOf(false)
+        }
+
+        val icon = if (passwordVisibility)
+            painterResource(id = R.drawable.baseline_visibility_24)
+        else
+            painterResource(id = R.drawable.baseline_visibility_off_24)
+        Text(
+            text = titleTextField,
+            style = TextStyle(
+                fontSize = 18.sp,
+                lineHeight = 24.sp,
+                color = Color(0XFF142A3B),
+                fontWeight = FontWeight(400),
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ContentWhite, RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(10.dp)),
+            shape = RoundedCornerShape(10.dp),
+            value = value,
+            onValueChange = onValueChange,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryBase,
+                unfocusedBorderColor = PrimaryBase,
+            ),
+            trailingIcon = {
+                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                    Icon(
+                        painter = icon,
+                        contentDescription = "vis"
+                    )
+                }
+            },
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
+
+        )
+    }
+}
+
+
 
 @Composable
 fun DateTimeField(
@@ -252,6 +346,10 @@ fun PreviewInputComponents() {
 //            modifier = Modifier,
 //            titleTextField = "Nama Tanaman"
 //        )
+//        NormalTextFieldGreen(modifier = Modifier,
+//            titleTextField = "", value = "") {
+//
+//        }
 
 //        IconTextField(
 //            modifier = Modifier,
@@ -264,6 +362,10 @@ fun PreviewInputComponents() {
 //                id = R.drawable.ic_lock
 //            )
 //        )
+//        PasswordtTextFieldGreen(modifier = Modifier,
+//            titleTextField ="" , value ="" ) {
+//
+//        }
         Spacer(modifier = Modifier.height(20.dp))
 
 
