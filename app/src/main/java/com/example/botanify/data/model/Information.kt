@@ -4,6 +4,10 @@ data class Information(
     val id : String,
     val title : String,
     val date : String,
-    val content : String,
+    val kategori : String,
+    val deskripsi : String,
     val image : String,
-)
+    val url : String,
+) {
+    constructor() : this("","","","","","","")
+}

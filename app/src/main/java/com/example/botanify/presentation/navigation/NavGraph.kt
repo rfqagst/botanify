@@ -19,6 +19,8 @@ import com.example.botanify.presentation.screen.auth.register.RegisterScreen
 import com.example.botanify.presentation.screen.home.HomeScreen
 import com.example.botanify.presentation.screen.home.HomeViewModel
 import com.example.botanify.presentation.screen.informasi.DetailInformasiScreen
+import com.example.botanify.presentation.screen.informasi.InformationViewModel
+import com.example.botanify.presentation.screen.informasi.InformationWebView
 import com.example.botanify.presentation.screen.informasi.ListInformasiScreen
 import com.example.botanify.presentation.screen.notifikasi.NotificationScreen
 import com.example.botanify.presentation.screen.onboarding.OnBoarding
@@ -40,10 +42,17 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
     val onboardingManager by lazy { OnboardingManager(context) }
 
-    NavHost(navController = navController, startDestination = Screen.OnBoarding.route) {
+    NavHost(navController = navController, startDestination = Screen.Home.route) {
 
         composable(route = Screen.Home.route) {
-            HomeScreen(modifier = modifier, navController, homeViewModel = HomeViewModel())
+            val informationViewModel: InformationViewModel = hiltViewModel()
+
+            HomeScreen(
+                modifier = modifier,
+                navController,
+                homeViewModel = HomeViewModel(),
+                informationViewModel
+            )
         }
 
         composable(route = Screen.TanamanSaya.route) {
@@ -51,7 +60,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
         }
 
         composable(route = Screen.Information.route) {
-            ListInformasiScreen(modifier = modifier, navController)
+            val informationViewModel: InformationViewModel = hiltViewModel()
+
+            ListInformasiScreen(modifier = modifier, navController, informationViewModel)
         }
 
         composable(
@@ -59,6 +70,11 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
         ) {
             val informationId = it.arguments?.getString("informationId") ?: ""
             DetailInformasiScreen(modifier = modifier, informationId)
+        }
+
+
+        composable(route = Screen.InformationWebView.route) {
+            InformationWebView(modifier)
         }
 
         composable(route = Screen.Profile.route) {

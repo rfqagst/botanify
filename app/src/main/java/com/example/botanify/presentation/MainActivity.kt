@@ -1,4 +1,4 @@
-package com.example.botanify
+package com.example.botanify.presentation
 
 //import com.example.botanify.screen.search.profile.ProfileScreen
 import android.Manifest
@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat

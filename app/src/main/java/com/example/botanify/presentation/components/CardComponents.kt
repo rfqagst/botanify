@@ -80,7 +80,7 @@ fun BannerCard(modifier: Modifier, navController: NavHostController) {
 
 
 @Composable
-fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: Int) {
+fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: String) {
     Row(
         modifier = modifier
             .padding(bottom = 8.dp)
@@ -98,8 +98,9 @@ fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: 
                 .background(ContentLightBlue)
         ) {
             Image(
+                modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
-                painter = painterResource(id = image),
+                painter = rememberAsyncImagePainter(model = image),
                 contentDescription = null
             )
         }

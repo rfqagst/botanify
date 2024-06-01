@@ -1,46 +1,59 @@
 package com.example.botanify.presentation.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.botanify.data.local.categoryList
-import com.example.botanify.data.local.informationData
+import com.example.botanify.data.model.Information
 import com.example.botanify.presentation.components.BannerCard
 import com.example.botanify.presentation.components.FilterButton
 import com.example.botanify.presentation.components.InformationHomeCard
 import com.example.botanify.presentation.navigation.Screen
+import com.example.botanify.presentation.screen.informasi.InformationViewModel
 import com.example.botanify.presentation.ui.theme.SecondaryBase
 import com.example.botanify.presentation.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 
 @Composable
-fun HomeScreen(modifier: Modifier, navController: NavHostController, homeViewModel: HomeViewModel) {
+fun HomeScreen(
+    modifier: Modifier,
+    navController: NavHostController,
+    homeViewModel: HomeViewModel,
+    informationViewModel: InformationViewModel
+) {
 
-    val informationData = informationData
+    val informationData by informationViewModel.informations.collectAsState()
+    val filterState by homeViewModel.filters.collectAsState()
+    val selectedCategory by homeViewModel.selectedCategory.collectAsState()
 
-    val filterState = homeViewModel.filters
-
+    LaunchedEffect(selectedCategory) {
+        informationViewModel.fetchInformations(selectedCategory)
+    }
     Column(modifier = modifier.background(SurfaceBase)) {
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -88,31 +101,66 @@ fun HomeScreen(modifier: Modifier, navController: NavHostController, homeViewMod
             LazyRow {
                 items(filterState.size) { index ->
                     filterState[index].let { category ->
-                        FilterButton(modifier = Modifier.clickable {
-                            homeViewModel.toggleFilter(index)
-                        }, category.category, isActive = category.isActive)
+                        FilterButton(
+                            modifier = Modifier.clickable {
+                                homeViewModel.toggleFilter(index)
+                            },
+                            category.category,
+                            isActive = category.isActive
+                        )
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            LazyColumn {
-                items(informationData.size) { index ->
-                    informationData[index].let { information ->
-                        InformationHomeCard(
-                            modifier = Modifier.clickable {
-                                val informationId = information.id
-                                navController.navigate(Screen.DetailInformation.route + "/$informationId")
-                            },
-                            title = information.title,
-                            date = information.date, image = information.image
+
+            when (informationData) {
+                is Resource.Error -> {
+                    Log.d("ListInformasiScreen", "Error: ${informationData.message}")
+                }
+
+                is Resource.Idle -> {
+                    TODO()
+                }
+
+                is Resource.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .padding(top = 36.dp)
+                                .size(48.dp)
                         )
                     }
                 }
+
+                is Resource.Success -> {
+                    val informations = (informationData as Resource.Success<List<Information>>).data
+
+                    informations?.let { infos ->
+                        LazyColumn {
+                            items(infos.size) { index ->
+                                val information = infos[index]
+                                InformationHomeCard(
+                                    modifier = Modifier.clickable {
+                                        navController.navigate(Screen.DetailInformation.route + "/${information.id}")
+                                    },
+                                    title = information.title,
+                                    date = information.date,
+                                    image = information.image
+                                )
+                            }
+                        }
+
+
+                    }
+                }
+
+
             }
-
-
         }
     }
 }

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.model.Plant
-import com.example.botanify.data.firebase.repository.PlantRepository
+import com.example.botanify.data.firebase.repository.PlantRepositoryFB
 import com.example.botanify.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlantViewModel @Inject constructor(
-    private val plantRepository: PlantRepository
+    private val plantRepository: PlantRepositoryFB
 ) : ViewModel() {
 
     private val _plants = MutableStateFlow<Resource<List<Plant>>>(Resource.Loading(null))

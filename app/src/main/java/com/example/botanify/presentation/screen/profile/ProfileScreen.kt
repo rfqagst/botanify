@@ -225,7 +225,6 @@ fun ProfileScreen(modifier: Modifier, authViewModel: AuthViewModel, navControlle
 
                     }
                     HorizontalDivider()
-
                     IconButton(
                         onClick = { showLogoutDialog = true },
                         modifier = Modifier

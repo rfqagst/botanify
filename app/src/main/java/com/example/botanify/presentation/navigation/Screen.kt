@@ -24,6 +24,8 @@ sealed class Screen(val route: String) {
 
     data object Information : Screen("information")
     data object DetailInformation : Screen("detailinformation")
+    data object InformationWebView : Screen("informationwebview")
+
 
 
     data object ScanTanaman : Screen("scantanaman")

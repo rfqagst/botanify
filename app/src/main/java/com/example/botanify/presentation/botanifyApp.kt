@@ -1,4 +1,4 @@
-package com.example.botanify
+package com.example.botanify.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.botanify.R
 import com.example.botanify.presentation.components.BottomBarComponent
 import com.example.botanify.presentation.components.TopBarComponent
 import com.example.botanify.presentation.components.TopBarComponentBack
@@ -58,7 +59,9 @@ fun BotanifyApp(
                     Screen.DetailTanaman.route + "/{tanamanId}",
                     Screen.TambahKoleksiTanaman.route,
                     Screen.SearchInformationScreen.route,
-                    Screen.SearchTanamanScreen.route
+                    Screen.SearchTanamanScreen.route,
+                    Screen.InformationWebView.route
+
 
                 )
             ) {
@@ -97,7 +100,8 @@ fun BotanifyApp(
                     Screen.DetailTanaman.route + "/{tanamanId}",
                     Screen.TambahKoleksiTanaman.route,
                     Screen.SearchInformationScreen.route,
-                    Screen.SearchTanamanScreen.route
+                    Screen.SearchTanamanScreen.route,
+                    Screen.InformationWebView.route
                     )
             ) {
                 BottomBarComponent(navController)
@@ -108,6 +112,11 @@ fun BotanifyApp(
                 Screen.Home.route -> TopBarComponentHome(name = currentUser,navController = navController)
                 Screen.DetailInformation.route + "/{informationId}" -> TopBarComponent(
                     title = "Detail Information",
+                    navController = navController
+                )
+
+                Screen.InformationWebView.route -> TopBarComponent(
+                    title = "Detail Informasi",
                     navController = navController
                 )
 

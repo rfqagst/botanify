@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.model.PlantCollection
 import com.example.botanify.data.model.Reminder
-import com.example.botanify.data.firebase.repository.PlantRepository
+import com.example.botanify.data.firebase.repository.PlantRepositoryFB
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TanamanSayaViewModel @Inject constructor(
-    private val repository: PlantRepository
+    private val repository: PlantRepositoryFB
 ) : ViewModel() {
 
     private val _addPlantState = MutableStateFlow<Resource<PlantCollection>>(Resource.Idle())
