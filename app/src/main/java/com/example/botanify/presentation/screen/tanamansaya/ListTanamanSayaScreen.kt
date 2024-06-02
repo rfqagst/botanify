@@ -7,23 +7,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -32,6 +28,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,28 +39,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.botanify.data.local.MyPlantData
-import com.example.botanify.data.local.myplantsData
+import com.example.botanify.data.model.PlantCollection
 import com.example.botanify.presentation.components.TanamanSayaCard
 import com.example.botanify.presentation.navigation.Screen
-
-import com.example.botanify.presentation.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
+import formatReminder
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostController) {
+fun ListTanamanSayaScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: TanamanSayaViewModel
+) {
     var showBottomSheet by remember { mutableStateOf(false) }
-    var selectedPlant by remember { mutableStateOf<MyPlantData?>(null) }
-    val myPlantData = myplantsData
+    var selectedPlant by remember { mutableStateOf<PlantCollection?>(null) }
     var deletePlant by remember { mutableStateOf(false) }
+
+    val listPlantCollection by viewModel.plantCollection.collectAsState()
+
+
     val delete = SwipeAction(
         onSwipe = {
             deletePlant = true
         },
         icon = {
-            Icon(imageVector = Icons.Default.Delete, contentDescription = "",
+            Icon(
+                imageVector = Icons.Default.Delete, contentDescription = "",
                 tint = Color(0xFFBA1200),
                 modifier = Modifier
                     .padding(start = 20.dp)
@@ -78,30 +82,69 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
             .background(Color(0xFFEFEFEF))
             .padding(start = 16.dp, end = 16.dp, top = 16.dp)
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            items(myPlantData.size) { index ->
-                myPlantData[index].let { plant ->
-                    SwipeableActionsBox(endActions = listOf(delete),
-                        backgroundUntilSwipeThreshold = Color.Transparent,
-                        swipeThreshold = 200.dp) {
-                        TanamanSayaCard(
-                            modifier = Modifier
-                                .padding(bottom = 16.dp)
-                                .clickable {
-                                    selectedPlant = plant
-                                    showBottomSheet = true
-                                },
-                            title = plant.name,
-                            image = plant.image,
-                            schedule = plant.schedule
-                        )
-                    }
 
+        when (listPlantCollection) {
+            is Resource.Error -> {
+                Log.d("ListInformasiScreen", "Error: ${listPlantCollection.message}")
+            }
+
+            is Resource.Idle -> {
+                // do nothing
+            }
+
+            is Resource.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(top = 36.dp)
+                            .size(48.dp)
+                    )
                 }
             }
+
+            is Resource.Success -> {
+                listPlantCollection.let {
+                    val plants =
+                        (listPlantCollection as Resource.Success<List<PlantCollection>>).data
+                    Log.d("ListTanamanSayaScreen", "Plants: $plants")  // Tambahkan log ini
+
+                    plants?.let {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            items(plants.size) { index ->
+                                val plant = plants[index]
+                                SwipeableActionsBox(
+                                    endActions = listOf(delete),
+                                    backgroundUntilSwipeThreshold = Color.Transparent,
+                                    swipeThreshold = 200.dp
+                                ) {
+                                    TanamanSayaCard(
+                                        modifier = Modifier
+                                            .padding(bottom = 16.dp)
+                                            .clickable {
+                                                selectedPlant = plant
+                                                showBottomSheet = true
+                                            },
+                                        title = plant.plantName,
+                                        image = plant.plantImage,
+                                        schedule = formatReminder(plant.reminder)
+                                    )
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
         }
 
         if (showBottomSheet && selectedPlant != null) {
@@ -110,8 +153,9 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
                 plant = selectedPlant!!
             )
         }
-
     }
+
+
     Column(
         modifier
             .fillMaxSize()
@@ -119,10 +163,12 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.End
     ) {
-        FloatingActionButton(onClick = { navController.navigate(Screen.TambahKoleksiTanaman.route) },
+        FloatingActionButton(
+            onClick = { navController.navigate(Screen.TambahKoleksiTanaman.route) },
             containerColor = Color(0xFF2BB34B),
             contentColor = Color.White,
-            shape = CircleShape) {
+            shape = CircleShape
+        ) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = "")
         }
 
@@ -156,7 +202,7 @@ fun ListTanamanSayaScreen(modifier: Modifier = Modifier, navController: NavHostC
 @Composable
 fun BottomSheet(
     onDismissRequest: () -> Unit,
-    plant: MyPlantData
+    plant: PlantCollection
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -171,7 +217,7 @@ fun BottomSheet(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            DetailTanamanSayaScreen(plant)
+//            DetailTanamanSayaScreen(plant)
         }
     }
 }

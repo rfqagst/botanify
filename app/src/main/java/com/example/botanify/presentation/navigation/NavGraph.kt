@@ -59,7 +59,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
         }
 
         composable(route = Screen.TanamanSaya.route) {
-            ListTanamanSayaScreen(modifier = modifier, navController)
+            val tanamanSayaViewModel: TanamanSayaViewModel = hiltViewModel()
+            ListTanamanSayaScreen(modifier = modifier, navController, tanamanSayaViewModel)
         }
 
         composable(route = Screen.Information.route) {

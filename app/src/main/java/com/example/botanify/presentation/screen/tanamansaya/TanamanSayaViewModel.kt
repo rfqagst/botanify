@@ -29,8 +29,16 @@ class TanamanSayaViewModel @Inject constructor(
     private val _addPlantState = MutableStateFlow<Resource<PlantCollection>>(Resource.Idle())
     val addPlantState: StateFlow<Resource<PlantCollection>> = _addPlantState
 
+    private val _plantCollection = MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Idle())
+    val plantCollection: StateFlow<Resource<List<PlantCollection>>> = _plantCollection
+
     private val currentUser: FirebaseUser?
         get() = repository.currentUser
+
+
+    init {
+        fetchKoleksiTanaman(currentUser!!.uid)
+    }
 
     private fun addKoleksiTanaman(plantCollection: PlantCollection) {
         currentUser?.let { user ->
@@ -46,9 +54,12 @@ class TanamanSayaViewModel @Inject constructor(
         }
     }
 
-    fun fetchKoleksiTanaman(userId: String) {
+    private fun fetchKoleksiTanaman(userId: String) {
         viewModelScope.launch {
-            repository.fetchKoleksiTanamanFirebase(userId)
+                repository.fetchKoleksiTanamanFirebase(userId).collect{collectionData ->
+                    _plantCollection.value = collectionData
+                    Log.d("TanamanSayaVM", " id user: $userId, Data: $collectionData")
+                }
         }
     }
 

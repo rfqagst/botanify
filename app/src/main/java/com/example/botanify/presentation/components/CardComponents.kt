@@ -332,7 +332,7 @@ fun InformationCard(modifier: Modifier) {
 }
 
 @Composable
-fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: String) {
+fun TanamanSayaCard(modifier: Modifier, title: String, image: String, schedule: String) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -345,9 +345,9 @@ fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: Str
             modifier = Modifier
                 .padding(8.dp)
                 .width(75.dp)
-                .height(114.dp)
+                .height(96.dp)
                 .clip(RoundedCornerShape(15.dp)),
-            painter = painterResource(id = image),
+            painter = rememberAsyncImagePainter(model = image),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -366,7 +366,7 @@ fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: Str
                 text = "Penyiraman Selanjutnya :",
                 color = ContentSemiDark,
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     lineHeight = 21.sp,
                     fontWeight = FontWeight(400),
                 )
@@ -390,7 +390,7 @@ fun TanamanSayaCard(modifier: Modifier, title: String, image: Int, schedule: Str
                     text = schedule,
                     color = ContentSemiDark,
                     style = TextStyle(
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         lineHeight = 21.sp,
                         fontWeight = FontWeight(600),
                     )

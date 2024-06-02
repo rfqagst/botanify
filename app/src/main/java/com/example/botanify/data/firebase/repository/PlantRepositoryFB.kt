@@ -102,7 +102,7 @@ class PlantRepositoryFB (
     fun fetchKoleksiTanamanFirebase(userId: String): Flow<Resource<List<PlantCollection>>> {
         val plantCollectionFlow =
             MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Loading(null))
-        val collectionRef = plantRef.child(userId).child("plantCollections")
+        val collectionRef = firebaseDatabase.getReference("users").child(userId).child("plantCollections")
 
         collectionRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

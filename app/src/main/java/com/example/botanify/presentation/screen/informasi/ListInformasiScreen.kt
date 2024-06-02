@@ -39,7 +39,7 @@ fun ListInformasiScreen(
         }
 
         is Resource.Idle -> {
-            TODO()
+            // do nothing
         }
 
         is Resource.Loading -> {
