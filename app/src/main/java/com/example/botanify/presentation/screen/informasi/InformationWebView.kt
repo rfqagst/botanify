@@ -8,17 +8,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun InformationWebView(modifier : Modifier) {
+fun InformationWebView(modifier : Modifier, webUrl : String) {
     AndroidView(factory = {
         WebView(it).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            loadUrl("https://rfqagst.github.io/tips-menanam-bunga-matahari.html")
+            loadUrl(webUrl)
             webViewClient = WebViewClient()
         }
     }, update = {
-        it.loadUrl("https://rfqagst.github.io/tips-menanam-bunga-matahari.html")
+        it.loadUrl(webUrl)
     })
 }

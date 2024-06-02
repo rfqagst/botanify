@@ -40,7 +40,7 @@ class InformationViewModel @Inject constructor(
     }
 
 
-    fun fetchPlantById(informationId: String) {
+    fun fetchInformationById(informationId: String) {
         viewModelScope.launch {
             repository.fetchInformationByIdFirebase(informationId).collect { informationsData ->
                 _informationById.value = informationsData

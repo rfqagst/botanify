@@ -1,97 +1,68 @@
 package com.example.botanify.presentation.screen.informasi
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.botanify.R
-import com.example.botanify.data.local.informationData
-import com.example.botanify.presentation.ui.theme.ContentDark
-import com.example.botanify.presentation.ui.theme.ContentSemiDark
-import com.example.botanify.presentation.ui.theme.PrimaryBase
-import com.example.botanify.presentation.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 
 @Composable
-fun DetailInformasiScreen(modifier: Modifier, informationId : String) {
+fun DetailInformasiScreen(
+    modifier: Modifier,
+    informationId: String,
+    informationViewModel: InformationViewModel
+) {
 
-    val informationData = informationData
-    val information = informationData.find { it.id == informationId }
+    val informationDetail by informationViewModel.informationById.collectAsState(initial = null)
 
 
-    if(information != null) {
-        Column(
-            modifier
-                .background(SurfaceBase)
-                .verticalScroll(rememberScrollState())) {
-            Image(
-                modifier = Modifier
-                    .height(216.dp)
-                    .fillMaxWidth(),
-                contentScale = ContentScale.Crop,
-                painter = painterResource(id = information.image),
-                contentDescription = null
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Column(
-                modifier = Modifier
-                    .padding(16.dp),
+    LaunchedEffect(informationId) {
+        informationViewModel.fetchInformationById(informationId)
+    }
+
+    when (informationDetail) {
+        is Resource.Error -> {
+            Log.d("DetailTanamanScreen", "Error: ${(informationDetail as Resource.Error).message}")
+        }
+
+        is Resource.Idle -> {
+            // do nothing
+        }
+
+        is Resource.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = information.title,
-                    color = ContentDark,
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        lineHeight = 24.sp,
-                        fontWeight = FontWeight(700),
-                    )
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = information.publisher,
-                    color = PrimaryBase,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 21.sp,
-                        fontWeight = FontWeight(400),
-                    )
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = information.date,
-                    color = ContentSemiDark,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        lineHeight = 18.sp,
-                        fontWeight = FontWeight(400),
-                    )
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = information.description,
-                    color = ContentSemiDark,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
-                        fontWeight = FontWeight(400),
-                    )
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(top = 36.dp)
+                        .size(48.dp)
                 )
             }
+        }
 
+        is Resource.Success -> {
+            val information = (informationDetail as Resource.Success).data
+            information?.let {
+                InformationWebView(modifier = modifier, webUrl = information.url)
+
+            }
+
+        }
+
+        null -> {
+            // do nothing
         }
     }
 

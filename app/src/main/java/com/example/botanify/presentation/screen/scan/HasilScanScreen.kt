@@ -109,40 +109,30 @@ fun HasilScanScreen(modifier: Modifier = Modifier) {
             cardTitle = "Keterangan",
             onClick = {
                 expandedStateKeterangan = !expandedStateKeterangan
-                if (expandedStateKeterangan) {
-                    expandedStateDiagnosa = false
-                    expandedStatePenanganan = false
-                }
             },
             rotationState = rotationStateKeterangan,
             expandedState = expandedStateKeterangan,
             expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
         )
+
         Spacer(modifier = Modifier.height(16.dp))
         ExpandableCard(
             modifier = Modifier,
             cardTitle = "Hasil Diagnosa",
             onClick = {
                 expandedStateDiagnosa = !expandedStateDiagnosa
-                if (expandedStateDiagnosa) {
-                    expandedStateKeterangan = false
-                    expandedStatePenanganan = false
-                }
             },
             rotationState = rotationStateDiagnosa,
             expandedState = expandedStateDiagnosa,
             expadableValue = "Nama Penyakit: Penyakit Embun Tepung\nHama: Jamur Erysiphales."
         )
+
         Spacer(modifier = Modifier.height(16.dp))
         ExpandableCard(
             modifier = Modifier,
             cardTitle = "Penanganan",
             onClick = {
                 expandedStatePenanganan = !expandedStatePenanganan
-                if (expandedStatePenanganan) {
-                    expandedStateKeterangan = false
-                    expandedStateDiagnosa = false
-                }
             },
             rotationState = rotationStatePenanganan,
             expandedState = expandedStatePenanganan,

@@ -69,12 +69,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
             route = Screen.DetailInformation.route + "/{informationId}",
         ) {
             val informationId = it.arguments?.getString("informationId") ?: ""
-            DetailInformasiScreen(modifier = modifier, informationId)
+            val informationViewModel: InformationViewModel = hiltViewModel()
+            DetailInformasiScreen(modifier = modifier, informationId, informationViewModel)
         }
 
 
-        composable(route = Screen.InformationWebView.route) {
-            InformationWebView(modifier)
+        composable(route = Screen.InformationWebView.route + "/{webUrl}") {
+            val webUrl = it.arguments?.getString("webUrl") ?: ""
+            InformationWebView(modifier, webUrl = webUrl)
         }
 
         composable(route = Screen.Profile.route) {
