@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,12 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.botanify.R
 import com.example.botanify.presentation.components.LargeBtn
+import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.ContentDark
 
 @Composable
-fun InstruksiScanScreen(modifier: Modifier) {
+fun InstruksiScanScreen(modifier: Modifier, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -180,7 +181,7 @@ fun InstruksiScanScreen(modifier: Modifier) {
             }
         }
         Spacer(modifier = Modifier.height(101.dp))
-        LargeBtn(text = "Lanjutkan", onClick = { /*TODO*/ }, modifier = Modifier)
+        LargeBtn(text = "Lanjutkan", onClick = { navController.navigate(Screen.ScanTanaman.route) }, modifier = Modifier)
 
 
     }
@@ -192,7 +193,7 @@ fun InstruksiScanScreen(modifier: Modifier) {
 @Preview(showBackground = true)
 fun PreviewInstruksiScanScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
-        InstruksiScanScreen(modifier = Modifier)
+//        InstruksiScanScreen(modifier = Modifier, navController: NavController)
 
     }
 

@@ -33,7 +33,10 @@ import com.example.botanify.presentation.screen.search.SearchTanamanScreen
 import com.example.botanify.presentation.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.presentation.screen.tanamansaya.TambahKoleksiTanamanScreen
 import com.example.botanify.presentation.screen.tanamansaya.TanamanSayaViewModel
+import com.example.botanify.presentation.screen.profile.EditProfileScreen
+import com.example.botanify.screen.profile.GantiPasswordScreen
 import com.example.botanify.screen.profile.ProfileScreen
+import com.example.botanify.presentation.screen.scan.InstruksiScanScreen
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -81,7 +84,15 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
         composable(route = Screen.Profile.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
-            ProfileScreen(modifier = modifier, authViewModel, navController)
+            ProfileScreen(modifier = modifier, authViewModel,navController)
+        }
+        
+        composable(route = Screen.EditProfile.route) {
+            EditProfileScreen(modifier = Modifier)
+        }
+        
+        composable(route = Screen.GantiPassword.route) {
+            GantiPasswordScreen(modifier = Modifier)
         }
 
         composable(route = Screen.Notification.route) {
@@ -117,14 +128,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
 
         composable(route = Screen.OnBoarding.route) {
-            OnBoarding(
-                onboardingManager = onboardingManager,
-                onFinish = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.OnBoarding.route) { inclusive = true }
-                    }
-                }
-            )
+           OnBoarding(
+               onboardingManager = onboardingManager,
+               onFinish = {
+                   navController.navigate(Screen.Login.route) {
+                       popUpTo(Screen.OnBoarding.route) { inclusive = true }
+                   }
+               }
+           )
         }
 
         composable(route = Screen.Register.route) {
@@ -149,6 +160,10 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
         composable(route = Screen.HasilScan.route) {
             HasilScanScreen(modifier = modifier)
+        }
+
+        composable(route = Screen.InstruksiScan.route) {
+            InstruksiScanScreen(modifier = Modifier, navController)
         }
 
 

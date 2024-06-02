@@ -54,6 +54,7 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
     }
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var instruksi by remember { mutableStateOf<Uri?>(null) }
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             selectedImageUri = uri
@@ -152,7 +153,13 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
             )
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
-                    modifier = Modifier.size(45.dp),
+                    modifier = Modifier
+                        .size(45.dp)
+                        .clickable {
+                            if (instruksi != null){
+                                navController.navigate(Screen.InstruksiScan.route)
+                            } else navController.navigate(Screen.InstruksiScan.route)
+                        },
                     painter = painterResource(id = R.drawable.ic_instruksi),
                     contentDescription = null
                 )

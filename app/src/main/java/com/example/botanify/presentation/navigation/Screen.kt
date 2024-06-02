@@ -9,6 +9,8 @@ sealed class Screen(val route: String) {
 
 
     data object Profile : Screen("profile")
+    data object EditProfile : Screen("editprofile")
+    data object GantiPassword : Screen("editpassword")
     data object Home : Screen("home")
     data object Notification : Screen("notification")
 
@@ -30,6 +32,7 @@ sealed class Screen(val route: String) {
 
     data object ScanTanaman : Screen("scantanaman")
     data object HasilScan : Screen("hasilscan")
+    data object InstruksiScan : Screen("instruksiscan")
 
 
 }
