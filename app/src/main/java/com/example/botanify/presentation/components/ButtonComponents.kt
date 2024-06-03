@@ -127,7 +127,7 @@ fun FilterButton(modifier: Modifier, filterText: String, isActive: Boolean) {
             color = if (isActive) ContentWhite else ContentDark,
             text = filterText,
             style = TextStyle(
-                fontSize = 12.sp,
+                fontSize = 14.sp,
                 lineHeight = 16.sp,
                 fontWeight = FontWeight(600),
             )

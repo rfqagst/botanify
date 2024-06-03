@@ -7,9 +7,9 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.botanify.data.firebase.repository.PlantRepositoryFB
 import com.example.botanify.data.model.PlantCollection
 import com.example.botanify.data.model.Reminder
-import com.example.botanify.data.firebase.repository.PlantRepositoryFB
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,15 +30,21 @@ class TanamanSayaViewModel @Inject constructor(
     private val _addPlantState = MutableStateFlow<Resource<PlantCollection>>(Resource.Idle())
     val addPlantState: StateFlow<Resource<PlantCollection>> = _addPlantState
 
-    private val _plantCollection = MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Idle())
+    private val _plantCollection =
+        MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Idle())
     val plantCollection: StateFlow<Resource<List<PlantCollection>>> = _plantCollection
 
-    private val currentUser: FirebaseUser?
+    private val _deletePlantState = MutableStateFlow<Resource<Boolean>>(Resource.Idle())
+    val deletePlantState: StateFlow<Resource<Boolean>> = _deletePlantState
+    val currentUser: FirebaseUser?
         get() = repository.currentUser
 
 
     init {
-        fetchKoleksiTanaman(currentUser!!.uid)
+        val userId = currentUser?.uid ?: ""
+
+        fetchKoleksiTanamanUser(userId)
+
     }
 
     private fun addKoleksiTanaman(plantCollection: PlantCollection) {
@@ -54,12 +61,20 @@ class TanamanSayaViewModel @Inject constructor(
         }
     }
 
-    private fun fetchKoleksiTanaman(userId: String) {
+    private fun fetchKoleksiTanamanUser(userId: String) {
         viewModelScope.launch {
-                repository.fetchKoleksiTanamanFirebase(userId).collect{collectionData ->
-                    _plantCollection.value = collectionData
-                    Log.d("TanamanSayaVM", " id user: $userId, Data: $collectionData")
-                }
+            repository.fetchPlantCollectionsFirebase(userId).collect { collectionData ->
+                _plantCollection.value = collectionData
+                Log.d("TanamanSayaVM", " id user: $userId, Data: $collectionData")
+            }
+        }
+    }
+
+    fun deletePlantCollection(userId: String, plantCollectionId: String) {
+        viewModelScope.launch {
+            repository.detelePlantCollectionFirebase(userId, plantCollectionId).collect { result ->
+                _deletePlantState.value = result
+            }
         }
     }
 
@@ -67,6 +82,7 @@ class TanamanSayaViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun uploadImageAndCollectionToStorage(
         plantName: String,
+        plantNote: String,
         uri: Uri,
         selectedDates: List<LocalDate>,
         selectedTime: LocalTime,
@@ -83,8 +99,10 @@ class TanamanSayaViewModel @Inject constructor(
                 )
 
                 val plantCollection = PlantCollection(
+                    collectionId = UUID.randomUUID().toString(),
                     plantName = plantName,
                     plantImage = imageUrl,
+                    plantNote = plantNote,
                     reminder = mapOf("reminder1" to reminder)
                 )
 

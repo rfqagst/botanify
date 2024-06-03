@@ -47,7 +47,6 @@ import formatReminder
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
 fun ListTanamanSayaScreen(
     modifier: Modifier = Modifier,
@@ -57,13 +56,19 @@ fun ListTanamanSayaScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPlant by remember { mutableStateOf<PlantCollection?>(null) }
     var deletePlant by remember { mutableStateOf(false) }
+    var plantToDelete by remember { mutableStateOf<Pair<String, PlantCollection>?>(null) }
 
-    val listPlantCollection by viewModel.plantCollection.collectAsState()
+
+    val listPlantState by viewModel.plantCollection.collectAsState()
+    val deletePlantState by viewModel.deletePlantState.collectAsState()
 
 
     val delete = SwipeAction(
         onSwipe = {
-            deletePlant = true
+            selectedPlant?.let { plant ->
+                plantToDelete = plant.collectionId to plant
+                deletePlant = true
+            }
         },
         icon = {
             Icon(
@@ -83,9 +88,9 @@ fun ListTanamanSayaScreen(
             .padding(start = 16.dp, end = 16.dp, top = 16.dp)
     ) {
 
-        when (listPlantCollection) {
+        when (listPlantState) {
             is Resource.Error -> {
-                Log.d("ListInformasiScreen", "Error: ${listPlantCollection.message}")
+                Log.d("ListInformasiScreen", "Error: ${listPlantState.message}")
             }
 
             is Resource.Idle -> {
@@ -106,9 +111,9 @@ fun ListTanamanSayaScreen(
             }
 
             is Resource.Success -> {
-                listPlantCollection.let {
+                listPlantState.let {
                     val plants =
-                        (listPlantCollection as Resource.Success<List<PlantCollection>>).data
+                        (listPlantState as Resource.Success<List<PlantCollection>>).data
                     Log.d("ListTanamanSayaScreen", "Plants: $plants")  // Tambahkan log ini
 
                     plants?.let {
@@ -119,7 +124,10 @@ fun ListTanamanSayaScreen(
                             items(plants.size) { index ->
                                 val plant = plants[index]
                                 SwipeableActionsBox(
-                                    endActions = listOf(delete),
+                                    endActions = listOf(delete.copy(onSwipe = {
+                                        plantToDelete = plant.collectionId to plant
+                                        deletePlant = true
+                                    })),
                                     backgroundUntilSwipeThreshold = Color.Transparent,
                                     swipeThreshold = 200.dp
                                 ) {
@@ -173,7 +181,10 @@ fun ListTanamanSayaScreen(
         }
 
     }
-    if (deletePlant) {
+
+
+
+    if (deletePlant && plantToDelete != null) {
         AlertDialog(
             onDismissRequest = { deletePlant = false },
             title = { Text(text = "Konfirmasi Hapus") },
@@ -181,22 +192,42 @@ fun ListTanamanSayaScreen(
             confirmButton = {
                 Button(
                     onClick = {
-
+                        val userId = viewModel.currentUser?.uid ?: return@Button
+                        viewModel.deletePlantCollection(userId, plantToDelete!!.first)
+                        deletePlant = false
                     }
                 ) {
                     Text("Ya")
                 }
             },
             dismissButton = {
-                Button(
-                    onClick = { deletePlant = false }
-                ) {
+                Button(onClick = { deletePlant = false }) {
                     Text("Tidak")
                 }
             }
         )
     }
+
+    when (deletePlantState) {
+        is Resource.Success -> {
+            Log.d("ListTanamanSayaScreen", "Plant deleted successfully")
+            deletePlant = false
+            plantToDelete = null
+        }
+        is Resource.Error -> {
+            Log.d("ListTanamanSayaScreen", "Error deleting plant: ${deletePlantState.message}")
+            deletePlant = false
+        }
+        is Resource.Loading -> {
+            // Show loading indicator if necessary
+        }
+        is Resource.Idle -> {
+            // do nothing
+        }
+    }
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -217,7 +248,7 @@ fun BottomSheet(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-//            DetailTanamanSayaScreen(plant)
+            DetailTanamanSayaScreen(plant)
         }
     }
 }

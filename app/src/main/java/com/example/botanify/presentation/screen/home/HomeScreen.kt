@@ -77,7 +77,7 @@ fun HomeScreen(
                     Text(
                         text = "Pelajari lebih lanjut tentang tanaman",
                         style = TextStyle(
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight(400),
                         )

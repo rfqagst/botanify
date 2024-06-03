@@ -79,6 +79,41 @@ fun NormalTextField(
 }
 
 @Composable
+fun DescriptionTextField(
+    modifier: Modifier,
+    titleTextField: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = titleTextField,
+            style = TextStyle(
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                fontWeight = FontWeight(700),
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentWhite)
+                .height(100.dp)
+            ,
+            value = value,
+            onValueChange = onValueChange,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryBase,
+                unfocusedBorderColor = Color.Transparent,
+            ),
+        )
+    }
+}
+
+@Composable
 fun NormalTextFieldGreen(
     modifier: Modifier,
     titleTextField: String,

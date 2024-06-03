@@ -83,7 +83,7 @@ fun BannerCard(modifier: Modifier, navController: NavHostController) {
 fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: String) {
     Row(
         modifier = modifier
-            .padding(bottom = 8.dp)
+            .padding(bottom = 16.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(ContentWhite)
             .fillMaxWidth(),
@@ -108,10 +108,12 @@ fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: 
 
         Column {
             Text(
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 text = title,
                 style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
                     fontWeight = FontWeight(600),
                     color = ContentDark,
                 )
@@ -133,7 +135,7 @@ fun InformationHomeCard(modifier: Modifier, title: String, date: String, image: 
                 Text(
                     text = date,
                     style = TextStyle(
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         lineHeight = 18.sp,
                         fontWeight = FontWeight(400),
                     )
@@ -356,12 +358,12 @@ fun TanamanSayaCard(modifier: Modifier, title: String, image: String, schedule: 
                 text = title,
                 color = ContentDark,
                 style = TextStyle(
-                    fontSize = 16.sp,
+                    fontSize = 18.sp,
                     lineHeight = 24.sp,
                     fontWeight = FontWeight(700),
                 )
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Penyiraman Selanjutnya :",
                 color = ContentSemiDark,
@@ -491,7 +493,7 @@ fun ExpandableCard(
 fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: String) {
     Row(
         modifier = modifier
-            .padding(bottom = 8.dp)
+            .padding(bottom = 16.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(ContentWhite)
             .fillMaxWidth(),
@@ -521,7 +523,7 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
             Text(
                 text = name,
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     lineHeight = 16.sp,
                     fontWeight = FontWeight(600),
                     color = ContentDark,
@@ -557,7 +559,7 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
 fun SearchInformationCard(modifier: Modifier, name: String, description: String, image: Int) {
     Row(
         modifier = modifier
-            .padding(bottom = 8.dp)
+            .padding(bottom = 16.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(ContentWhite)
             .fillMaxWidth(),
@@ -587,8 +589,10 @@ fun SearchInformationCard(modifier: Modifier, name: String, description: String,
         Column {
             Text(
                 text = name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     lineHeight = 16.sp,
                     fontWeight = FontWeight(600),
                     color = ContentDark,

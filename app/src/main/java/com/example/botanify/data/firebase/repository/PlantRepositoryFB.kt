@@ -20,11 +20,11 @@ import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
-class PlantRepositoryFB (
+class PlantRepositoryFB(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,
     private val firebaseStorage: FirebaseStorage
-    ) {
+) {
 
     private val plantRef = firebaseDatabase.getReference("plants")
 
@@ -71,7 +71,11 @@ class PlantRepositoryFB (
 
             override fun onCancelled(databaseError: DatabaseError) {
                 plantFlow.value = Resource.Error(databaseError.message, null)
-                Log.w("PlantRepositoryFB", "fetchPlantById:onCancelled", databaseError.toException())
+                Log.w(
+                    "PlantRepositoryFB",
+                    "fetchPlantById:onCancelled",
+                    databaseError.toException()
+                )
             }
         })
 
@@ -85,10 +89,7 @@ class PlantRepositoryFB (
     ): Resource<Boolean> {
         return try {
             val userRef = firebaseDatabase.getReference("users").child(userId)
-            val plantCollectionId = userRef.child("plantCollections").push().key ?: throw Exception(
-                "Cannot generate a new plant collection ID"
-            )
-            userRef.child("plantCollections").child(plantCollectionId).setValue(plantCollection)
+            userRef.child("plantCollections").child(plantCollection.collectionId).setValue(plantCollection)
                 .await()
             Resource.Success(true)
         } catch (e: Exception) {
@@ -99,10 +100,11 @@ class PlantRepositoryFB (
     }
 
 
-    fun fetchKoleksiTanamanFirebase(userId: String): Flow<Resource<List<PlantCollection>>> {
+    fun fetchPlantCollectionsFirebase(userId: String): Flow<Resource<List<PlantCollection>>> {
         val plantCollectionFlow =
             MutableStateFlow<Resource<List<PlantCollection>>>(Resource.Loading(null))
-        val collectionRef = firebaseDatabase.getReference("users").child(userId).child("plantCollections")
+        val collectionRef =
+            firebaseDatabase.getReference("users").child(userId).child("plantCollections")
 
         collectionRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -122,6 +124,27 @@ class PlantRepositoryFB (
         })
         return plantCollectionFlow
 
+    }
+
+
+    fun detelePlantCollectionFirebase(
+        userId: String,
+        plantCollectionId: String
+    ): Flow<Resource<Boolean>> {
+        val plantCollectionFlow = MutableStateFlow<Resource<Boolean>>(Resource.Loading(null))
+        val collectionRef =
+            firebaseDatabase.getReference("users").child(userId).child("plantCollections")
+                .child(plantCollectionId)
+
+        collectionRef.removeValue().addOnSuccessListener {
+            plantCollectionFlow.value = Resource.Success(true)
+        }.addOnFailureListener { error ->
+            plantCollectionFlow.value =
+                Resource.Error(error.message ?: "An unknown error occurred", false)
+            Log.e("PlantRepositoryFB", "deletePlantCollectionFirebase:onFailure", error)
+        }
+
+        return plantCollectionFlow
     }
 
 

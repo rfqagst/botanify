@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.DateRange
@@ -47,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
 import com.example.botanify.presentation.components.DateTimeField
+import com.example.botanify.presentation.components.DescriptionTextField
 import com.example.botanify.presentation.components.LargeBtn
 import com.example.botanify.presentation.components.NormalTextField
 import com.example.botanify.presentation.components.SmallBtn
@@ -78,6 +81,7 @@ fun TambahKoleksiTanamanScreen(
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var namaTanaman by remember { mutableStateOf("") }
+    var plantNote by remember { mutableStateOf("") }
     var durasiPenyiraman by remember { mutableStateOf("") }
     var waktuPenyiraman by remember { mutableStateOf("") }
     var isFormReset by remember { mutableStateOf(false) }
@@ -109,6 +113,7 @@ fun TambahKoleksiTanamanScreen(
             namaTanaman = ""
             durasiPenyiraman = ""
             waktuPenyiraman = ""
+            plantNote = ""
             selectedDates.value = listOf()
             selectedTime.value = LocalTime.of(0, 0, 0)
         }
@@ -144,7 +149,8 @@ fun TambahKoleksiTanamanScreen(
         modifier
             .background(SurfaceBase)
             .padding(16.dp)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()), // Tambahkan ini untuk scrolling
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
@@ -190,14 +196,14 @@ fun TambahKoleksiTanamanScreen(
 
         NormalTextField(
             modifier = Modifier,
-            titleTextField = "Nama Tanaman",
+            titleTextField = "Nama Koleksi",
             value = namaTanaman,
             onValueChange = { namaTanaman = it })
         Spacer(modifier = Modifier.height(16.dp))
 
         DateTimeField(
             modifier = Modifier,
-            titleTextField = "Durasi Penyiraman",
+            titleTextField = "Durasi Reminder Aktif",
             value = durasiPenyiraman,
             onValueChange = { durasiPenyiraman = it },
             onClickIcon = {
@@ -218,7 +224,17 @@ fun TambahKoleksiTanamanScreen(
             icon = Icons.Default.Alarm
 
         )
-        Spacer(modifier = Modifier.height(78.dp))
+
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        DescriptionTextField(
+            modifier = Modifier,
+            titleTextField = "Catatan Tanaman",
+            value = plantNote,
+            onValueChange = { plantNote = it })
+
+        Spacer(modifier = Modifier.height(58.dp))
 
         LargeBtn(
             text = "Tambah Koleksi",
@@ -227,14 +243,17 @@ fun TambahKoleksiTanamanScreen(
                     tanamanSayaViewModel.uploadImageAndCollectionToStorage(
                         uri = uri,
                         plantName = namaTanaman,
+                        plantNote = plantNote,
                         selectedTime = selectedTime.value,
                         selectedDates = selectedDates.value,
                         context = context,
-                        )
+                    )
                 }
             },
             modifier = Modifier
         )
+
+        Spacer(modifier = Modifier.height(58.dp))
 
 
         when (addPlantState) {
@@ -255,7 +274,7 @@ fun TambahKoleksiTanamanScreen(
                     color = PrimaryBase,
                     text = "Berhasil Menambahkan Koleksi Tanaman"
                 )
-               isFormReset = true
+                isFormReset = true
             }
 
             is Resource.Loading -> {
