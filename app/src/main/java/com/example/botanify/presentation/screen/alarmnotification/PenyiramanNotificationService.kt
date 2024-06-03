@@ -2,18 +2,19 @@ package com.example.botanify.presentation.screen.alarmnotification
 
 import android.app.NotificationManager
 import android.content.Context
+import android.text.Html.fromHtml
 import androidx.core.app.NotificationCompat
 import com.example.botanify.R
 
-class PenyiramanNotificationService(private val context: Context) {
+class PenyiramanNotificationService(private val context: Context,) {
 
     private val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    fun showNotification() {
+    fun showNotification(plantName : String) {
         val notification = NotificationCompat.Builder(context, PENYIRAMAN_CHANNEL_ID)
             .setContentTitle("Penyiraman Tanaman")
-            .setContentText("Saat nya penyiraman Anggrek merah")
+            .setContentText(fromHtml("Saatnya penyiraman tanaman <b>$plantName</b>"))
             .setSmallIcon(R.drawable.ic_wateringcan)
             .build()
 

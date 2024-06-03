@@ -51,7 +51,7 @@ fun DetailTanamanSayaScreen(plant: PlantCollection) {
                 .height(221.dp)
                 .fillMaxSize()
                 .clip(RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.FillWidth
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row(

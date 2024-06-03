@@ -6,7 +6,8 @@ import android.content.Intent
 
 class NotificationPenyiramanReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        val plantName = intent.getStringExtra("PLANT_NAME") ?: ""
         val notificationService = PenyiramanNotificationService(context)
-        notificationService.showNotification()
+        notificationService.showNotification(plantName)
     }
 }
