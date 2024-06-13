@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.botanify.data.model.Information
+import com.example.botanify.data.firebase.model.Information
 import com.example.botanify.presentation.components.BannerCard
 import com.example.botanify.presentation.components.FilterButton
 import com.example.botanify.presentation.components.InformationHomeCard
@@ -48,6 +48,8 @@ fun HomeScreen(
 ) {
 
     val informationData by informationViewModel.informations.collectAsState()
+
+
     val filterState by homeViewModel.filters.collectAsState()
     val selectedCategory by homeViewModel.selectedCategory.collectAsState()
 

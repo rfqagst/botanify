@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.botanify.R
-import com.example.botanify.data.local.informationData
+import com.example.botanify.data.dummy.informationData
 import com.example.botanify.presentation.components.SearchInformationCard
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.SecondaryBase

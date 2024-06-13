@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
-import com.example.botanify.data.model.PlantCollection
+import com.example.botanify.data.firebase.model.PlantCollection
 import com.example.botanify.presentation.ui.theme.SecondaryBase
 import formatReminder
 

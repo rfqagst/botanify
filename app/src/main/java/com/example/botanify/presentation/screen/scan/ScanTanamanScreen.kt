@@ -1,6 +1,7 @@
 package com.example.botanify.presentation.screen.scan
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -21,10 +22,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -43,9 +47,15 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.ContentWhite
+import com.example.botanify.utils.Resource
+import com.example.botanify.utils.toFile
 
 @Composable
-fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
+fun ScanTanamanScreen(
+    modifier: Modifier,
+    navController: NavHostController,
+    viewModel: ScanViewModel
+) {
     val applicationContext = LocalContext.current
     val controller = remember {
         LifecycleCameraController(applicationContext).apply {
@@ -60,6 +70,8 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
             selectedImageUri = uri
         }
 
+    val identifyPlantNameState by viewModel.identifyPlantNameState.collectAsState()
+    val identifyPlantDiseasesState by viewModel.identifyPlantDiseasesState.collectAsState()
 
     Column(modifier.fillMaxSize()) {
         Box(
@@ -138,25 +150,31 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
                     )
                 )
             }
+
+
             Image(
                 modifier = Modifier
                     .size(68.dp)
                     .clickable {
-                        if (selectedImageUri != null) {
-                            navController.navigate(Screen.HasilScan.route)
-                        } else navController.navigate(Screen.HasilScan.route)
+                        selectedImageUri
+                            ?.toFile(applicationContext)
+                            ?.let { file ->
+                                viewModel.scanPlant(file)
+                            }
+
                     },
                 painter = if (selectedImageUri != null) painterResource(id = R.drawable.ic_checkcircle) else painterResource(
                     id = R.drawable.ic_scan2
                 ),
                 contentDescription = null
             )
+
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     modifier = Modifier
                         .size(45.dp)
                         .clickable {
-                            if (instruksi != null){
+                            if (instruksi != null) {
                                 navController.navigate(Screen.InstruksiScan.route)
                             } else navController.navigate(Screen.InstruksiScan.route)
                         },
@@ -174,6 +192,68 @@ fun ScanTanamanScreen(modifier: Modifier, navController: NavHostController) {
                 )
             }
 
+        }
+
+
+        when(identifyPlantNameState) {
+            is Resource.Error -> {
+                Log.d("ScanTanamanScreen", "Error: ${identifyPlantNameState.message}")
+            }
+            is Resource.Idle -> {
+                //
+            }
+            is Resource.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .padding(top = 36.dp)
+                                .size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman",fontSize = 20.sp, textAlign = TextAlign.Center)
+                    }
+
+                }
+            }
+            is Resource.Success -> {
+                val result = (identifyPlantNameState as Resource.Success).data
+                Log.d("identifyPlantName", "Success: $result")
+            }
+        }
+
+
+        when(identifyPlantDiseasesState) {
+            is Resource.Error -> {
+                Log.d("ScanTanamanScreen", "Error: ${identifyPlantDiseasesState.message}")
+            }
+            is Resource.Idle -> {
+                //
+            }
+            is Resource.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .padding(top = 36.dp)
+                                .size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman", fontSize = 20.sp,  textAlign = TextAlign.Center)
+                    }
+                }
+            }
+            is Resource.Success -> {
+                val result = (identifyPlantDiseasesState as Resource.Success).data
+                Log.d("identifyPlantDisease", "Success: $result")
+                navController.navigate(Screen.HasilScan.route)
+            }
         }
     }
 

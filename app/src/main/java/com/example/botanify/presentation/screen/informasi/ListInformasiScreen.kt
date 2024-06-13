@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.botanify.data.model.Information
+import com.example.botanify.data.firebase.model.Information
 import com.example.botanify.presentation.components.InformationHomeCard
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.SurfaceBase

@@ -90,6 +90,43 @@ fun TopBarComponent(title: String, navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun TopBarComponentHasilScan(title: String, navController: NavHostController) {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(ContentWhite),
+        title = {
+            Text(
+                text = title,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(500),
+                    color = ContentDark,
+                    textAlign = TextAlign.Center,
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+
+            )
+
+        },
+        navigationIcon = {
+            Icon(
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.Home.route)
+                },
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back"
+            )
+        },
+        modifier = Modifier
+            .background(ContentWhite)
+
+    )
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun TopBarComponentBack( navController: NavHostController) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(ContentWhite),

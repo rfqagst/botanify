@@ -26,6 +26,7 @@ import com.example.botanify.R
 import com.example.botanify.presentation.components.BottomBarComponent
 import com.example.botanify.presentation.components.TopBarComponent
 import com.example.botanify.presentation.components.TopBarComponentBack
+import com.example.botanify.presentation.components.TopBarComponentHasilScan
 import com.example.botanify.presentation.components.TopBarComponentHome
 import com.example.botanify.presentation.components.TopBarComponentSearch
 import com.example.botanify.presentation.navigation.Screen
@@ -146,7 +147,7 @@ fun BotanifyApp(
                     navController = navController
                 )
 
-                Screen.HasilScan.route -> TopBarComponent(
+                Screen.HasilScan.route -> TopBarComponentHasilScan(
                     title = "Hasil Scan Tanaman",
                     navController = navController
                 )

@@ -1,7 +1,7 @@
 package com.example.botanify.data.firebase.repository
 
 import android.util.Log
-import com.example.botanify.data.model.Information
+import com.example.botanify.data.firebase.model.Information
 import com.example.botanify.utils.Resource
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

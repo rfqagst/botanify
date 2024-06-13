@@ -24,8 +24,11 @@ import com.example.botanify.presentation.screen.informasi.InformationWebView
 import com.example.botanify.presentation.screen.informasi.ListInformasiScreen
 import com.example.botanify.presentation.screen.notifikasi.NotificationScreen
 import com.example.botanify.presentation.screen.onboarding.OnBoarding
+import com.example.botanify.presentation.screen.profile.EditProfileScreen
 import com.example.botanify.presentation.screen.scan.HasilScanScreen
+import com.example.botanify.presentation.screen.scan.InstruksiScanScreen
 import com.example.botanify.presentation.screen.scan.ScanTanamanScreen
+import com.example.botanify.presentation.screen.scan.ScanViewModel
 import com.example.botanify.presentation.screen.search.DetailTanamanScreen
 import com.example.botanify.presentation.screen.search.PlantViewModel
 import com.example.botanify.presentation.screen.search.SearchInformationScreen
@@ -33,10 +36,8 @@ import com.example.botanify.presentation.screen.search.SearchTanamanScreen
 import com.example.botanify.presentation.screen.tanamansaya.ListTanamanSayaScreen
 import com.example.botanify.presentation.screen.tanamansaya.TambahKoleksiTanamanScreen
 import com.example.botanify.presentation.screen.tanamansaya.TanamanSayaViewModel
-import com.example.botanify.presentation.screen.profile.EditProfileScreen
 import com.example.botanify.screen.profile.GantiPasswordScreen
 import com.example.botanify.screen.profile.ProfileScreen
-import com.example.botanify.presentation.screen.scan.InstruksiScanScreen
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -85,13 +86,13 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
         composable(route = Screen.Profile.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
-            ProfileScreen(modifier = modifier, authViewModel,navController)
+            ProfileScreen(modifier = modifier, authViewModel, navController)
         }
-        
+
         composable(route = Screen.EditProfile.route) {
             EditProfileScreen(modifier = Modifier)
         }
-        
+
         composable(route = Screen.GantiPassword.route) {
             GantiPasswordScreen(modifier = Modifier)
         }
@@ -129,14 +130,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
 
         composable(route = Screen.OnBoarding.route) {
-           OnBoarding(
-               onboardingManager = onboardingManager,
-               onFinish = {
-                   navController.navigate(Screen.Login.route) {
-                       popUpTo(Screen.OnBoarding.route) { inclusive = true }
-                   }
-               }
-           )
+            OnBoarding(
+                onboardingManager = onboardingManager,
+                onFinish = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.OnBoarding.route) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable(route = Screen.Register.route) {
@@ -156,7 +157,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
 
         composable(route = Screen.ScanTanaman.route) {
-            ScanTanamanScreen(modifier = modifier, navController)
+            val scanViewModel: ScanViewModel = hiltViewModel()
+            ScanTanamanScreen(modifier = modifier, navController, scanViewModel)
         }
 
         composable(route = Screen.HasilScan.route) {

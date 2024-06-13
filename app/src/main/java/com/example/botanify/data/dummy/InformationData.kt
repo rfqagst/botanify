@@ -1,4 +1,4 @@
-package com.example.botanify.data.local
+package com.example.botanify.data.dummy
 
 import com.example.botanify.R
 

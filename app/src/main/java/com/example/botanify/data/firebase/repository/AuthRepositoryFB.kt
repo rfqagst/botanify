@@ -1,7 +1,7 @@
 package com.example.botanify.data.firebase.repository
 
 import android.util.Log
-import com.example.botanify.data.model.User
+import com.example.botanify.data.firebase.model.User
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

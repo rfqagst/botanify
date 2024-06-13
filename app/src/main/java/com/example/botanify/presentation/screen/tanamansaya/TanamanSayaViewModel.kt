@@ -8,8 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.firebase.repository.PlantRepositoryFB
-import com.example.botanify.data.model.PlantCollection
-import com.example.botanify.data.model.Reminder
+import com.example.botanify.data.firebase.model.PlantCollection
+import com.example.botanify.data.firebase.model.Reminder
 import com.example.botanify.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel

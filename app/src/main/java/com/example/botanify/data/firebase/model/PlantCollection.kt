@@ -1,4 +1,4 @@
-package com.example.botanify.data.model
+package com.example.botanify.data.firebase.model
 
 data class PlantCollection(
     val collectionId: String,

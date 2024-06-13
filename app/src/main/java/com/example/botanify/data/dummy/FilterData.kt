@@ -1,4 +1,4 @@
-package com.example.botanify.data.local
+package com.example.botanify.data.dummy
 
 data class FilterData(
     val category: String,

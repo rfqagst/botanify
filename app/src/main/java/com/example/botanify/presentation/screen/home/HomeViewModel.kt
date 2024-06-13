@@ -1,8 +1,8 @@
 package com.example.botanify.presentation.screen.home
 
 import androidx.lifecycle.ViewModel
-import com.example.botanify.data.local.FilterData
-import com.example.botanify.data.local.categoryList
+import com.example.botanify.data.dummy.FilterData
+import com.example.botanify.data.dummy.categoryList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

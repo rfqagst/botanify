@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
-import com.example.botanify.data.model.Plant
-import com.example.botanify.data.model.PlantCollection
+import com.example.botanify.data.firebase.model.Plant
+import com.example.botanify.data.firebase.model.PlantCollection
 import com.example.botanify.utils.Resource
 import com.example.botanify.utils.uriToBitmap
 import com.google.firebase.auth.FirebaseAuth

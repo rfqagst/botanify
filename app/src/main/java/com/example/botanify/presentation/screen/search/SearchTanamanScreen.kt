@@ -31,7 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.botanify.R
-import com.example.botanify.data.model.Plant
+import com.example.botanify.data.retrofit.response.backend.DataItem
+import com.example.botanify.data.retrofit.response.backend.PlantResponse
 import com.example.botanify.presentation.components.SearchTanamanCard
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.SecondaryBase
@@ -92,10 +93,11 @@ fun SearchTanamanScreen(
         }
     ) {
 
-        when(plantData) {
+        when (plantData) {
             is Resource.Error -> {
                 Log.d("SearchTanamanScreen", "Error: ${plantData.message}")
             }
+
             is Resource.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -108,14 +110,15 @@ fun SearchTanamanScreen(
                     )
                 }
             }
+
             is Resource.Success -> {
-                val plants = (plantData as Resource.Success<List<Plant>>).data
+                val plants = (plantData as Resource.Success<List<DataItem>>).data
                 val filteredPlants = if (textSearch.isEmpty()) {
                     plants
                 } else {
                     plants?.filter { plant ->
-                        plant.name.lowercase().contains(textSearch.lowercase()) ||
-                                plant.description.lowercase().contains(textSearch.lowercase())
+                        plant.namaTanaman?.lowercase()?.contains(textSearch.lowercase()) == true ||
+                                plant.deskripsiTanaman?.lowercase()?.contains(textSearch.lowercase()) == true
                     }
                 }
 
@@ -123,12 +126,12 @@ fun SearchTanamanScreen(
                     items(filteredPlants!!.size) { index ->
                         filteredPlants[index].let { plant ->
                             SearchTanamanCard(
-                                name = plant.name,
-                                description = plant.description,
-                                image = plant.image,
+                                name = plant.namaTanaman ?: "Tidak ditemukan tanaman",
+                                description = plant.deskripsiTanaman ?: "Tidak ditemukan deskripsi" ,
+                                image = plant.fotoTanaman ?: "",
                                 modifier = Modifier.clickable {
-                                    val tanamanId = plant.id
-                                    navController.navigate(Screen.DetailTanaman.route + "/$tanamanId")
+                                    val idTanaman = plant.idTanaman
+                                    navController.navigate(Screen.DetailTanaman.route + "/$idTanaman")
                                 }
                             )
                         }
@@ -141,7 +144,6 @@ fun SearchTanamanScreen(
                 // Do nothing
             }
         }
-
 
 
     }

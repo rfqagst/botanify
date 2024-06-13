@@ -256,7 +256,7 @@ fun TambahKoleksiTanamanScreen(
                     fontSize = 16.sp,
                     modifier = Modifier.padding(vertical = 32.dp),
                     color = Color.Red,
-                    text = "Berhasil Menambahkan Koleksi Tanaman"
+                    text = "Gagal Menambahkan Koleksi Tanaman"
                 )
             }
 

@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.botanify.data.model.Plant
+import com.example.botanify.data.retrofit.response.backend.PlantDetailResponse
 import com.example.botanify.presentation.components.ExpandableCard
 import com.example.botanify.presentation.ui.theme.ContentWhite
 import com.example.botanify.presentation.ui.theme.SurfaceBase
@@ -39,8 +39,6 @@ fun DetailTanamanScreen(modifier: Modifier, tanamanId: String, plantViewModel: P
     var expandedState by remember { mutableStateOf(true) }
     val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
 
-//    val plantData = plantsData
-//    val plant = plantData.find { it.id == tanamanId }
 
     val plantDetail by plantViewModel.plantsById.collectAsState()
 
@@ -62,7 +60,8 @@ fun DetailTanamanScreen(modifier: Modifier, tanamanId: String, plantViewModel: P
         }
 
         is Resource.Success -> {
-            val plant = (plantDetail as Resource.Success<Plant>).data
+            val plant = (plantDetail as Resource.Success<PlantDetailResponse>).data
+            Log.d("DetailTanamanScreen", "Success: $plant")
             Column(
                 modifier = modifier.background(SurfaceBase)
             ) {
@@ -71,7 +70,7 @@ fun DetailTanamanScreen(modifier: Modifier, tanamanId: String, plantViewModel: P
                         .height(216.dp)
                         .fillMaxWidth(),
                     contentScale = ContentScale.Crop,
-                    painter = rememberAsyncImagePainter(model = plant?.image),
+                    painter = rememberAsyncImagePainter(model = plant?.data?.fotoTanaman),
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -80,7 +79,7 @@ fun DetailTanamanScreen(modifier: Modifier, tanamanId: String, plantViewModel: P
                         .background(ContentWhite)
                         .padding(16.dp)
                         .fillMaxWidth(),
-                    text = plant?.name ?: "",
+                    text = plant?.data?.namaTanaman ?: "",
                     style = TextStyle(
                         fontSize = 20.sp,
                         lineHeight = 44.sp,
@@ -94,7 +93,7 @@ fun DetailTanamanScreen(modifier: Modifier, tanamanId: String, plantViewModel: P
                     onClick = { expandedState = !expandedState },
                     rotationState = rotationState,
                     expandedState = expandedState,
-                    expadableValue = plant?.description ?: ""
+                    expadableValue = plant?.data?.deskripsiTanaman ?: ""
                 )
             }
         }

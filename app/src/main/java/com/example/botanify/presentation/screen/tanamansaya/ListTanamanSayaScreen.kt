@@ -1,6 +1,5 @@
 package com.example.botanify.presentation.screen.tanamansaya
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,7 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.botanify.data.model.PlantCollection
+import com.example.botanify.data.firebase.model.PlantCollection
 import com.example.botanify.presentation.components.TanamanSayaCard
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.utils.Resource
@@ -65,8 +64,7 @@ fun ListTanamanSayaScreen(
 
     val delete = SwipeAction(
         onSwipe = {
-            selectedPlant?.let { plant ->
-                plantToDelete = plant.collectionId to plant
+            plantToDelete?.let {
                 deletePlant = true
             }
         },
@@ -181,7 +179,6 @@ fun ListTanamanSayaScreen(
         }
 
     }
-
 
 
     if (deletePlant && plantToDelete != null) {

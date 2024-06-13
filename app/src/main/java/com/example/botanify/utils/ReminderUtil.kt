@@ -1,4 +1,4 @@
-import com.example.botanify.data.model.Reminder
+import com.example.botanify.data.firebase.model.Reminder
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
