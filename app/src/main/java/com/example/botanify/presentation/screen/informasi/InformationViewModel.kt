@@ -3,8 +3,10 @@ package com.example.botanify.presentation.screen.informasi
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.botanify.data.firebase.repository.InformationRepositoryFB
-import com.example.botanify.data.firebase.model.Information
+import com.example.botanify.data.retrofit.repository.InformationRepository
+import com.example.botanify.data.retrofit.response.backend.DetailInformationItem
+import com.example.botanify.data.retrofit.response.backend.InformationDetailResponse
+import com.example.botanify.data.retrofit.response.backend.InformationsResponseItem
 import com.example.botanify.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,26 +16,40 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InformationViewModel @Inject constructor(
-    private val repository: InformationRepositoryFB
+    private val repository: InformationRepository
 ) : ViewModel() {
 
-    private val _informations = MutableStateFlow<Resource<List<Information>>>(Resource.Loading(null))
-    val informations: StateFlow<Resource<List<Information>>> = _informations
+
+    private val _informationById =
+        MutableStateFlow<Resource<InformationDetailResponse>>(Resource.Loading(null))
+    val informationById: StateFlow<Resource<InformationDetailResponse>> = _informationById
 
 
-    private val _informationById = MutableStateFlow<Resource<Information>>(Resource.Loading(null))
-    val informationById: StateFlow<Resource<Information>> = _informationById
+    private val _informationByCategory =
+        MutableStateFlow<Resource<List<InformationsResponseItem>>>(Resource.Loading(null))
+    val informationByCategory: StateFlow<Resource<List<InformationsResponseItem>>> =
+        _informationByCategory
 
 
     init {
-        fetchInformations()
+        fetchInformationsByCategory("Semua")
     }
 
-    fun fetchInformations(category: String? = null) {
-        viewModelScope.launch {
-            repository.fetchInformationsFirebase(category).collect { informationsData ->
-                _informations.value = informationsData
-                Log.d("plantssssssssss", informationsData.toString())
+
+    fun fetchInformationsByCategory(category: String) {
+        if (category == "Semua") {
+            viewModelScope.launch {
+                repository.getInformations().collect { informationsData ->
+                    _informationByCategory.value = informationsData
+                    Log.d("plantssssssssss", informationsData.toString())
+                }
+            }
+        } else {
+            viewModelScope.launch {
+                repository.getInformationsByCategory(category).collect { informationsData ->
+                    _informationByCategory.value = informationsData
+                    Log.d("plantssssssssss", informationsData.toString())
+                }
             }
         }
     }
@@ -41,9 +57,9 @@ class InformationViewModel @Inject constructor(
 
     fun fetchInformationById(informationId: String) {
         viewModelScope.launch {
-            repository.fetchInformationByIdFirebase(informationId).collect { informationsData ->
+            repository.getInformationsById(informationId).collect { informationsData ->
                 _informationById.value = informationsData
-                Log.d("PlantViewModel", "Plant data fetched: $informationsData")
+                Log.d("PlantViewModel", "Plant data fetched: ${informationsData.data}")
             }
         }
     }

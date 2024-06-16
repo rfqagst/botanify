@@ -1,5 +1,6 @@
 package com.example.botanify.presentation.screen.scan
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,10 +36,11 @@ import androidx.compose.ui.unit.sp
 import com.example.botanify.R
 import com.example.botanify.presentation.components.ExpandableCard
 import com.example.botanify.presentation.components.SmallBtn
+import com.example.botanify.utils.Resource
 
 
 @Composable
-fun HasilScanScreen(modifier: Modifier = Modifier) {
+fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewModel) {
 
     var expandedStateKeterangan by remember { mutableStateOf(false) }
     var expandedStateDiagnosa by remember { mutableStateOf(false) }
@@ -53,6 +57,40 @@ fun HasilScanScreen(modifier: Modifier = Modifier) {
     )
 
     val context = LocalContext.current
+
+    val penanggananPenyakitState by penanggananViewModel.penanggananPenyakitState.collectAsState()
+    val penanggananHamaState by penanggananViewModel.penanggananHamaState.collectAsState()
+
+
+    LaunchedEffect(key1 = String) {
+//        penanggananViewModel.getPenaggananPenyakit("powdery mildew")
+        penanggananViewModel.getPenaggananHama("caterpillar")
+
+    }
+
+    when (penanggananHamaState) {
+        is Resource.Error -> {
+            //
+        }
+
+        is Resource.Idle -> {
+            //
+        }
+
+        is Resource.Loading -> {
+            //
+        }
+
+        is Resource.Success -> {
+            val data = (penanggananHamaState as Resource.Success).data
+            data?.forEach { item ->
+                Log.d(
+                    "HasilScanHama",
+                    "ID Penanganan: ${item.idPenanganan}, Nama Hama: ${item.namaHama}, Penanganan: ${item.penanganan}"
+                )
+            }
+        }
+    }
 
     Column(modifier = modifier.padding(horizontal = 16.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -146,7 +184,7 @@ fun HasilScanScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 fun PreviewHasilScan() {
     Column(modifier = Modifier.fillMaxSize()) {
-        HasilScanScreen(modifier = Modifier)
+//        HasilScanScreen(modifier = Modifier)
 
     }
 

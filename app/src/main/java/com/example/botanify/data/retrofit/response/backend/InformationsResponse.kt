@@ -2,13 +2,13 @@ package com.example.botanify.data.retrofit.response.backend
 
 import com.google.gson.annotations.SerializedName
 
-data class InformationResponse(
+data class InformationsResponse(
 
-	@field:SerializedName("InformationResponse")
-	val informationResponse: List<InformationResponseItem?>? = null
+	@field:SerializedName("InformationsResponse")
+	val informationsResponse: List<InformationsResponseItem?>? = null
 )
 
-data class InformationResponseItem(
+data class InformationsResponseItem(
 
 	@field:SerializedName("penerbit")
 	val penerbit: String? = null,

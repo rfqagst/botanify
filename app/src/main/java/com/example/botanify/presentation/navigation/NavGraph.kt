@@ -27,6 +27,7 @@ import com.example.botanify.presentation.screen.onboarding.OnBoarding
 import com.example.botanify.presentation.screen.profile.EditProfileScreen
 import com.example.botanify.presentation.screen.scan.HasilScanScreen
 import com.example.botanify.presentation.screen.scan.InstruksiScanScreen
+import com.example.botanify.presentation.screen.scan.PenanggananViewModel
 import com.example.botanify.presentation.screen.scan.ScanTanamanScreen
 import com.example.botanify.presentation.screen.scan.ScanViewModel
 import com.example.botanify.presentation.screen.search.DetailTanamanScreen
@@ -162,7 +163,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
         }
 
         composable(route = Screen.HasilScan.route) {
-            HasilScanScreen(modifier = modifier)
+            val penanggananViewModel: PenanggananViewModel = hiltViewModel()
+
+            HasilScanScreen(modifier = modifier, penanggananViewModel)
         }
 
         composable(route = Screen.InstruksiScan.route) {

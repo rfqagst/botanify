@@ -2,12 +2,15 @@ package com.example.botanify.di
 
 import android.util.Log
 import com.example.botanify.data.retrofit.repository.InformationRepository
+import com.example.botanify.data.retrofit.repository.PenanggananRepository
 import com.example.botanify.data.retrofit.repository.PlantRepository
+import com.example.botanify.data.retrofit.repository.ScanRepository
 import com.example.botanify.data.retrofit.repository.UserRepository
 import com.example.botanify.data.retrofit.services.ClassifyPlantDiseasesServices
-import com.example.botanify.data.retrofit.services.InformationServices
-import com.example.botanify.data.retrofit.services.PlantServices
 import com.example.botanify.data.retrofit.services.IdentifyPlantServices
+import com.example.botanify.data.retrofit.services.InformationServices
+import com.example.botanify.data.retrofit.services.PenanggananServices
+import com.example.botanify.data.retrofit.services.PlantServices
 import com.example.botanify.data.retrofit.services.UserServices
 import dagger.Module
 import dagger.Provides
@@ -56,6 +59,8 @@ object NetworkModule {
     }
 
 
+    // PROVIDE RETROFIT
+
     @Provides
     @Singleton
     @Named("Backend")
@@ -90,9 +95,7 @@ object NetworkModule {
     }
 
 
-
-
-
+    // PROVIDE SERVICES BACKEND
     @Provides
     @Singleton
     fun providePlantService(@Named("Backend") retrofit: Retrofit): PlantServices {
@@ -111,8 +114,14 @@ object NetworkModule {
         return retrofit.create(UserServices::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun providePenanganaanServices(@Named("Backend") retrofit: Retrofit): PenanggananServices {
+        return retrofit.create(PenanggananServices::class.java)
+    }
 
 
+    // PROVIDE REPOSITORIES BACKEND
     @Provides
     @Singleton
     fun providePlantRepository(plantServices: PlantServices): PlantRepository {
@@ -131,12 +140,14 @@ object NetworkModule {
         return UserRepository(userServices)
     }
 
+    @Provides
+    @Singleton
+    fun providePenanggananRepository(penanggananServices: PenanggananServices): PenanggananRepository {
+        return PenanggananRepository(penanggananServices)
+    }
 
 
-
-
-
-
+    // PROVIDE SERVICES SCAN
     @Provides
     @Singleton
     fun providePlantScanService(@Named("PlantScan") retrofit: Retrofit): IdentifyPlantServices {
@@ -149,7 +160,14 @@ object NetworkModule {
         return retrofit.create(ClassifyPlantDiseasesServices::class.java)
     }
 
+    // PROVIDE REPOSITORIES SCAN
+    @Provides
+    @Singleton
+    fun provideScanRepository(
+        identifyPlantServices: IdentifyPlantServices,
+        classifyPlantDiseasesServices: ClassifyPlantDiseasesServices
+    ): ScanRepository {
+        return ScanRepository(identifyPlantServices, classifyPlantDiseasesServices)
 
-
-
+    }
 }

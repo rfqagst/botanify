@@ -12,7 +12,7 @@ class HomeViewModel : ViewModel() {
     private val _filters = MutableStateFlow(categoryList)
     val filters: StateFlow<List<FilterData>> = _filters
 
-    private val _selectedCategory = MutableStateFlow("Semua")
+    private val _selectedCategory = MutableStateFlow("")
     val selectedCategory: StateFlow<String> = _selectedCategory
     fun toggleFilter(index: Int) {
         _filters.update { currentFilter ->

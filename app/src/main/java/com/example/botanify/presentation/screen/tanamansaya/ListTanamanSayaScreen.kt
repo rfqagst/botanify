@@ -24,9 +24,14 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxState
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,8 +48,6 @@ import com.example.botanify.presentation.components.TanamanSayaCard
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.utils.Resource
 import formatReminder
-import me.saket.swipe.SwipeAction
-import me.saket.swipe.SwipeableActionsBox
 
 @Composable
 fun ListTanamanSayaScreen(
@@ -54,31 +57,11 @@ fun ListTanamanSayaScreen(
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var selectedPlant by remember { mutableStateOf<PlantCollection?>(null) }
-    var deletePlant by remember { mutableStateOf(false) }
-    var plantToDelete by remember { mutableStateOf<Pair<String, PlantCollection>?>(null) }
 
 
     val listPlantState by viewModel.plantCollection.collectAsState()
     val deletePlantState by viewModel.deletePlantState.collectAsState()
 
-
-    val delete = SwipeAction(
-        onSwipe = {
-            plantToDelete?.let {
-                deletePlant = true
-            }
-        },
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Delete, contentDescription = "",
-                tint = Color(0xFFBA1200),
-                modifier = Modifier
-                    .padding(start = 20.dp)
-                    .size(60.dp)
-            )
-        },
-        background = Color.Transparent
-    )
 
     Column(
         modifier = modifier
@@ -110,38 +93,38 @@ fun ListTanamanSayaScreen(
 
             is Resource.Success -> {
                 listPlantState.let {
-                    val plants =
-                        (listPlantState as Resource.Success<List<PlantCollection>>).data
-                    Log.d("ListTanamanSayaScreen", "Plants: $plants")  // Tambahkan log ini
-
+                    val plants = (listPlantState as Resource.Success<List<PlantCollection>>).data
                     plants?.let {
                         LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
+                            modifier = Modifier.fillMaxSize()
                         ) {
                             items(plants.size) { index ->
                                 val plant = plants[index]
-                                SwipeableActionsBox(
-                                    endActions = listOf(delete.copy(onSwipe = {
-                                        plantToDelete = plant.collectionId to plant
-                                        deletePlant = true
-                                    })),
-                                    backgroundUntilSwipeThreshold = Color.Transparent,
-                                    swipeThreshold = 200.dp
-                                ) {
-                                    TanamanSayaCard(
-                                        modifier = Modifier
-                                            .padding(bottom = 16.dp)
-                                            .clickable {
-                                                selectedPlant = plant
-                                                showBottomSheet = true
-                                            },
-                                        title = plant.plantName,
-                                        image = plant.plantImage,
-                                        schedule = formatReminder(plant.reminder)
-                                    )
 
-                                }
+                                SwipeToDeleteContainer(
+                                    item = plant,
+                                    content = {
+                                        TanamanSayaCard(
+                                            modifier = Modifier
+                                                .padding(bottom = 16.dp)
+                                                .clickable {
+                                                    selectedPlant = plant
+                                                    showBottomSheet = true
+                                                },
+                                            title = plant.plantName,
+                                            image = plant.plantImage,
+                                            schedule = formatReminder(plant.reminder)
+                                        )
+                                    },
+                                    onDelete = {
+                                        val currentUser = viewModel.currentUser?.uid
+
+                                        viewModel.deletePlantCollection(
+                                            currentUser ?: return@SwipeToDeleteContainer,
+                                            plant.collectionId
+                                        )
+                                    }
+                                )
 
                             }
                         }
@@ -181,49 +164,118 @@ fun ListTanamanSayaScreen(
     }
 
 
-    if (deletePlant && plantToDelete != null) {
-        AlertDialog(
-            onDismissRequest = { deletePlant = false },
-            title = { Text(text = "Konfirmasi Hapus") },
-            text = { Text(text = "Apakah Anda yakin ingin menghapus tanaman ini?") },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        val userId = viewModel.currentUser?.uid ?: return@Button
-                        viewModel.deletePlantCollection(userId, plantToDelete!!.first)
-                        deletePlant = false
-                    }
-                ) {
-                    Text("Ya")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { deletePlant = false }) {
-                    Text("Tidak")
-                }
-            }
-        )
-    }
 
     when (deletePlantState) {
         is Resource.Success -> {
             Log.d("ListTanamanSayaScreen", "Plant deleted successfully")
-            deletePlant = false
-            plantToDelete = null
+//            deletePlant = false
+//            plantToDelete = null
         }
+
         is Resource.Error -> {
             Log.d("ListTanamanSayaScreen", "Error deleting plant: ${deletePlantState.message}")
-            deletePlant = false
+//            deletePlant = false
         }
+
         is Resource.Loading -> {
             // Show loading indicator if necessary
         }
+
         is Resource.Idle -> {
             // do nothing
         }
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DeleteBackground(
+    swipeDismissState: SwipeToDismissBoxState,
+) {
+    val color =
+        if (swipeDismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart
+        ) {
+            Color(0xFFFF9E9E)
+        } else {
+            Color.Transparent
+        }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .fillMaxWidth()
+            .background(color)
+            .padding(16.dp),
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        Icon(imageVector = Icons.Default.Delete, contentDescription = "", tint = Color.White)
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T> SwipeToDeleteContainer(
+    item: T,
+    onDelete: (T) -> Unit,
+    content: @Composable (T) -> Unit
+) {
+    var isRemove by remember {
+        mutableStateOf(false)
+    }
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+    val state = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                showDialog = true
+                false
+            } else {
+                false
+            }
+        }
+    )
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(text = "Konfirmasi Hapus") },
+            text = { Text(text = "Apakah Anda yakin ingin menghapus tanaman ini?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        isRemove = true
+                        showDialog = false
+                    },
+                ) {
+                    Text("Ya")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text("Tidak")
+                }
+            }
+        )
+    }
+
+    LaunchedEffect(key1 = isRemove) {
+        if (isRemove) {
+            onDelete(item)
+        }
+
+    }
+
+    SwipeToDismissBox(
+        state = state,
+        backgroundContent = {
+            DeleteBackground(swipeDismissState = state)
+        },
+        content = { content(item) }
+    )
+
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)

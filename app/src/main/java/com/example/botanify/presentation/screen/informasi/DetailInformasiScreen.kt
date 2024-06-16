@@ -23,11 +23,12 @@ fun DetailInformasiScreen(
     informationViewModel: InformationViewModel
 ) {
 
-    val informationDetail by informationViewModel.informationById.collectAsState(initial = null)
+    val informationDetail by informationViewModel.informationById.collectAsState()
 
 
     LaunchedEffect(informationId) {
         informationViewModel.fetchInformationById(informationId)
+        Log.d("DetailTanamanScreens", "LaunchedEffect: $informationId")
     }
 
     when (informationDetail) {
@@ -55,8 +56,8 @@ fun DetailInformasiScreen(
         is Resource.Success -> {
             val information = (informationDetail as Resource.Success).data
             information?.let {
-                InformationWebView(modifier = modifier, webUrl = information.url)
-
+                InformationWebView(modifier = modifier, webUrl = information.data?.url ?: "")
+                Log.d("DetailTanamanScreend", "Success: ${information.data?.idInformasi}")
             }
 
         }

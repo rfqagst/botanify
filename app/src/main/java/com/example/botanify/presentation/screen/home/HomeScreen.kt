@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.botanify.data.firebase.model.Information
+import com.example.botanify.data.retrofit.response.backend.InformationsResponseItem
 import com.example.botanify.presentation.components.BannerCard
 import com.example.botanify.presentation.components.FilterButton
 import com.example.botanify.presentation.components.InformationHomeCard
@@ -47,15 +47,16 @@ fun HomeScreen(
     informationViewModel: InformationViewModel
 ) {
 
-    val informationData by informationViewModel.informations.collectAsState()
+    val informationByCategory by informationViewModel.informationByCategory.collectAsState()
 
 
     val filterState by homeViewModel.filters.collectAsState()
     val selectedCategory by homeViewModel.selectedCategory.collectAsState()
 
-    LaunchedEffect(selectedCategory) {
-        informationViewModel.fetchInformations(selectedCategory)
-    }
+//    LaunchedEffect(selectedCategory) {
+//        informationViewModel.fetchInformations()
+//    }
+
     Column(modifier = modifier.background(SurfaceBase)) {
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -106,6 +107,7 @@ fun HomeScreen(
                         FilterButton(
                             modifier = Modifier.clickable {
                                 homeViewModel.toggleFilter(index)
+                                    informationViewModel.fetchInformationsByCategory(category.category)
                             },
                             category.category,
                             isActive = category.isActive
@@ -117,9 +119,9 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
 
-            when (informationData) {
+            when (informationByCategory) {
                 is Resource.Error -> {
-                    Log.d("ListInformasiScreen", "Error: ${informationData.message}")
+                    Log.d("ListInformasiScreen", "Error: ${informationByCategory.message}")
                 }
 
                 is Resource.Idle -> {
@@ -140,7 +142,8 @@ fun HomeScreen(
                 }
 
                 is Resource.Success -> {
-                    val informations = (informationData as Resource.Success<List<Information>>).data
+                    val informations =
+                        (informationByCategory as Resource.Success<List<InformationsResponseItem>>).data
 
                     informations?.let { infos ->
                         LazyColumn {
@@ -148,11 +151,11 @@ fun HomeScreen(
                                 val information = infos[index]
                                 InformationHomeCard(
                                     modifier = Modifier.clickable {
-                                        navController.navigate(Screen.DetailInformation.route + "/${information.id}")
+                                        navController.navigate(Screen.DetailInformation.route + "/${information.idInformasi}")
                                     },
-                                    title = information.title,
-                                    date = information.date,
-                                    image = information.image
+                                    title = information.judul ?: "",
+                                    date = information.tanggal ?: "",
+                                    image = information.fotoInformasi ?: "",
                                 )
                             }
                         }
@@ -163,6 +166,8 @@ fun HomeScreen(
 
 
             }
+
+
         }
     }
 }
