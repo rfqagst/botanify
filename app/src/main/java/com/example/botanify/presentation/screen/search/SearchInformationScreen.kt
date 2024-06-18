@@ -12,6 +12,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,17 +23,26 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.botanify.R
-import com.example.botanify.data.dummy.informationData
+import com.example.botanify.presentation.components.InformationHomeCard
 import com.example.botanify.presentation.components.SearchInformationCard
 import com.example.botanify.presentation.navigation.Screen
+import com.example.botanify.presentation.screen.informasi.InformationViewModel
 import com.example.botanify.presentation.ui.theme.SecondaryBase
 import com.example.botanify.presentation.ui.theme.SurfaceBase
+import com.example.botanify.utils.Resource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchInformationScreen(modifier: Modifier, navController: NavHostController) {
+fun SearchInformationScreen(
+    modifier: Modifier,
+    navController: NavHostController,
+    informationViewModel: InformationViewModel = hiltViewModel()
+) {
+
+    val information by informationViewModel.informationByCategory.collectAsState()
 
 
     var textSearch by remember {
@@ -77,31 +87,51 @@ fun SearchInformationScreen(modifier: Modifier, navController: NavHostController
             )
         }
     ) {
-        val filteredInformation = if (textSearch.isEmpty()) {
-            informationData
-        } else {
-            informationData.filter { information ->
-                information.title.lowercase().contains(textSearch.lowercase()) ||
-                        information.description.lowercase().contains(textSearch.lowercase())
-            }
-        }
 
-        LazyColumn(modifier = Modifier.padding(16.dp)) {
-            items(filteredInformation.size) { index ->
-                filteredInformation[index].let { information ->
-                    SearchInformationCard(
-                        name = information.title,
-                        description = information.description,
-                        image = information.image,
-                        modifier = Modifier.clickable {
-                            val informationId = information.id
-                            navController.navigate(Screen.DetailInformation.route + "/$informationId")
-                        }
-                    )
+        when (information) {
+            is Resource.Error -> {
+                //
+            }
+
+            is Resource.Idle -> {
+                //
+            }
+
+            is Resource.Loading -> {
+                //
+            }
+
+            is Resource.Success -> {
+                val informationData = information.data ?: emptyList()
+                val filteredInformation = if (textSearch.isEmpty()) {
+                    informationData
+                } else {
+                    informationData.filter { information ->
+                        information.judul?.lowercase()?.contains(textSearch.lowercase()) == true
+                    }
                 }
 
+                LazyColumn(modifier = Modifier.padding(16.dp)) {
+                    items(filteredInformation.size) { index ->
+                        filteredInformation[index].let { information ->
+                            InformationHomeCard(
+                                modifier = Modifier.clickable {
+                                    val informationId = information.idInformasi
+                                    navController.navigate(Screen.DetailInformation.route + "/$informationId")
+                                },
+                                title = information.judul ?: "",
+                                date = information.tanggal ?: "",
+                                image = information.fotoInformasi ?: ""
+                            )
 
+                        }
+
+
+                    }
+                }
             }
         }
+
+
     }
 }

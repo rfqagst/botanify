@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.botanify.data.dummy.FilterData
 import com.example.botanify.data.retrofit.response.backend.InformationsResponseItem
 import com.example.botanify.presentation.components.BannerCard
 import com.example.botanify.presentation.components.FilterButton
@@ -52,9 +53,6 @@ fun HomeScreen(
     val filterState by homeViewModel.filters.collectAsState()
     val selectedCategory by homeViewModel.selectedCategory.collectAsState()
 
-//    LaunchedEffect(selectedCategory) {
-//        informationViewModel.fetchInformations()
-//    }
 
     Column(modifier = modifier.background(SurfaceBase)) {
         Spacer(modifier = Modifier.height(4.dp))
@@ -63,100 +61,122 @@ fun HomeScreen(
             BannerCard(modifier = Modifier, navController)
             Spacer(modifier = Modifier.height(16.dp))
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column {
-                    Text(
-                        text = "Informasi Tanaman",
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(600),
-                        )
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Pelajari lebih lanjut tentang tanaman",
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            lineHeight = 16.sp,
-                            fontWeight = FontWeight(400),
-                        )
-                    )
-                }
-                Text(
-                    modifier = Modifier.clickable {
-                        navController.navigate(Screen.Information.route)
-                    },
-                    text = "Lihat semua",
-                    color = SecondaryBase,
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight(600),
-                    )
-                )
-            }
+            InformationHeader(navController = navController)
             Spacer(modifier = Modifier.height(8.dp))
 
-
-            LazyRow {
-                items(filterState.size) { index ->
-                    filterState[index].let { category ->
-                        FilterButton(
-                            modifier = Modifier.clickable {
-                                homeViewModel.toggleFilter(index)
-                                informationViewModel.fetchInformationsByCategory(category.category)
-                            },
-                            category.category,
-                            isActive = category.isActive
-                        )
-                    }
-                }
-            }
+            FilterRow(
+                filterState = filterState,
+                homeViewModel = homeViewModel,
+                informationViewModel = informationViewModel
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
-
-
-            when (informationByCategory) {
-                is Resource.Error -> {
-                    Log.d("ListInformasiScreen", "Error: ${informationByCategory.message}")
-                }
-
-                is Resource.Idle -> {
-                    TODO()
-                }
-
-                is Resource.Loading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .padding(top = 36.dp)
-                                .size(48.dp)
-                        )
-                    }
-                }
-
-                is Resource.Success -> {
-                    val informations =
-                        (informationByCategory as Resource.Success<List<InformationsResponseItem>>).data
-
-                    informations?.let { infos ->
-                        HomeArticles(navController, infos)
-                    }
-                }
-
-
-            }
+            InformationContent(
+                informationByCategory = informationByCategory,
+                navController = navController
+            )
 
 
         }
     }
 }
 
+
+@Composable
+fun InformationHeader(navController: NavHostController) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column {
+            Text(
+                text = "Informasi Tanaman",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Pelajari lebih lanjut tentang tanaman",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                )
+            )
+        }
+        Text(
+            modifier = Modifier.clickable {
+                navController.navigate(Screen.Information.route)
+            },
+            text = "Lihat semua",
+            color = SecondaryBase,
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+            )
+        )
+    }
+}
+
+@Composable
+fun FilterRow(
+    filterState: List<FilterData>,
+    homeViewModel: HomeViewModel,
+    informationViewModel: InformationViewModel
+) {
+    LazyRow {
+        items(filterState.size) { index ->
+            val category = filterState[index]
+            FilterButton(
+                modifier = Modifier.clickable {
+                    homeViewModel.toggleFilter(index)
+                    informationViewModel.fetchInformationsByCategory(category.category)
+                },
+                filterText = category.category,
+                isActive = category.isActive,
+            )
+        }
+    }
+}
+
+
+@Composable
+fun InformationContent(
+    informationByCategory: Resource<List<InformationsResponseItem>>,
+    navController: NavHostController
+) {
+    when (informationByCategory) {
+        is Resource.Error -> {
+            Log.d("HomeScreen", "Error: ${informationByCategory.message}")
+        }
+
+        is Resource.Idle -> {
+            // Handle idle state
+        }
+
+        is Resource.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(top = 36.dp)
+                        .size(48.dp)
+                )
+            }
+        }
+
+        is Resource.Success -> {
+            val informations = informationByCategory.data
+            informations?.let { infos ->
+                HomeArticles(navController, infos)
+            }
+        }
+    }
+}
 
 @Composable
 fun HomeArticles(navController: NavHostController, infos: List<InformationsResponseItem>) {

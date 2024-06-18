@@ -16,12 +16,14 @@ class PenanggananViewModel @Inject constructor(
     private val repository: PenanggananRepository
 ) : ViewModel() {
 
-    private val _penanggananState = MutableStateFlow<Penangganan?>(null)
-    val penanggananState: StateFlow<Penangganan?> = _penanggananState
+    private val _penanggananState = MutableStateFlow<PenanggananUiState>(PenanggananUiState.Loading)
+    val penanggananState: StateFlow<PenanggananUiState?> = _penanggananState
 
 
     fun getPenangganan(hama: String, penyakit: String) {
         viewModelScope.launch {
+            _penanggananState.value = PenanggananUiState.Loading
+
             try {
                 var currentPenangganan = Penangganan()
 
@@ -36,7 +38,6 @@ class PenanggananViewModel @Inject constructor(
                         )
                         Log.d("penanggananViewModel", firstHama.penanganan.toString())
                     }
-                    _penanggananState.value = currentPenangganan
                 }
 
                 if (penyakit.isNotEmpty()) {
@@ -50,13 +51,20 @@ class PenanggananViewModel @Inject constructor(
                         )
                         Log.d("penanggananViewModel", firstPenyakit.penanganan.toString())
                     }
-                    _penanggananState.value = currentPenangganan
                 }
+                _penanggananState.value = PenanggananUiState.Success(currentPenangganan)
 
             } catch (e: Exception) {
                 Log.e("penanggananViewModel", "Error fetching data", e)
+                _penanggananState.value = PenanggananUiState.Error
             }
         }
     }
 }
 
+
+sealed interface PenanggananUiState {
+    data class Success(val penangganan: Penangganan) : PenanggananUiState
+    object Error : PenanggananUiState
+    object Loading : PenanggananUiState
+}

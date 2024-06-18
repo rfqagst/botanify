@@ -1,6 +1,6 @@
 package com.example.botanify.presentation.screen.scan
 
-import android.widget.Toast
+import android.content.Context
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
+import com.example.botanify.data.retrofit.response.scan.Penangganan
 import com.example.botanify.presentation.components.ExpandableCard
 import com.example.botanify.presentation.components.ExpandableCardScan
 import com.example.botanify.presentation.components.SmallBtn
@@ -57,9 +58,7 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
         targetValue = if (expandedStatePenanganan) 180f else 0f, label = ""
     )
 
-    val context = LocalContext.current
-
-    val penanggananState by penanggananViewModel.penanggananState.collectAsState()
+    val uiState by penanggananViewModel.penanggananState.collectAsState()
 
     val scrollState = rememberScrollState()
 
@@ -69,75 +68,107 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
     }
 
 
-    Column(modifier = modifier
-        .padding(horizontal = 16.dp)
-        .verticalScroll(scrollState)) {
-        Spacer(modifier = Modifier.height(16.dp))
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .verticalScroll(scrollState)
+    ) {
+        HasilScanContent(
+            expandedStateKeterangan,
+            onExpandKeterangan = { expandedStateKeterangan = !expandedStateKeterangan },
+            expandedStateDiagnosa,
+            onExpandDiagnosa = { expandedStateDiagnosa = !expandedStateDiagnosa },
+            expandedStatePenanganan,
+            onExpandPenanganan = { expandedStatePenanganan = !expandedStatePenanganan },
+            rotationStateKeterangan,
+            rotationStateDiagnosa,
+            rotationStatePenanganan,
+            uiState = uiState ?: PenanggananUiState.Loading,
+        )
+
+    }
+}
+
+
+@Composable
+fun HasilScanContent(
+    expandedStateKeterangan: Boolean,
+    onExpandKeterangan: () -> Unit,
+    expandedStateDiagnosa: Boolean,
+    onExpandDiagnosa: () -> Unit,
+    expandedStatePenanganan: Boolean,
+    onExpandPenanganan: () -> Unit,
+    rotationStateKeterangan: Float,
+    rotationStateDiagnosa: Float,
+    rotationStatePenanganan: Float,
+    uiState: PenanggananUiState,
+) {
+    Spacer(modifier = Modifier.height(16.dp))
+    Image(
+        painter = painterResource(id = R.drawable.scantnm),
+        contentDescription = "",
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(221.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        contentScale = ContentScale.FillWidth
+    )
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = R.drawable.scantnm),
-            contentDescription = "",
+            contentDescription = null,
             modifier = Modifier
-                .fillMaxWidth()
-                .height(221.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.FillWidth
+                .size(114.dp)
+                .clip(RoundedCornerShape(15.dp)),
+            contentScale = ContentScale.Crop,
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.width(24.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = R.drawable.scantnm),
-                contentDescription = null,
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Agloenema",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    lineHeight = 30.sp,
+                    fontWeight = FontWeight(700),
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            SmallBtn(
+                text = "Tambah Ke Koleksi Tanaman",
+                onClick = {
+
+                },
                 modifier = Modifier
-                    .size(114.dp)
-                    .clip(RoundedCornerShape(15.dp)),
-                contentScale = ContentScale.Crop,
             )
-            Spacer(modifier = Modifier.width(24.dp))
-
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Agloenema",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        lineHeight = 30.sp,
-                        fontWeight = FontWeight(700),
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SmallBtn(
-                    text = "Tambah Ke Koleksi Tanaman",
-                    onClick = {
-                        Toast.makeText(
-                            context,
-                            "Berhasil Menambah Tanaman Ke Koleksi",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    },
-                    modifier = Modifier
-                )
-            }
         }
+    }
 
-        Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
-        PlantDetail(
-            expandedStateKeterangan = expandedStateKeterangan,
-            onExpandKeterangan = { expandedStateKeterangan = !expandedStateKeterangan },
-            expandedStateDiagnosa = expandedStateDiagnosa,
-            onExpandDiagnosa = { expandedStateDiagnosa = !expandedStateDiagnosa },
-            expandedStatePenanganan = expandedStatePenanganan,
-            onExpandPenanganan = { expandedStatePenanganan = !expandedStatePenanganan },
-            rotationStateKeterangan = rotationStateKeterangan,
-            rotationStateDiagnosa = rotationStateDiagnosa,
-            rotationStatePenanganan = rotationStatePenanganan,
-            penanggananPenyakit = penanggananState?.penanggananPenyakit ?: "Tidak Ditemukan",
-            namaPenyakit = penanggananState?.namaPenyakit?.uppercase() ?: "Tidak Ditemukan",
-            namaHama = penanggananState?.namaHama?.uppercase() ?: "Tidak Ditemukan",
-            penanggananHama = penanggananState?.penanggananHama ?: "Tidak Ditemukan",
-
+    when (uiState) {
+        is PenanggananUiState.Loading -> {
+            Text(text = "Loading...")
+        }
+        is PenanggananUiState.Success -> {
+            PlantDetail(
+                expandedStateKeterangan = expandedStateKeterangan,
+                onExpandKeterangan = onExpandKeterangan,
+                expandedStateDiagnosa = expandedStateDiagnosa,
+                onExpandDiagnosa = onExpandDiagnosa,
+                expandedStatePenanganan = expandedStatePenanganan,
+                onExpandPenanganan = onExpandPenanganan,
+                rotationStateKeterangan = rotationStateKeterangan,
+                rotationStateDiagnosa = rotationStateDiagnosa,
+                rotationStatePenanganan = rotationStatePenanganan,
+                penangganan = uiState.penangganan
             )
-
+        }
+        is PenanggananUiState.Error -> {
+            Text(text = "Error loading data")
+        }
     }
 }
 
@@ -152,10 +183,7 @@ fun PlantDetail(
     rotationStateKeterangan: Float,
     rotationStateDiagnosa: Float,
     rotationStatePenanganan: Float,
-    penanggananPenyakit: String,
-    penanggananHama: String,
-    namaPenyakit: String,
-    namaHama: String,
+    penangganan: Penangganan
 ) {
     ExpandableCard(
         modifier = Modifier,
@@ -173,8 +201,8 @@ fun PlantDetail(
         onClick = onExpandDiagnosa,
         rotationState = rotationStateDiagnosa,
         expandedState = expandedStateDiagnosa,
-        penyakitValue = "Nama Penyakit: $namaPenyakit",
-        hamaValue = "Nama Hama: $namaHama"
+        penyakitValue = "Nama Penyakit: ${penangganan.namaPenyakit.uppercase()}",
+        hamaValue = "Nama Hama: ${penangganan.namaHama.uppercase()}"
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -184,8 +212,8 @@ fun PlantDetail(
         onClick = onExpandPenanganan,
         rotationState = rotationStatePenanganan,
         expandedState = expandedStatePenanganan,
-        penyakitValue = "Penanganan Penyakit: $penanggananPenyakit",
-        hamaValue = "Penanganan Hama: $penanggananHama"
+        penyakitValue = "Penanganan Penyakit: ${penangganan.penanggananPenyakit}",
+        hamaValue = "Penanganan Hama: ${penangganan.penanggananHama}"
     )
 }
 

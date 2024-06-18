@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
 import com.example.botanify.presentation.navigation.Screen
@@ -490,7 +491,6 @@ fun ExpandableCard(
 }
 
 
-
 @Composable
 fun ExpandableCardScan(
     modifier: Modifier,
@@ -629,7 +629,7 @@ fun SearchTanamanCard(modifier: Modifier, name: String, description: String, ima
 
 
 @Composable
-fun SearchInformationCard(modifier: Modifier, name: String, description: String, image: Int) {
+fun SearchInformationCard(modifier: Modifier, name: String, image: String) {
     Row(
         modifier = modifier
             .padding(bottom = 16.dp)
@@ -647,15 +647,15 @@ fun SearchInformationCard(modifier: Modifier, name: String, description: String,
                 .background(ContentLightBlue)
         ) {
 
-//            AsyncImage(
-//                model = image, contentDescription = null, contentScale = ContentScale.Crop,
-//            )
-
-            Image(
-                painter = painterResource(id = image),
-                contentScale = ContentScale.Crop,
-                contentDescription = null
+            AsyncImage(
+                model = image, contentDescription = null, contentScale = ContentScale.Crop,
             )
+
+//            Image(
+//                painter = painterResource(id = image),
+//                contentScale = ContentScale.Crop,
+//                contentDescription = null
+//            )
         }
         Spacer(modifier = Modifier.width(8.dp))
 
@@ -673,17 +673,17 @@ fun SearchInformationCard(modifier: Modifier, name: String, description: String,
             )
             Spacer(modifier = Modifier.height(4.dp))
 
-            Text(
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                text = description,
-                color = ContentSemiDark,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    fontWeight = FontWeight(400),
-                )
-            )
+//            Text(
+//                overflow = TextOverflow.Ellipsis,
+//                maxLines = 1,
+//                text = description,
+//                color = ContentSemiDark,
+//                style = TextStyle(
+//                    fontSize = 14.sp,
+//                    lineHeight = 16.sp,
+//                    fontWeight = FontWeight(400),
+//                )
+//            )
             Spacer(modifier = Modifier.height(6.dp))
 
             Row(
