@@ -1,7 +1,9 @@
 package com.example.botanify.presentation.screen.scan
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -31,7 +33,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,21 +58,25 @@ fun ScanTanamanScreen(
     viewModel: ScanViewModel
 ) {
     val applicationContext = LocalContext.current
+    val identifyPlantNameState by viewModel.identifyPlantNameState.collectAsState()
+    val identifyPlantDiseasesState by viewModel.identifyPlantDiseasesState.collectAsState()
+    val selectedImageUri by viewModel.selectedImageUri.collectAsState()
+
+
     val controller = remember {
         LifecycleCameraController(applicationContext).apply {
             setEnabledUseCases(CameraController.IMAGE_CAPTURE)
         }
     }
 
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-    var instruksi by remember { mutableStateOf<Uri?>(null) }
     val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            selectedImageUri = uri
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                viewModel.selectedImageUri(uri)
+            }
         }
 
-    val identifyPlantNameState by viewModel.identifyPlantNameState.collectAsState()
-    val identifyPlantDiseasesState by viewModel.identifyPlantDiseasesState.collectAsState()
+
 
     Column(modifier.fillMaxSize()) {
         Box(
@@ -124,84 +129,25 @@ fun ScanTanamanScreen(
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.15f),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    modifier = Modifier
-                        .size(45.dp)
-                        .clickable {
-                            launcher.launch("image/*")
-                        },
-                    painter = painterResource(id = R.drawable.ic_galleryblack),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Gallery",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight(500),
-                    )
-                )
-            }
+        CameraBottomMenu(
+            modifier = Modifier.weight(0.15f),
+            launcher = launcher,
+            selectedImageUri = selectedImageUri,
+            navController = navController,
+            viewModel = viewModel,
+            applicationContext = applicationContext
+        )
 
 
-            Image(
-                modifier = Modifier
-                    .size(68.dp)
-                    .clickable {
-                        selectedImageUri
-                            ?.toFile(applicationContext)
-                            ?.let { file ->
-                                viewModel.scanPlant(file)
-                            }
-
-                    },
-                painter = if (selectedImageUri != null) painterResource(id = R.drawable.ic_checkcircle) else painterResource(
-                    id = R.drawable.ic_scan2
-                ),
-                contentDescription = null
-            )
-
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    modifier = Modifier
-                        .size(45.dp)
-                        .clickable {
-                            if (instruksi != null) {
-                                navController.navigate(Screen.InstruksiScan.route)
-                            } else navController.navigate(Screen.InstruksiScan.route)
-                        },
-                    painter = painterResource(id = R.drawable.ic_instruksi),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "Instruksi",
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight(500),
-                    )
-                )
-            }
-
-        }
-
-
-        when(identifyPlantNameState) {
+        when (identifyPlantNameState) {
             is Resource.Error -> {
                 Log.d("ScanTanamanScreen", "Error: ${identifyPlantNameState.message}")
             }
+
             is Resource.Idle -> {
                 //
             }
+
             is Resource.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -214,11 +160,16 @@ fun ScanTanamanScreen(
                                 .size(48.dp)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text(text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman",fontSize = 20.sp, textAlign = TextAlign.Center)
+                        Text(
+                            text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
                     }
 
                 }
             }
+
             is Resource.Success -> {
                 val result = (identifyPlantNameState as Resource.Success).data
                 Log.d("identifyPlantName", "Success: $result")
@@ -226,13 +177,15 @@ fun ScanTanamanScreen(
         }
 
 
-        when(identifyPlantDiseasesState) {
+        when (identifyPlantDiseasesState) {
             is Resource.Error -> {
                 Log.d("ScanTanamanScreen", "Error: ${identifyPlantDiseasesState.message}")
             }
+
             is Resource.Idle -> {
                 //
             }
+
             is Resource.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -245,19 +198,102 @@ fun ScanTanamanScreen(
                                 .size(48.dp)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text(text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman", fontSize = 20.sp,  textAlign = TextAlign.Center)
+                        Text(
+                            text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
+
             is Resource.Success -> {
                 val result = (identifyPlantDiseasesState as Resource.Success).data
                 Log.d("identifyPlantDisease", "Success: $result")
-                navController.navigate(Screen.HasilScan.route)
+                navController.navigate(Screen.HasilScan.route )
             }
         }
     }
 
 
+}
+
+
+@Composable
+fun CameraBottomMenu(
+    modifier: Modifier,
+    launcher: ManagedActivityResultLauncher<String, Uri?>,
+    selectedImageUri: Uri?,
+    navController: NavHostController,
+    viewModel: ScanViewModel,
+    applicationContext: Context
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                modifier = Modifier
+                    .size(45.dp)
+                    .clickable {
+                        launcher.launch("image/*")
+                    },
+                painter = painterResource(id = R.drawable.ic_galleryblack),
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Gallery",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500),
+                )
+            )
+        }
+
+
+        Image(
+            modifier = Modifier
+                .size(68.dp)
+                .clickable {
+                    selectedImageUri
+                        ?.toFile(applicationContext)
+                        ?.let { file ->
+                            viewModel.scanPlant(file)
+                        }
+
+                },
+            painter = if (selectedImageUri != null) painterResource(id = R.drawable.ic_checkcircle) else painterResource(
+                id = R.drawable.ic_scan2
+            ),
+            contentDescription = null
+        )
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                modifier = Modifier
+                    .size(45.dp)
+                    .clickable {
+                        navController.navigate(Screen.InstruksiScan.route)
+                    },
+                painter = painterResource(id = R.drawable.ic_instruksi),
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Instruksi",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500),
+                )
+            )
+        }
+
+    }
 }
 
 

@@ -54,7 +54,6 @@ class InformationViewModel @Inject constructor(
         }
     }
 
-
     fun fetchInformationById(informationId: String) {
         viewModelScope.launch {
             repository.getInformationsById(informationId).collect { informationsData ->
@@ -63,6 +62,5 @@ class InformationViewModel @Inject constructor(
             }
         }
     }
-
 
 }

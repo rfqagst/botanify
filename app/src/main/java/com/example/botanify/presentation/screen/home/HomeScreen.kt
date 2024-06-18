@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -107,7 +106,7 @@ fun HomeScreen(
                         FilterButton(
                             modifier = Modifier.clickable {
                                 homeViewModel.toggleFilter(index)
-                                    informationViewModel.fetchInformationsByCategory(category.category)
+                                informationViewModel.fetchInformationsByCategory(category.category)
                             },
                             category.category,
                             isActive = category.isActive
@@ -146,21 +145,7 @@ fun HomeScreen(
                         (informationByCategory as Resource.Success<List<InformationsResponseItem>>).data
 
                     informations?.let { infos ->
-                        LazyColumn {
-                            items(infos.size) { index ->
-                                val information = infos[index]
-                                InformationHomeCard(
-                                    modifier = Modifier.clickable {
-                                        navController.navigate(Screen.DetailInformation.route + "/${information.idInformasi}")
-                                    },
-                                    title = information.judul ?: "",
-                                    date = information.tanggal ?: "",
-                                    image = information.fotoInformasi ?: "",
-                                )
-                            }
-                        }
-
-
+                        HomeArticles(navController, infos)
                     }
                 }
 
@@ -168,6 +153,24 @@ fun HomeScreen(
             }
 
 
+        }
+    }
+}
+
+
+@Composable
+fun HomeArticles(navController: NavHostController, infos: List<InformationsResponseItem>) {
+    LazyColumn {
+        items(infos.size) { index ->
+            val information = infos[index]
+            InformationHomeCard(
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.DetailInformation.route + "/${information.idInformasi}")
+                },
+                title = information.judul ?: "",
+                date = information.tanggal ?: "",
+                image = information.fotoInformasi ?: "",
+            )
         }
     }
 }

@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.retrofit.repository.PenanggananRepository
-import com.example.botanify.data.retrofit.response.backend.HamaResponseItem
-import com.example.botanify.data.retrofit.response.backend.PenyakitResponseItem
-import com.example.botanify.utils.Resource
+import com.example.botanify.data.retrofit.response.scan.Penangganan
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,40 +16,47 @@ class PenanggananViewModel @Inject constructor(
     private val repository: PenanggananRepository
 ) : ViewModel() {
 
-    private val _penanggananPenyakitState =
-        MutableStateFlow<Resource<List<PenyakitResponseItem>>>(Resource.Idle())
-    val penanggananPenyakitState: StateFlow<Resource<List<PenyakitResponseItem>>> =
-        _penanggananPenyakitState
+    private val _penanggananState = MutableStateFlow<Penangganan?>(null)
+    val penanggananState: StateFlow<Penangganan?> = _penanggananState
 
-    private val _penanggananHamaState =
-        MutableStateFlow<Resource<List<HamaResponseItem>>>(Resource.Idle())
-    val penanggananHamaState: StateFlow<Resource<List<HamaResponseItem>>> =
-        _penanggananHamaState
 
-    fun getPenaggananPenyakit(namaPenyakit: String) {
+    fun getPenangganan(hama: String, penyakit: String) {
         viewModelScope.launch {
-            repository.getPenanggananPenyakit(namaPenyakit).collect { result ->
-                _penanggananPenyakitState.value = result
-                Log.d(
-                    "PenanggananViewModel",
-                    "getPenaggananPenyakit: $result.data"
-                )
+            try {
+                var currentPenangganan = Penangganan()
+
+                if (hama.isNotEmpty()) {
+                    val hamaResponse = repository.getPenanggananHama(hama)
+                    if (hamaResponse.isNotEmpty()) {
+                        val firstHama = hamaResponse.first()
+                        currentPenangganan = currentPenangganan.copy(
+                            idHama = firstHama.idPenanganan ?: 0,
+                            namaHama = firstHama.namaHama ?: "",
+                            penanggananHama = firstHama.penanganan ?: ""
+                        )
+                        Log.d("penanggananViewModel", firstHama.penanganan.toString())
+                    }
+                    _penanggananState.value = currentPenangganan
+                }
+
+                if (penyakit.isNotEmpty()) {
+                    val penyakitResponse = repository.getPenanggananPenyakit(penyakit)
+                    if (penyakitResponse.isNotEmpty()) {
+                        val firstPenyakit = penyakitResponse.first()
+                        currentPenangganan = currentPenangganan.copy(
+                            idPenyakit = firstPenyakit.idPenanganan ?: 0,
+                            namaPenyakit = firstPenyakit.namaPenyakit ?: "",
+                            penanggananPenyakit = firstPenyakit.penanganan ?: ""
+                        )
+                        Log.d("penanggananViewModel", firstPenyakit.penanganan.toString())
+                    }
+                    _penanggananState.value = currentPenangganan
+                }
+
+            } catch (e: Exception) {
+                Log.e("penanggananViewModel", "Error fetching data", e)
             }
-
-        }
-    }
-
-
-    fun getPenaggananHama(namaHama: String) {
-        viewModelScope.launch {
-            repository.getPenanggananHama(namaHama).collect { result ->
-                _penanggananHamaState.value = result
-                Log.d(
-                    "PenanggananViewModel",
-                    "PenanggananHama: $result.data"
-                )
-            }
-
         }
     }
 }
+

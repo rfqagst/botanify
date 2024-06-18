@@ -1,6 +1,5 @@
 package com.example.botanify.presentation.screen.scan
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -13,7 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.botanify.R
 import com.example.botanify.presentation.components.ExpandableCard
+import com.example.botanify.presentation.components.ExpandableCardScan
 import com.example.botanify.presentation.components.SmallBtn
-import com.example.botanify.utils.Resource
 
 
 @Composable
@@ -58,41 +59,19 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
 
     val context = LocalContext.current
 
-    val penanggananPenyakitState by penanggananViewModel.penanggananPenyakitState.collectAsState()
-    val penanggananHamaState by penanggananViewModel.penanggananHamaState.collectAsState()
+    val penanggananState by penanggananViewModel.penanggananState.collectAsState()
+
+    val scrollState = rememberScrollState()
 
 
-    LaunchedEffect(key1 = String) {
-//        penanggananViewModel.getPenaggananPenyakit("powdery mildew")
-        penanggananViewModel.getPenaggananHama("caterpillar")
-
+    LaunchedEffect(Unit) {
+        penanggananViewModel.getPenangganan("caterpillar", "powdery mildew")
     }
 
-    when (penanggananHamaState) {
-        is Resource.Error -> {
-            //
-        }
 
-        is Resource.Idle -> {
-            //
-        }
-
-        is Resource.Loading -> {
-            //
-        }
-
-        is Resource.Success -> {
-            val data = (penanggananHamaState as Resource.Success).data
-            data?.forEach { item ->
-                Log.d(
-                    "HasilScanHama",
-                    "ID Penanganan: ${item.idPenanganan}, Nama Hama: ${item.namaHama}, Penanganan: ${item.penanganan}"
-                )
-            }
-        }
-    }
-
-    Column(modifier = modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = modifier
+        .padding(horizontal = 16.dp)
+        .verticalScroll(scrollState)) {
         Spacer(modifier = Modifier.height(16.dp))
         Image(
             painter = painterResource(id = R.drawable.scantnm),
@@ -118,7 +97,7 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Aglaonema",
+                    text = "Agloenema",
                     style = TextStyle(
                         fontSize = 20.sp,
                         lineHeight = 30.sp,
@@ -142,41 +121,72 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ExpandableCard(
-            modifier = Modifier,
-            cardTitle = "Keterangan",
-            onClick = {
-                expandedStateKeterangan = !expandedStateKeterangan
-            },
-            rotationState = rotationStateKeterangan,
-            expandedState = expandedStateKeterangan,
-            expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
-        )
+        PlantDetail(
+            expandedStateKeterangan = expandedStateKeterangan,
+            onExpandKeterangan = { expandedStateKeterangan = !expandedStateKeterangan },
+            expandedStateDiagnosa = expandedStateDiagnosa,
+            onExpandDiagnosa = { expandedStateDiagnosa = !expandedStateDiagnosa },
+            expandedStatePenanganan = expandedStatePenanganan,
+            onExpandPenanganan = { expandedStatePenanganan = !expandedStatePenanganan },
+            rotationStateKeterangan = rotationStateKeterangan,
+            rotationStateDiagnosa = rotationStateDiagnosa,
+            rotationStatePenanganan = rotationStatePenanganan,
+            penanggananPenyakit = penanggananState?.penanggananPenyakit ?: "Tidak Ditemukan",
+            namaPenyakit = penanggananState?.namaPenyakit?.uppercase() ?: "Tidak Ditemukan",
+            namaHama = penanggananState?.namaHama?.uppercase() ?: "Tidak Ditemukan",
+            penanggananHama = penanggananState?.penanggananHama ?: "Tidak Ditemukan",
 
-        Spacer(modifier = Modifier.height(16.dp))
-        ExpandableCard(
-            modifier = Modifier,
-            cardTitle = "Hasil Diagnosa",
-            onClick = {
-                expandedStateDiagnosa = !expandedStateDiagnosa
-            },
-            rotationState = rotationStateDiagnosa,
-            expandedState = expandedStateDiagnosa,
-            expadableValue = "Nama Penyakit: Penyakit Embun Tepung\nHama: Jamur Erysiphales."
-        )
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
-        ExpandableCard(
-            modifier = Modifier,
-            cardTitle = "Penanganan",
-            onClick = {
-                expandedStatePenanganan = !expandedStatePenanganan
-            },
-            rotationState = rotationStatePenanganan,
-            expandedState = expandedStatePenanganan,
-            expadableValue = "Memastikan sirkulasi udara yang baik di sekitar tanaman, menghindari kelembaban berlebih, dan menggunakan fungisida yang sesuai dapat membantu mengendalikan penyakit ini."
-        )
     }
+}
+
+@Composable
+fun PlantDetail(
+    expandedStateKeterangan: Boolean,
+    onExpandKeterangan: () -> Unit,
+    expandedStateDiagnosa: Boolean,
+    onExpandDiagnosa: () -> Unit,
+    expandedStatePenanganan: Boolean,
+    onExpandPenanganan: () -> Unit,
+    rotationStateKeterangan: Float,
+    rotationStateDiagnosa: Float,
+    rotationStatePenanganan: Float,
+    penanggananPenyakit: String,
+    penanggananHama: String,
+    namaPenyakit: String,
+    namaHama: String,
+) {
+    ExpandableCard(
+        modifier = Modifier,
+        cardTitle = "Keterangan",
+        onClick = onExpandKeterangan,
+        rotationState = rotationStateKeterangan,
+        expandedState = expandedStateKeterangan,
+        expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+    ExpandableCardScan(
+        modifier = Modifier,
+        cardTitle = "Hasil Diagnosa",
+        onClick = onExpandDiagnosa,
+        rotationState = rotationStateDiagnosa,
+        expandedState = expandedStateDiagnosa,
+        penyakitValue = "Nama Penyakit: $namaPenyakit",
+        hamaValue = "Nama Hama: $namaHama"
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+    ExpandableCardScan(
+        modifier = Modifier,
+        cardTitle = "Penanganan",
+        onClick = onExpandPenanganan,
+        rotationState = rotationStatePenanganan,
+        expandedState = expandedStatePenanganan,
+        penyakitValue = "Penanganan Penyakit: $penanggananPenyakit",
+        hamaValue = "Penanganan Hama: $penanggananHama"
+    )
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.botanify.presentation.screen.scan
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.botanify.data.retrofit.repository.ScanRepository
@@ -27,14 +28,21 @@ class ScanViewModel @Inject constructor(
     val identifyPlantDiseasesState: StateFlow<Resource<PredictionsResponse>> =
         _identifyPlantDiseasesState
 
+    private val _selectedImageUri = MutableStateFlow<Uri?>(null)
+    val selectedImageUri: StateFlow<Uri?> = _selectedImageUri
+
+    fun selectedImageUri(uri: Uri) {
+        _selectedImageUri.value = uri
+    }
+
 
     fun scanPlant(image: File) {
         viewModelScope.launch {
             _identifyPlantNameState.value = Resource.Loading()
-            _identifyPlantDiseasesState.value = Resource.Loading()
 
             repository.identifyPlantName(image).collect { result ->
                 _identifyPlantNameState.value = result
+                _identifyPlantDiseasesState.value = Resource.Loading()
                 if (result is Resource.Success) {
                     repository.classifyPlantDiseasesPests(image).collect { diseaseResult ->
                         _identifyPlantDiseasesState.value = diseaseResult
@@ -49,5 +57,6 @@ class ScanViewModel @Inject constructor(
     }
 
 
-
 }
+
+

@@ -489,6 +489,79 @@ fun ExpandableCard(
     }
 }
 
+
+
+@Composable
+fun ExpandableCardScan(
+    modifier: Modifier,
+    cardTitle: String,
+    onClick: () -> Unit,
+    rotationState: Float,
+    expandedState: Boolean,
+    penyakitValue: String,
+    hamaValue: String
+) {
+
+    Column(
+        modifier = modifier.background(ContentWhite)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = cardTitle,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    lineHeight = 44.sp,
+                    fontWeight = FontWeight(700),
+                )
+            )
+            IconButton(
+                modifier = Modifier.rotate(rotationState),
+                onClick = onClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    tint = SecondaryBase,
+                    contentDescription = null
+                )
+            }
+        }
+
+        if (expandedState) {
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    text = penyakitValue,
+                    color = ContentSemiDark,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight(400),
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    text = hamaValue,
+                    color = ContentSemiDark,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight(400),
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: String) {
     Row(
