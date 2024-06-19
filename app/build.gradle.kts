@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -58,8 +59,6 @@ kapt {
 
 
 dependencies {
-
-
 
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)

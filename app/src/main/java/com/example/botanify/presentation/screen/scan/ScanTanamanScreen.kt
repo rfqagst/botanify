@@ -31,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,10 +45,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
+import com.example.botanify.data.retrofit.response.scan.ScanResult
+import com.example.botanify.data.retrofit.response.scan.gson
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.ContentWhite
-import com.example.botanify.utils.Resource
 import com.example.botanify.utils.toFile
+import java.net.URLEncoder
 
 @Composable
 fun ScanTanamanScreen(
@@ -58,10 +59,9 @@ fun ScanTanamanScreen(
     viewModel: ScanViewModel
 ) {
     val applicationContext = LocalContext.current
-    val identifyPlantNameState by viewModel.identifyPlantNameState.collectAsState()
-    val identifyPlantDiseasesState by viewModel.identifyPlantDiseasesState.collectAsState()
     val selectedImageUri by viewModel.selectedImageUri.collectAsState()
 
+    val scanState by viewModel.scanState.collectAsState()
 
     val controller = remember {
         LifecycleCameraController(applicationContext).apply {
@@ -76,8 +76,6 @@ fun ScanTanamanScreen(
             }
         }
 
-
-
     Column(modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -90,6 +88,7 @@ fun ScanTanamanScreen(
                     painter = rememberAsyncImagePainter(model = selectedImageUri),
                     contentDescription = null,
                 )
+                Log.d("SelectedScanHasil", "selectedImageUriSScan: $selectedImageUri")
             } else {
                 CameraPreview(controller = controller, modifier = Modifier.fillMaxSize())
                 Row(
@@ -139,16 +138,16 @@ fun ScanTanamanScreen(
         )
 
 
-        when (identifyPlantNameState) {
-            is Resource.Error -> {
-                Log.d("ScanTanamanScreen", "Error: ${identifyPlantNameState.message}")
+        when (scanState) {
+            is ScanState.Error -> {
+                Log.d("ScanTanamanScreen", "Error: ${(scanState as ScanState.Error).message}")
             }
 
-            is Resource.Idle -> {
+            is ScanState.Idle -> {
                 //
             }
 
-            is Resource.Loading -> {
+            is ScanState.LoadingIdentifyPlantDiseases -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -161,32 +160,15 @@ fun ScanTanamanScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman",
+                            text = "Sedang Mengenali Nama Tanaman",
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center
                         )
                     }
-
                 }
             }
 
-            is Resource.Success -> {
-                val result = (identifyPlantNameState as Resource.Success).data
-                Log.d("identifyPlantName", "Success: $result")
-            }
-        }
-
-
-        when (identifyPlantDiseasesState) {
-            is Resource.Error -> {
-                Log.d("ScanTanamanScreen", "Error: ${identifyPlantDiseasesState.message}")
-            }
-
-            is Resource.Idle -> {
-                //
-            }
-
-            is Resource.Loading -> {
+            is ScanState.LoadingIdentifyPlantName -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -199,7 +181,7 @@ fun ScanTanamanScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Sedang Mendiagnosis Penyakit dan Hama Tanaman",
+                            text = "Sedang Mendiagnosis Penyakit/Hama Tanaman",
                             fontSize = 20.sp,
                             textAlign = TextAlign.Center
                         )
@@ -207,15 +189,28 @@ fun ScanTanamanScreen(
                 }
             }
 
-            is Resource.Success -> {
-                val result = (identifyPlantDiseasesState as Resource.Success).data
-                Log.d("identifyPlantDisease", "Success: $result")
-                navController.navigate(Screen.HasilScan.route )
+            is ScanState.ScanResult -> {
+
+                val scanResult = (scanState as ScanState.ScanResult)
+                val sharedPlantDetail = ScanResult(
+                    plantName = scanResult.plantName,
+                    disease = scanResult.disease,
+                    userImageUri = Uri.encode(scanResult.userImageUri)
+                )
+
+                Log.d("ScanTanamanScreen", "Scan Result: ${scanResult.userImageUri}")
+
+                val jsonString = URLEncoder.encode(gson.toJson(sharedPlantDetail), "UTF-8")
+                Log.d("JsonStringggss", "Scan Result: $jsonString")
+
+                navController.navigate(Screen.HasilScan.route + "/$jsonString")
+
             }
+
         }
+
+
     }
-
-
 }
 
 

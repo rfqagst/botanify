@@ -1,8 +1,10 @@
 package com.example.botanify.presentation.screen.scan
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,18 +34,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
 import com.example.botanify.data.retrofit.response.scan.Penangganan
+import com.example.botanify.data.retrofit.response.scan.ScanResult
 import com.example.botanify.presentation.components.ExpandableCard
 import com.example.botanify.presentation.components.ExpandableCardScan
 import com.example.botanify.presentation.components.SmallBtn
 
 
 @Composable
-fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewModel) {
+fun HasilScanScreen(
+    modifier: Modifier,
+    penanggananViewModel: PenanggananViewModel,
+    scanViewModel: ScanViewModel = hiltViewModel(),
+    scanResult: ScanResult
+) {
 
     var expandedStateKeterangan by remember { mutableStateOf(false) }
     var expandedStateDiagnosa by remember { mutableStateOf(false) }
@@ -62,10 +74,16 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
 
     val scrollState = rememberScrollState()
 
+    val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        penanggananViewModel.getPenangganan("caterpillar", "powdery mildew")
+
+
+    LaunchedEffect(scanResult) {
+        Log.d("HasilScanScreen", "HasilScanScreen: $scanResult")
+        Log.d("SelectedScanHasil", "HasilScanScreen URI: ${scanResult.userImageUri}")
+        penanggananViewModel.getPenangganan(scanResult.plantName, scanResult.disease)
     }
+
 
 
     Column(
@@ -84,6 +102,8 @@ fun HasilScanScreen(modifier: Modifier, penanggananViewModel: PenanggananViewMod
             rotationStateDiagnosa,
             rotationStatePenanganan,
             uiState = uiState ?: PenanggananUiState.Loading,
+            scanResult = scanResult,
+            context = context
         )
 
     }
@@ -102,6 +122,8 @@ fun HasilScanContent(
     rotationStateDiagnosa: Float,
     rotationStatePenanganan: Float,
     uiState: PenanggananUiState,
+    scanResult: ScanResult,
+    context: Context
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Image(
@@ -116,19 +138,20 @@ fun HasilScanContent(
     Spacer(modifier = Modifier.height(24.dp))
 
     Row(verticalAlignment = Alignment.CenterVertically) {
+
         Image(
-            painter = painterResource(id = R.drawable.scantnm),
-            contentDescription = null,
+            painter = rememberAsyncImagePainter(model = scanResult.userImageUri),
+            contentDescription = "Hasil Scan",
             modifier = Modifier
                 .size(114.dp)
                 .clip(RoundedCornerShape(15.dp)),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(24.dp))
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "Agloenema",
+                text = scanResult.plantName,
                 style = TextStyle(
                     fontSize = 20.sp,
                     lineHeight = 30.sp,
@@ -146,12 +169,33 @@ fun HasilScanContent(
         }
     }
 
+
+
+
     Spacer(modifier = Modifier.height(16.dp))
 
     when (uiState) {
         is PenanggananUiState.Loading -> {
-            Text(text = "Loading...")
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(top = 36.dp)
+                            .size(48.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Sedang Mencari Detail Penyakit dan Hama Tanaman",
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
+
         is PenanggananUiState.Success -> {
             PlantDetail(
                 expandedStateKeterangan = expandedStateKeterangan,
@@ -166,6 +210,7 @@ fun HasilScanContent(
                 penangganan = uiState.penangganan
             )
         }
+
         is PenanggananUiState.Error -> {
             Text(text = "Error loading data")
         }

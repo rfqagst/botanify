@@ -2,6 +2,7 @@ package com.example.botanify.presentation.navigation
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,6 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.botanify.data.datastore.OnboardingManager
+import com.example.botanify.data.retrofit.response.scan.ScanResult
+import com.example.botanify.data.retrofit.response.scan.gson
 import com.example.botanify.presentation.screen.auth.AuthViewModel
 import com.example.botanify.presentation.screen.auth.login.ForgotPassword
 import com.example.botanify.presentation.screen.auth.login.LoginScreen
@@ -39,6 +42,7 @@ import com.example.botanify.presentation.screen.tanamansaya.TambahKoleksiTanaman
 import com.example.botanify.presentation.screen.tanamansaya.TanamanSayaViewModel
 import com.example.botanify.screen.profile.GantiPasswordScreen
 import com.example.botanify.screen.profile.ProfileScreen
+import java.net.URLDecoder
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -48,7 +52,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
     val onboardingManager by lazy { OnboardingManager(context) }
 
     NavHost(navController = navController, startDestination = Screen.Home.route) {
-
         composable(route = Screen.Home.route) {
             val informationViewModel: InformationViewModel = hiltViewModel()
 
@@ -162,10 +165,20 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
             ScanTanamanScreen(modifier = modifier, navController, scanViewModel)
         }
 
-        composable(route = Screen.HasilScan.route) {
+        composable(
+            route = Screen.HasilScan.route + "/{scanResult}",
+            arguments = listOf(navArgument("scanResult") { type = NavType.StringType })
+        ) {
             val penanggananViewModel: PenanggananViewModel = hiltViewModel()
+            val scanViewModel: ScanViewModel = hiltViewModel()
 
-            HasilScanScreen(modifier = modifier, penanggananViewModel)
+            val scanResultJson = it.arguments?.getString("scanResult") ?: ""
+            val decodedJson = URLDecoder.decode(scanResultJson, "UTF-8")
+            val scanResult = gson.fromJson(decodedJson, ScanResult::class.java)
+
+            Log.d("NavHasilScanScreen", "HasilScanScreen: $scanResult")
+
+            HasilScanScreen(modifier = modifier, penanggananViewModel, scanViewModel, scanResult)
         }
 
         composable(route = Screen.InstruksiScan.route) {
