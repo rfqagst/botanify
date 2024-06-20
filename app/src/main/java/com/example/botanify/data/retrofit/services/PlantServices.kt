@@ -16,10 +16,10 @@ interface PlantServices {
     @GET("tanaman")
     suspend fun fetchPlants(): Response<PlantResponse>
 
-    @GET("tanaman/{name}")
+    @GET("tanaman/name/{name}")
     suspend fun fetchPlantByName(
         @Path("name") name: String
-    ): Response<PlantResponse>
+    ): Response<PlantDetailResponse>
 
     @GET("tanaman/{id}")
     suspend fun fetchPlantById(@Path("id") id: String): Response<PlantDetailResponse>

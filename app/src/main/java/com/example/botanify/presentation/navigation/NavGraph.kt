@@ -170,7 +170,6 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
             arguments = listOf(navArgument("scanResult") { type = NavType.StringType })
         ) {
             val penanggananViewModel: PenanggananViewModel = hiltViewModel()
-            val scanViewModel: ScanViewModel = hiltViewModel()
 
             val scanResultJson = it.arguments?.getString("scanResult") ?: ""
             val decodedJson = URLDecoder.decode(scanResultJson, "UTF-8")
@@ -178,7 +177,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier, context: Cont
 
             Log.d("NavHasilScanScreen", "HasilScanScreen: $scanResult")
 
-            HasilScanScreen(modifier = modifier, penanggananViewModel, scanViewModel, scanResult)
+            HasilScanScreen(modifier = modifier, penanggananViewModel, scanResult)
         }
 
         composable(route = Screen.InstruksiScan.route) {

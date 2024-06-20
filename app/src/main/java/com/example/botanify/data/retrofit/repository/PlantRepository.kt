@@ -2,13 +2,17 @@ package com.example.botanify.data.retrofit.repository
 
 import android.util.Log
 import com.example.botanify.data.retrofit.response.backend.DataItem
+import com.example.botanify.data.retrofit.response.backend.HamaResponseItem
+import com.example.botanify.data.retrofit.response.backend.PenyakitResponseItem
 import com.example.botanify.data.retrofit.response.backend.PlantDetailResponse
+import com.example.botanify.data.retrofit.response.backend.PlantResponse
 import com.example.botanify.data.retrofit.services.PlantServices
 import com.example.botanify.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import retrofit2.Response
 import javax.inject.Inject
 
 class PlantRepository @Inject constructor(
@@ -49,4 +53,26 @@ class PlantRepository @Inject constructor(
             emit(Resource.Error("Exception: ${e.message}"))
         }
     }.flowOn(Dispatchers.IO)
+
+
+    suspend fun getPlantByName(name: String): Resource<PlantDetailResponse> {
+        return try {
+            val response = plantServices.fetchPlantByName(name)
+            if (response.isSuccessful) {
+                response.body()?.let { plantResponse ->
+                    Log.d("PlantRepositorygetPlantByName", "Fetched plant: $plantResponse")
+                    Resource.Success(plantResponse)
+                } ?: Resource.Error("No plant found")
+            } else {
+                Resource.Error("Error fetching plant: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Log.e("PlantRepositorygetPlantByName", "Error fetching plant by name : ${e.message}")
+            Resource.Error("Exception: ${e.message}")
+
+        }
+    }
+
+
+
 }

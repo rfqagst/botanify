@@ -57,41 +57,5 @@ class ScanRepository @Inject constructor(
     }
 
 
-//    fun identifyPlantName(image: File): Flow<Resource<ScanPlantResponse>> = flow {
-//        emit(Resource.Loading())
-//        val requestImageFile = image.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//        val imageMultiPart = MultipartBody.Part.createFormData(
-//            "file",
-//            image.name,
-//            requestImageFile
-//        )
-//        try {
-//            val response = plantIdentifyPlantServices.identifyPlantName(imageMultiPart)
-//            emit(Resource.Success(response))
-//        } catch (e: Exception) {
-//            emit(Resource.Error(e.localizedMessage ?: "An error occurred"))
-//        }
-//    }.flowOn(Dispatchers.IO)
-//
-//
-//    fun classifyPlantDiseasesPests(image: File): Flow<Resource<PredictionsResponse>> = flow {
-//        emit(Resource.Loading())
-//        val requestImageFile = image.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//        val imageMultiPart = MultipartBody.Part.createFormData(
-//            "file",
-//            image.name,
-//            requestImageFile
-//        )
-//        try {
-//            val response = diseaseIdentifyPlantServices.classifyPlantDiseasesPests(
-//                apiKey = apiKey,
-//                file = imageMultiPart
-//            )
-//            Log.d("classifyPlantDiseasesPests", "classifyPlantDiseasesPests: $response, image: $image")
-//            emit(Resource.Success(response))
-//        } catch (e: Exception) {
-//            emit(Resource.Error(e.localizedMessage ?: "An error occurred"))
-//        }
-//    }.flowOn(Dispatchers.IO)
 
 }

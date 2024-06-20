@@ -56,7 +56,7 @@ fun BotanifyApp(
                     Screen.Register.route,
                     Screen.DetailInformation.route + "/{informationId}",
                     Screen.ScanTanaman.route,
-                    Screen.HasilScan.route,
+                    Screen.HasilScan.route + "/{scanResult}",
                     Screen.DetailTanaman.route + "/{tanamanId}",
                     Screen.TambahKoleksiTanaman.route,
                     Screen.SearchInformationScreen.route,
@@ -96,7 +96,7 @@ fun BotanifyApp(
                     Screen.Login.route,
                     Screen.Register.route,
                     Screen.ScanTanaman.route,
-                    Screen.HasilScan.route,
+                    Screen.HasilScan.route + "/{scanResult}",
                     Screen.DetailInformation.route + "/{informationId}",
                     Screen.DetailTanaman.route + "/{tanamanId}",
                     Screen.TambahKoleksiTanaman.route,
@@ -147,7 +147,7 @@ fun BotanifyApp(
                     navController = navController
                 )
 
-                Screen.HasilScan.route -> TopBarComponentHasilScan(
+                Screen.HasilScan.route + "/{scanResult}" -> TopBarComponentHasilScan(
                     title = "Hasil Scan Tanaman",
                     navController = navController
                 )

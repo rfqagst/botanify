@@ -1,6 +1,5 @@
 package com.example.botanify.presentation.screen.scan
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -41,19 +40,24 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.botanify.R
+import com.example.botanify.data.retrofit.response.backend.Data
+import com.example.botanify.data.retrofit.response.backend.PlantDetailResponse
+import com.example.botanify.data.retrofit.response.backend.PlantResponse
 import com.example.botanify.data.retrofit.response.scan.Penangganan
 import com.example.botanify.data.retrofit.response.scan.ScanResult
 import com.example.botanify.presentation.components.ExpandableCard
 import com.example.botanify.presentation.components.ExpandableCardScan
 import com.example.botanify.presentation.components.SmallBtn
+import com.example.botanify.presentation.screen.search.PlantViewModel
+import com.example.botanify.utils.Resource
 
 
 @Composable
 fun HasilScanScreen(
     modifier: Modifier,
     penanggananViewModel: PenanggananViewModel,
-    scanViewModel: ScanViewModel = hiltViewModel(),
-    scanResult: ScanResult
+    scanResult: ScanResult,
+    hasilScanViewModel: HasilScanViewModel = hiltViewModel()
 ) {
 
     var expandedStateKeterangan by remember { mutableStateOf(false) }
@@ -71,6 +75,9 @@ fun HasilScanScreen(
     )
 
     val uiState by penanggananViewModel.penanggananState.collectAsState()
+    val plantDetail by hasilScanViewModel.plantDetail.collectAsState()
+    val plant  = (plantDetail as? Resource.Success)?.data?.data?.namaTanaman
+
 
     val scrollState = rememberScrollState()
 
@@ -79,9 +86,8 @@ fun HasilScanScreen(
 
 
     LaunchedEffect(scanResult) {
-        Log.d("HasilScanScreen", "HasilScanScreen: $scanResult")
-        Log.d("SelectedScanHasil", "HasilScanScreen URI: ${scanResult.userImageUri}")
-        penanggananViewModel.getPenangganan(scanResult.plantName, scanResult.disease)
+        penanggananViewModel.getPenangganan("powdery-mildew")
+        hasilScanViewModel.fetchPlantByName(scanResult.plantName)
     }
 
 
@@ -103,7 +109,7 @@ fun HasilScanScreen(
             rotationStatePenanganan,
             uiState = uiState ?: PenanggananUiState.Loading,
             scanResult = scanResult,
-            context = context
+            plantDetail = plantDetail,
         )
 
     }
@@ -123,11 +129,13 @@ fun HasilScanContent(
     rotationStatePenanganan: Float,
     uiState: PenanggananUiState,
     scanResult: ScanResult,
-    context: Context
+    plantDetail: Resource<PlantDetailResponse>
 ) {
+    val plant = (plantDetail as? Resource.Success)?.data?.data
+
     Spacer(modifier = Modifier.height(16.dp))
     Image(
-        painter = painterResource(id = R.drawable.scantnm),
+        painter = rememberAsyncImagePainter(model = plant?.fotoTanaman),
         contentDescription = "",
         modifier = Modifier
             .fillMaxWidth()
@@ -169,9 +177,6 @@ fun HasilScanContent(
         }
     }
 
-
-
-
     Spacer(modifier = Modifier.height(16.dp))
 
     when (uiState) {
@@ -207,7 +212,8 @@ fun HasilScanContent(
                 rotationStateKeterangan = rotationStateKeterangan,
                 rotationStateDiagnosa = rotationStateDiagnosa,
                 rotationStatePenanganan = rotationStatePenanganan,
-                penangganan = uiState.penangganan
+                penangganan = uiState.penangganan,
+                plantDetail = plantDetail
             )
         }
 
@@ -228,15 +234,18 @@ fun PlantDetail(
     rotationStateKeterangan: Float,
     rotationStateDiagnosa: Float,
     rotationStatePenanganan: Float,
-    penangganan: Penangganan
+    penangganan: Penangganan,
+    plantDetail: Resource<PlantDetailResponse>
 ) {
+    val plant = (plantDetail as? Resource.Success)?.data?.data
+
     ExpandableCard(
         modifier = Modifier,
         cardTitle = "Keterangan",
         onClick = onExpandKeterangan,
         rotationState = rotationStateKeterangan,
         expandedState = expandedStateKeterangan,
-        expadableValue = "Aglaonema, juga dikenal sebagai \"Chinese Evergreen\", adalah tanaman hias dengan daun tebal, hijau gelap, dan motif daun yang menarik. Beberapa varietas memiliki warna daun yang beragam, termasuk hijau, merah muda, putih, atau perak."
+        expadableValue = plant?.deskripsiTanaman ?: ""
     )
 
     Spacer(modifier = Modifier.height(16.dp))

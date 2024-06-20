@@ -3,9 +3,11 @@ package com.example.botanify.presentation.screen.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.botanify.data.retrofit.repository.PlantRepository
 import com.example.botanify.data.retrofit.response.backend.DataItem
 import com.example.botanify.data.retrofit.response.backend.PlantDetailResponse
+import com.example.botanify.data.retrofit.response.backend.PlantResponse
 import com.example.botanify.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +27,9 @@ class PlantViewModel @Inject constructor(
 
     private val _plantsById = MutableStateFlow<Resource<PlantDetailResponse>>(Resource.Loading())
     val plantsById: StateFlow<Resource<PlantDetailResponse>> = _plantsById
+
+
+
 
     init {
         fetchPlants()
@@ -50,4 +55,6 @@ class PlantViewModel @Inject constructor(
             }
         }
     }
+
+
 }
