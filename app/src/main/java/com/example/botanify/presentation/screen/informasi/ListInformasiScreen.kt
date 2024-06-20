@@ -1,6 +1,8 @@
 package com.example.botanify.presentation.screen.informasi
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,7 +26,9 @@ import com.example.botanify.presentation.components.InformationHomeCard
 import com.example.botanify.presentation.navigation.Screen
 import com.example.botanify.presentation.ui.theme.SurfaceBase
 import com.example.botanify.utils.Resource
+import formatDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ListInformasiScreen(
     modifier: Modifier,
@@ -79,7 +83,7 @@ fun ListInformasiScreen(
                                     navController.navigate(Screen.DetailInformation.route + "/${information.idInformasi}")
                                 },
                                 title = information.judul ?: "",
-                                date = information.tanggal ?: "",
+                                date = formatDateTime(information.tanggal ?: ""),
                                 image = information.fotoInformasi ?: ""
                             )
                         }

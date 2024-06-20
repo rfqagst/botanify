@@ -12,7 +12,7 @@ interface InformationServices {
     suspend fun fetchInformationArticles(
     ): Response<List<InformationsResponseItem>>
 
-    @GET("informasi/{kategori}")
+    @GET("informasi/kategori/{kategori}")
     suspend fun fetchInformationArticlesByCategory(
         @Path("kategori") kategori: String
     ): Response<List<InformationsResponseItem>>

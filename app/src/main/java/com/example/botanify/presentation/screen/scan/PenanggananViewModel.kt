@@ -20,7 +20,7 @@ class PenanggananViewModel @Inject constructor(
     val penanggananState: StateFlow<PenanggananUiState?> = _penanggananState
 
     val listHama = listOf(
-        "hama-semut",
+        "hama semut",
         "catterpillar",
         "ladybug",
         "thrips",
@@ -29,8 +29,8 @@ class PenanggananViewModel @Inject constructor(
     )
 
     val listPenyakit = listOf(
-        "black-spot",
-        "powdery-mildew"
+        "black spot",
+        "powdery mildew"
     )
 
     fun getPenangganan(hamaPenyakit: String) {
@@ -42,14 +42,19 @@ class PenanggananViewModel @Inject constructor(
             try {
                 var currentPenangganan = Penangganan()
 
-                val hamaPenyakits = hamaPenyakit.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                val formattedHamaPenyakit = hamaPenyakit.replace("-", " ")
+                val hamaPenyakits = formattedHamaPenyakit.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
-                val hamaPenyakitFormatted = hamaPenyakits.first().replace("-", " ")
-                Log.d("penanggananViewModel", hamaPenyakitFormatted)
-                val hamaPenyakit = hamaPenyakits.first()
+                if (hamaPenyakits.isEmpty()) {
+                    throw NoSuchElementException("List is empty")
+                }
 
-                if (hamaPenyakit in listHama) {
-                    val hamaResponse = repository.getPenanggananHama(hamaPenyakitFormatted)
+                val firstHamaPenyakit = hamaPenyakits.first()
+                Log.d("penanggananViewModel", firstHamaPenyakit)
+                Log.d("penanggananViewModel", hamaPenyakit)
+
+                if (firstHamaPenyakit in listHama) {
+                    val hamaResponse = repository.getPenanggananHama(firstHamaPenyakit)
 
                     val firstHama = hamaResponse.first()
                     currentPenangganan = currentPenangganan.copy(
@@ -59,8 +64,8 @@ class PenanggananViewModel @Inject constructor(
                     )
                     Log.d("penanggananViewModel", firstHama.penanganan.toString())
 
-                } else if (hamaPenyakit  in listPenyakit) {
-                    val penyakitResponse = repository.getPenanggananPenyakit(hamaPenyakitFormatted)
+                } else if (firstHamaPenyakit  in listPenyakit) {
+                    val penyakitResponse = repository.getPenanggananPenyakit(firstHamaPenyakit)
                     val firstPenyakit = penyakitResponse.first()
                     currentPenangganan = currentPenangganan.copy(
                         idPenyakit = firstPenyakit.idPenanganan ?: 0,

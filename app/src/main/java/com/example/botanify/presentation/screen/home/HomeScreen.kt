@@ -1,6 +1,8 @@
 package com.example.botanify.presentation.screen.home
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +40,7 @@ import com.example.botanify.presentation.screen.informasi.InformationViewModel
 import com.example.botanify.presentation.ui.theme.SecondaryBase
 import com.example.botanify.presentation.ui.theme.SurfaceBase
 import com.example.botanify.utils.Resource
+import formatDateTime
 
 @Composable
 fun HomeScreen(
@@ -142,6 +145,7 @@ fun FilterRow(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun InformationContent(
     informationByCategory: Resource<List<InformationsResponseItem>>,
@@ -178,6 +182,7 @@ fun InformationContent(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeArticles(navController: NavHostController, infos: List<InformationsResponseItem>) {
     LazyColumn {
@@ -188,9 +193,10 @@ fun HomeArticles(navController: NavHostController, infos: List<InformationsRespo
                     navController.navigate(Screen.DetailInformation.route + "/${information.idInformasi}")
                 },
                 title = information.judul ?: "",
-                date = information.tanggal ?: "",
+                date = formatDateTime(information.tanggal ?: ""),
                 image = information.fotoInformasi ?: "",
             )
+            Log.d("HomeArticles", "Title: ${information.tanggal}")
         }
     }
 }

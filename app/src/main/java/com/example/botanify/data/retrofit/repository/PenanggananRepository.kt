@@ -13,9 +13,10 @@ class PenanggananRepository @Inject constructor(
     suspend fun getPenanggananPenyakit(namaPenyakit: String): List<PenyakitResponseItem> {
         return try {
             val response = penanggananServices.getPenyakit(namaPenyakit)
-//            Log.d("Responsesss", response.body().toString())
             Log.d("PenanggananRepository", namaPenyakit)
+            Log.d("PenanggananRepository", response.body().toString())
             response.body() ?: emptyList()
+
         } catch (e: Exception) {
             Log.e("Error", e.localizedMessage ?: "Error")
             emptyList()

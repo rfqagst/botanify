@@ -1,5 +1,7 @@
 package com.example.botanify.presentation.screen.search
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,7 +35,9 @@ import com.example.botanify.presentation.screen.informasi.InformationViewModel
 import com.example.botanify.presentation.ui.theme.SecondaryBase
 import com.example.botanify.presentation.ui.theme.SurfaceBase
 import com.example.botanify.utils.Resource
+import formatDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchInformationScreen(
@@ -120,7 +124,7 @@ fun SearchInformationScreen(
                                     navController.navigate(Screen.DetailInformation.route + "/$informationId")
                                 },
                                 title = information.judul ?: "",
-                                date = information.tanggal ?: "",
+                                date = formatDateTime(information.tanggal ?: ""),
                                 image = information.fotoInformasi ?: ""
                             )
 
