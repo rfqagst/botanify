@@ -3,6 +3,7 @@ package com.example.botanify.presentation.screen.scan
 import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,12 +29,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,9 +50,14 @@ import com.example.botanify.data.retrofit.response.scan.Penangganan
 import com.example.botanify.data.retrofit.response.scan.ScanResult
 import com.example.botanify.presentation.components.ExpandableCard
 import com.example.botanify.presentation.components.ExpandableCardScan
+import com.example.botanify.presentation.components.ExpandableCardScanDiagnosa
 import com.example.botanify.presentation.components.SmallBtn
 import com.example.botanify.presentation.screen.search.PlantViewModel
+import com.example.botanify.presentation.ui.theme.ContentDark
+import com.example.botanify.presentation.ui.theme.ContentLightBlue
+import com.example.botanify.presentation.ui.theme.PrimaryBase
 import com.example.botanify.utils.Resource
+import java.util.Locale
 
 
 @Composable
@@ -133,16 +141,39 @@ fun HasilScanContent(
 ) {
     val plant = (plantDetail as? Resource.Success)?.data?.data
 
+
     Spacer(modifier = Modifier.height(16.dp))
-    Image(
-        painter = rememberAsyncImagePainter(model = plant?.fotoTanaman),
-        contentDescription = "",
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(221.dp)
-            .clip(RoundedCornerShape(10.dp)),
-        contentScale = ContentScale.FillWidth
-    )
+
+
+    if (!plant?.fotoTanaman.isNullOrEmpty()) {
+        Image(
+            painter = rememberAsyncImagePainter(model = plant?.fotoTanaman),
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(221.dp)
+                .clip(RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.FillWidth
+        )
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(221.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(ContentLightBlue),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Tidak Ditemukan Data Tanaman,\n Silahkan coba Scan dengan Gambar lain",
+                textAlign = TextAlign.Center,
+                color = ContentDark,
+                fontSize = 16.sp
+            )
+        }
+
+    }
+
     Spacer(modifier = Modifier.height(24.dp))
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -245,18 +276,36 @@ fun PlantDetail(
         onClick = onExpandKeterangan,
         rotationState = rotationStateKeterangan,
         expandedState = expandedStateKeterangan,
-        expadableValue = plant?.deskripsiTanaman ?: ""
+        expadableValue = plant?.deskripsiTanaman ?: "Tidak Ditemukan Data Tanaman"
     )
 
     Spacer(modifier = Modifier.height(16.dp))
-    ExpandableCardScan(
+
+    val dataPenyakit = if (penangganan.namaPenyakit != "")  {
+        penangganan.namaPenyakit.uppercase()
+    }  else {
+        "Tidak Ditemukan Penyakit"
+    }
+
+    val dataHama = if (penangganan.namaHama != "")  {
+        penangganan.namaHama.uppercase()
+    }  else {
+        "Tidak Ditemukan Hama"
+    }
+
+    val penyakitColor = if (penangganan.namaPenyakit != "") Color.Red else PrimaryBase
+    val hamaColor = if (penangganan.namaHama != "") Color.Red else PrimaryBase
+
+    ExpandableCardScanDiagnosa(
         modifier = Modifier,
         cardTitle = "Hasil Diagnosa",
         onClick = onExpandDiagnosa,
         rotationState = rotationStateDiagnosa,
         expandedState = expandedStateDiagnosa,
-        penyakitValue = "Nama Penyakit: ${penangganan.namaPenyakit.uppercase()}",
-        hamaValue = "Nama Hama: ${penangganan.namaHama.uppercase()}"
+        penyakitValue = "Nama Penyakit: ${dataPenyakit}",
+        hamaValue = "Nama Hama: ${dataHama}",
+        penyakitColor = penyakitColor,
+        hamaColor = hamaColor
     )
 
     Spacer(modifier = Modifier.height(16.dp))

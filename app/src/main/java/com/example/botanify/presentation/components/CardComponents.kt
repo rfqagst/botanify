@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -561,6 +562,83 @@ fun ExpandableCardScan(
         }
     }
 }
+
+
+
+@Composable
+fun ExpandableCardScanDiagnosa(
+    modifier: Modifier,
+    cardTitle: String,
+    onClick: () -> Unit,
+    rotationState: Float,
+    expandedState: Boolean,
+    penyakitValue: String,
+    hamaValue: String,
+    penyakitColor : Color = ContentDark,
+    hamaColor : Color = ContentDark
+) {
+
+    Column(
+        modifier = modifier.background(ContentWhite)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = cardTitle,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    lineHeight = 44.sp,
+                    fontWeight = FontWeight(700),
+                )
+            )
+            IconButton(
+                modifier = Modifier.rotate(rotationState),
+                onClick = onClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    tint = SecondaryBase,
+                    contentDescription = null
+                )
+            }
+        }
+
+        if (expandedState) {
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    text = penyakitValue,
+                    color = penyakitColor,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight(400),
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    text = hamaValue,
+                    color = hamaColor,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight(400),
+                )
+            }
+        }
+    }
+}
+
+
 
 @Composable
 fun SearchTanamanCard(modifier: Modifier, name: String, description: String, image: String) {

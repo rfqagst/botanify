@@ -20,6 +20,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -39,7 +40,6 @@ object NetworkModule {
         return Interceptor { chain ->
             val original = chain.request()
             val requestBuilder = original.newBuilder()
-//                .header("x-api-key", API_KEY)
                 .method(original.method, original.body)
 
             val request = requestBuilder.build()
@@ -54,6 +54,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(apiKeyInterceptor: Interceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(apiKeyInterceptor)
             .build()
     }

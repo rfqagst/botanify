@@ -121,10 +121,7 @@ fun BotanifyApp(
                     navController = navController
                 )
 
-                Screen.TanamanSaya.route -> TopBarComponent(
-                    title = "Tanaman Saya",
-                    navController = navController
-                )
+
 
                 Screen.Notification.route -> TopBarComponent(
                     title = "Notification",
