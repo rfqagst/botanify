@@ -86,7 +86,7 @@ fun HasilScanScreen(
 
 
     LaunchedEffect(scanResult) {
-        penanggananViewModel.getPenangganan("powdery-mildew")
+        penanggananViewModel.getPenangganan(scanResult.disease)
         hasilScanViewModel.fetchPlantByName(scanResult.plantName)
     }
 

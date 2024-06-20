@@ -41,8 +41,12 @@ class PenanggananViewModel @Inject constructor(
 
             try {
                 var currentPenangganan = Penangganan()
-                val hamaPenyakitFormatted = hamaPenyakit.replace("-", " ")
 
+                val hamaPenyakits = hamaPenyakit.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+                val hamaPenyakitFormatted = hamaPenyakits.first().replace("-", " ")
+                Log.d("penanggananViewModel", hamaPenyakitFormatted)
+                val hamaPenyakit = hamaPenyakits.first()
 
                 if (hamaPenyakit in listHama) {
                     val hamaResponse = repository.getPenanggananHama(hamaPenyakitFormatted)
@@ -55,7 +59,7 @@ class PenanggananViewModel @Inject constructor(
                     )
                     Log.d("penanggananViewModel", firstHama.penanganan.toString())
 
-                } else if (hamaPenyakit in listPenyakit) {
+                } else if (hamaPenyakit  in listPenyakit) {
                     val penyakitResponse = repository.getPenanggananPenyakit(hamaPenyakitFormatted)
                     val firstPenyakit = penyakitResponse.first()
                     currentPenangganan = currentPenangganan.copy(
@@ -74,50 +78,6 @@ class PenanggananViewModel @Inject constructor(
             }
         }
     }
-
-
-//    fun getPenangganan(hama: String, penyakit: String = "") {
-//
-//        viewModelScope.launch {
-//            _penanggananState.value = PenanggananUiState.Loading
-//
-//            try {
-//                var currentPenangganan = Penangganan()
-//
-//                if (hama.isNotEmpty()) {
-//                    val hamaResponse = repository.getPenanggananHama(hama)
-//                    if (hamaResponse.isNotEmpty()) {
-//                        val firstHama = hamaResponse.first()
-//                        currentPenangganan = currentPenangganan.copy(
-//                            idHama = firstHama.idPenanganan ?: 0,
-//                            namaHama = firstHama.namaHama ?: "",
-//                            penanggananHama = firstHama.penanganan ?: ""
-//                        )
-//                        Log.d("penanggananViewModel", firstHama.penanganan.toString())
-//                    }
-//                }
-//
-//                if (penyakit.isNotEmpty()) {
-//                    val penyakitResponse = repository.getPenanggananPenyakit(penyakit)
-//                    if (penyakitResponse.isNotEmpty()) {
-//                        val firstPenyakit = penyakitResponse.first()
-//                        currentPenangganan = currentPenangganan.copy(
-//                            idPenyakit = firstPenyakit.idPenanganan ?: 0,
-//                            namaPenyakit = firstPenyakit.namaPenyakit ?: "",
-//                            penanggananPenyakit = firstPenyakit.penanganan ?: ""
-//                        )
-//                        Log.d("penanggananViewModel", firstPenyakit.penanganan.toString())
-//                    }
-//                }
-//                _penanggananState.value = PenanggananUiState.Success(currentPenangganan)
-//
-//            } catch (e: Exception) {
-//                Log.e("penanggananViewModel", "Error fetching data", e)
-//                _penanggananState.value = PenanggananUiState.Error
-//            }
-//        }
-//    }
-
 
 }
 
