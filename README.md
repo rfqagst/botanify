@@ -1,6 +1,8 @@
 # BOTANIFY
 
 BOTANIFY is an AI-powered application that simplifies plant care for you.
+App Interface and Botanify APK file : [Link to Drive Folder for Application Photos](https://github.com/wallabag/android-app/blob/master/README.md)
+
 
 ## Features
 - **Plant Diagnosis**: AI technology for diagnosing plant pests and diseases.
@@ -24,8 +26,7 @@ BOTANIFY is an AI-powered application that simplifies plant care for you.
 - **Alarm Manager**
 - **TFLite**
 
-## Screenshots and Demo
-[Link to Drive Folder for Application Photos](#)
+
 
 ---
 
