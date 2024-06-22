@@ -1,6 +1,6 @@
 
 # BOTANIFY
-![Botanify Banner](https://i.ibb.co.com/3RW3B45/AI-powered-application-that-simplifies-plant-care-for-you.png)
+![Botanify Banner](https://i.ibb.co.com/yp1kYLR/AI-powered-application-that-simplifies-plant-care-for-you-2.png)
 
 
 BOTANIFY is an AI-powered application that simplifies plant care for you.
