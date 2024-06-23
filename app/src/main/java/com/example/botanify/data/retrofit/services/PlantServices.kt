@@ -1,8 +1,10 @@
 package com.example.botanify.data.retrofit.services
 
 import com.example.botanify.data.firebase.model.PlantCollection
+import com.example.botanify.data.retrofit.response.backend.DataItemCollection
 import com.example.botanify.data.retrofit.response.backend.PlantDetailResponse
 import com.example.botanify.data.retrofit.response.backend.PlantResponse
+import com.example.botanify.data.retrofit.response.backend.ResponseCollection
 import com.example.botanify.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -25,21 +27,21 @@ interface PlantServices {
     suspend fun fetchPlantById(@Path("id") id: String): Response<PlantDetailResponse>
 
 
-    @GET
-    suspend fun fetchUserPlantCollection(userId: String): Flow<Resource<List<PlantCollection>>>
+    @GET("koleksi/user/{userId}")
+    suspend fun fetchUserPlantCollection(userId: String): Response<ResponseCollection>
 
     @POST
     suspend fun addPlantCollection(
         userId: String,
         plantCollection: PlantCollection
-    ): Flow<Resource<PlantCollection>>
+    ): Resource<PlantCollection>
 
 
     @DELETE
     suspend fun deletePlantCollection(
         userId: String,
         plantCollection: PlantCollection
-    ): Flow<Resource<PlantCollection>>
+    ): Resource<PlantCollection>
 
 
 }

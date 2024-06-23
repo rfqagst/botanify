@@ -44,8 +44,6 @@ object NetworkModule {
 
             val request = requestBuilder.build()
             Log.d("API Request", "URL: ${request.url}, Method: ${request.method}")
-            Log.d("API Request", "Headers: ${request.headers}")
-
             chain.proceed(request)
         }
     }

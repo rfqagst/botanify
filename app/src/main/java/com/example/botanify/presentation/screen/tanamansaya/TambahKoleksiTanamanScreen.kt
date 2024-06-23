@@ -102,7 +102,6 @@ fun TambahKoleksiTanamanScreen(
 
     LaunchedEffect(addPlantState) {
         if (addPlantState is Resource.Success) {
-            // Reset form fields
             selectedImageUri = null
             namaTanaman = ""
             durasiPenyiraman = ""

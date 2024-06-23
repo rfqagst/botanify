@@ -251,6 +251,22 @@ fun HasilScanContent(
         is PenanggananUiState.Error -> {
             Text(text = "Error loading data")
         }
+
+        is PenanggananUiState.NotFound -> {
+            PlantDetail(
+                expandedStateKeterangan = expandedStateKeterangan,
+                onExpandKeterangan = onExpandKeterangan,
+                expandedStateDiagnosa = expandedStateDiagnosa,
+                onExpandDiagnosa = onExpandDiagnosa,
+                expandedStatePenanganan = expandedStatePenanganan,
+                onExpandPenanganan = onExpandPenanganan,
+                rotationStateKeterangan = rotationStateKeterangan,
+                rotationStateDiagnosa = rotationStateDiagnosa,
+                rotationStatePenanganan = rotationStatePenanganan,
+                penangganan = uiState.penangganan,
+                plantDetail = plantDetail
+            )
+        }
     }
 }
 

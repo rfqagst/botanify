@@ -45,17 +45,24 @@ class PenanggananViewModel @Inject constructor(
                 val formattedHamaPenyakit = hamaPenyakit.replace("-", " ")
                 val hamaPenyakits = formattedHamaPenyakit.split(",").map { it.trim() }.filter { it.isNotEmpty() }
 
+
                 if (hamaPenyakits.isEmpty()) {
-                    throw NoSuchElementException("List is empty")
+                    _penanggananState.value = PenanggananUiState.NotFound(currentPenangganan)
+                    return@launch
                 }
 
                 val firstHamaPenyakit = hamaPenyakits.first()
+
+
                 Log.d("penanggananViewModel", firstHamaPenyakit)
                 Log.d("penanggananViewModel", hamaPenyakit)
 
                 if (firstHamaPenyakit in listHama) {
                     val hamaResponse = repository.getPenanggananHama(firstHamaPenyakit)
-
+                    if (hamaResponse.isEmpty()) {
+                        _penanggananState.value = PenanggananUiState.NotFound(currentPenangganan)
+                        return@launch
+                    }
                     val firstHama = hamaResponse.first()
                     currentPenangganan = currentPenangganan.copy(
                         idHama = firstHama.idPenanganan ?: 0,
@@ -64,8 +71,12 @@ class PenanggananViewModel @Inject constructor(
                     )
                     Log.d("penanggananViewModel", firstHama.penanganan.toString())
 
-                } else if (firstHamaPenyakit  in listPenyakit) {
+                } else if (firstHamaPenyakit in listPenyakit) {
                     val penyakitResponse = repository.getPenanggananPenyakit(firstHamaPenyakit)
+                    if (penyakitResponse.isEmpty()) {
+                        _penanggananState.value = PenanggananUiState.NotFound(currentPenangganan)
+                        return@launch
+                    }
                     val firstPenyakit = penyakitResponse.first()
                     currentPenangganan = currentPenangganan.copy(
                         idPenyakit = firstPenyakit.idPenanganan ?: 0,
@@ -73,8 +84,11 @@ class PenanggananViewModel @Inject constructor(
                         penanggananPenyakit = firstPenyakit.penanganan ?: ""
                     )
                     Log.d("penanggananViewModel", firstPenyakit.penanganan.toString())
-
+                } else {
+                    _penanggananState.value = PenanggananUiState.NotFound(currentPenangganan)
+                    return@launch
                 }
+
                 _penanggananState.value = PenanggananUiState.Success(currentPenangganan)
 
             } catch (e: Exception) {
@@ -83,12 +97,11 @@ class PenanggananViewModel @Inject constructor(
             }
         }
     }
-
 }
-
 
 sealed interface PenanggananUiState {
     data class Success(val penangganan: Penangganan) : PenanggananUiState
+    data class NotFound(val penangganan: Penangganan) : PenanggananUiState
     object Error : PenanggananUiState
     object Loading : PenanggananUiState
 }
